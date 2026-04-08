@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Módulo 1 · IA en Finanzas Corporativas · ADVANCE UR</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ur:#C8102E;--url:#F5E6E9;--urm:#E8899A;
+  --rose:#D4536E;--rose-light:#FBEAEE;
+  --bg:#F2F0EE;--white:#FFFFFF;
+  --b1:#E0DDDA;--b2:#C8C4C0;
+  --t1:#2C2C2C;--t2:#666560;--t3:#9E9B97;
+  --gold:#B8860B;--gold-light:#FDF8EC;
+  --green:#1A6B3C;--green-light:#EAF5EE;
+  --blue:#1A3A6B;--blue-light:#EAF0F8;
+}
+
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;}
+
+/* ─── HEADER ─── */
+header{flex-shrink:0;background:var(--white);border-bottom:2px solid var(--ur);padding:.75rem 2rem;display:flex;align-items:center;gap:16px;z-index:100;}
+.logo-mark{width:36px;height:36px;background:var(--ur);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:18px;height:18px;}
+.header-text{flex:1;}
+.header-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--t1);line-height:1.2;}
+.header-sub{font-size:11px;color:var(--t3);letter-spacing:.04em;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.progress-bar-wrap{width:180px;}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px;}
+.progress-track{height:4px;background:var(--b1);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--ur);border-radius:2px;transition:width .5s ease;}
+.badge-session{font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;background:var(--url);color:var(--ur);border:1px solid var(--urm);white-space:nowrap;}
+
+/* ─── MAIN LAYOUT ─── */
+.main{flex:1;display:flex;overflow:hidden;}
+
+/* ─── SIDEBAR ─── */
+.sidebar{width:280px;flex-shrink:0;background:var(--white);border-right:1px solid var(--b1);overflow-y:auto;display:flex;flex-direction:column;}
+.sidebar-header{padding:1rem 1.25rem .75rem;border-bottom:1px solid var(--b1);position:sticky;top:0;background:var(--white);z-index:10;}
+.sidebar-title{font-size:11px;font-weight:500;letter-spacing:.07em;color:var(--t3);text-transform:uppercase;}
+.sidebar-mod{font-size:13px;font-weight:500;color:var(--t1);margin-top:3px;}
+.session-list{padding:.5rem 0;}
+.session-item{display:flex;align-items:center;gap:10px;padding:.6rem 1.25rem;cursor:pointer;transition:background .12s;border-left:3px solid transparent;}
+.session-item:hover{background:var(--bg);}
+.session-item.active{background:var(--url);border-left-color:var(--ur);}
+.session-item.completed{opacity:.75;}
+.si-num{font-family:'DM Serif Display',serif;font-size:15px;color:var(--t3);width:24px;flex-shrink:0;text-align:center;}
+.session-item.active .si-num{color:var(--ur);}
+.si-text{flex:1;min-width:0;}
+.si-label{font-size:11px;color:var(--t3);}
+.si-title{font-size:12px;font-weight:500;color:var(--t1);line-height:1.3;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.session-item.active .si-title{color:var(--ur);}
+.si-check{width:16px;height:16px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.si-check.done{background:var(--green);color:#fff;}
+.si-check.current{background:var(--ur);color:#fff;}
+.si-check.pending{background:var(--b1);}
+
+/* ─── CONTENT ─── */
+.content{flex:1;overflow-y:auto;padding:2rem 2.5rem 3rem;display:flex;flex-direction:column;gap:2rem;}
+
+/* ─── SESSION PANEL ─── */
+.session-panel{display:none;}
+.session-panel.active{display:flex;flex-direction:column;gap:1.5rem;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.session-hero{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.hero-top{padding:1.75rem 2rem 1.25rem;background:linear-gradient(135deg,#1a0a0e 0%,var(--ur) 100%);}
+.hero-eyebrow{font-size:10px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:8px;}
+.hero-title{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;line-height:1.3;}
+.hero-body{padding:1.5rem 2rem;display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;}
+.hero-desc{flex:1;min-width:200px;font-size:14px;color:var(--t2);line-height:1.7;}
+.hero-meta{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);padding:5px 12px;border-radius:20px;border:1px solid var(--b1);background:var(--bg);white-space:nowrap;}
+.meta-pill svg{width:12px;height:12px;color:var(--ur);}
+
+/* ─── CONCEPT CARDS ─── */
+.cards-section{}
+.section-label{font-size:11px;font-weight:500;letter-spacing:.07em;color:var(--ur);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--url);}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.concept-card{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1.25rem;transition:all .2s;cursor:default;position:relative;overflow:hidden;}
+.concept-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--ur);}
+.concept-card.gold::before{background:var(--gold);}
+.concept-card.green::before{background:var(--green);}
+.concept-card.blue::before{background:var(--blue);}
+.concept-card.rose::before{background:var(--rose);}
+.concept-card:hover{border-color:var(--b2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px;}
+.card-icon.red{background:var(--url);}
+.card-icon.gold{background:var(--gold-light);}
+.card-icon.green{background:var(--green-light);}
+.card-icon.blue{background:var(--blue-light);}
+.card-icon.rose{background:var(--rose-light);}
+.card-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:5px;}
+.card-text{font-size:12px;color:var(--t2);line-height:1.65;}
+.card-tag{display:inline-flex;margin-top:10px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;}
+.tag-red{background:var(--url);color:var(--ur);}
+.tag-gold{background:var(--gold-light);color:var(--gold);}
+.tag-green{background:var(--green-light);color:var(--green);}
+.tag-blue{background:var(--blue-light);color:var(--blue);}
+.tag-rose{background:var(--rose-light);color:var(--rose);}
+
+/* ─── TIMELINE / EVOLUTION ─── */
+.timeline{display:flex;flex-direction:column;gap:0;}
+.timeline-item{display:flex;gap:16px;position:relative;}
+.timeline-item:not(:last-child)::after{content:'';position:absolute;left:17px;top:36px;width:1px;height:calc(100% - 20px);background:var(--b1);}
+.tl-dot{width:35px;height:35px;border-radius:50%;background:var(--ur);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:500;color:#fff;z-index:1;}
+.tl-dot.gold{background:var(--gold);}
+.tl-dot.green{background:var(--green);}
+.tl-dot.blue{background:var(--blue);}
+.tl-dot.rose{background:var(--rose);}
+.tl-content{flex:1;padding-bottom:1.5rem;}
+.tl-era{font-size:10px;font-weight:500;letter-spacing:.06em;color:var(--t3);margin-bottom:3px;}
+.tl-title{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:5px;}
+.tl-text{font-size:12px;color:var(--t2);line-height:1.65;}
+.tl-apps{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.tl-app{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--bg);border:1px solid var(--b1);color:var(--t2);}
+
+/* ─── COMPARISON TABLE ─── */
+.compare-table{background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.compare-table table{width:100%;border-collapse:collapse;}
+.compare-table th{background:var(--url);font-size:11px;font-weight:500;color:var(--ur);padding:.65rem 1rem;text-align:left;border-bottom:1px solid var(--b1);}
+.compare-table th:first-child{border-right:1px solid var(--b1);}
+.compare-table td{font-size:12px;color:var(--t2);padding:.65rem 1rem;border-bottom:1px solid var(--bg);vertical-align:top;line-height:1.5;}
+.compare-table tr:last-child td{border-bottom:none;}
+.compare-table td:first-child{font-weight:500;color:var(--t1);border-right:1px solid var(--b1);background:var(--bg);width:180px;}
+.compare-table td.yes{color:var(--green);}
+.compare-table td.limited{color:var(--gold);}
+
+/* ─── COMPONENTS ARCHITECTURE ─── */
+.arch-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.arch-item{padding:1.25rem 1rem;border-right:1px solid var(--b1);text-align:center;transition:background .15s;}
+.arch-item:last-child{border-right:none;}
+.arch-item:hover{background:var(--url);}
+.arch-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--ur);opacity:.3;line-height:1;}
+.arch-icon{font-size:22px;margin:4px 0 8px;}
+.arch-name{font-size:12px;font-weight:500;color:var(--t1);margin-bottom:4px;}
+.arch-desc{font-size:10px;color:var(--t3);line-height:1.5;}
+
+/* ─── QUIZ ─── */
+.quiz-card{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.quiz-header{background:linear-gradient(135deg,#1a0a0e,var(--ur));padding:1.25rem 1.5rem;}
+.quiz-header-title{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:3px;}
+.quiz-header-sub{font-size:11px;color:rgba(255,255,255,.6);}
+.quiz-body{padding:1.5rem;}
+.quiz-q{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:14px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:.75rem 1rem;border-radius:8px;border:1px solid var(--b1);cursor:pointer;transition:all .15s;font-size:13px;color:var(--t2);background:var(--bg);}
+.quiz-opt:hover{border-color:var(--urm);background:var(--url);color:var(--t1);}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.quiz-opt.wrong{border-color:var(--ur);background:var(--url);color:var(--ur);}
+.quiz-opt.disabled{cursor:default;pointer-events:none;}
+.opt-letter{width:22px;height:22px;border-radius:50%;background:var(--b1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+.quiz-opt.correct .opt-letter{background:var(--green);color:#fff;}
+.quiz-opt.wrong .opt-letter{background:var(--ur);color:#fff;}
+.quiz-feedback{margin-top:14px;padding:.9rem 1rem;border-radius:8px;font-size:13px;line-height:1.55;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.ok{background:var(--green-light);color:var(--green);border:1px solid #b3dfc2;}
+.quiz-feedback.fail{background:var(--url);color:var(--ur);border:1px solid var(--urm);}
+.quiz-footer{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--b1);}
+.quiz-score{font-size:12px;color:var(--t3);}
+.q-counter{font-size:11px;color:var(--t3);}
+
+/* ─── KEY CONCEPTS CALLOUT ─── */
+.callout{border-radius:10px;padding:1.1rem 1.25rem;font-size:13px;line-height:1.65;display:flex;gap:12px;align-items:flex-start;}
+.callout.red{background:var(--url);border:1px solid var(--urm);color:#7a0010;}
+.callout.gold{background:var(--gold-light);border:1px solid #e6d080;color:#7a5800;}
+.callout.green{background:var(--green-light);border:1px solid #b3dfc2;color:#0a4a25;}
+.callout.blue{background:var(--blue-light);border:1px solid #b3c9e6;color:#0d2a55;}
+.callout-icon{font-size:18px;flex-shrink:0;line-height:1.3;}
+.callout strong{font-weight:500;}
+
+/* ─── NAV ─── */
+.session-nav{display:flex;justify-content:space-between;align-items:center;padding-top:1.5rem;border-top:1px solid var(--b1);margin-top:.5rem;}
+.nav-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;border:1px solid var(--b2);color:var(--t2);background:var(--white);}
+.nav-btn:hover{background:var(--bg);color:var(--t1);}
+.nav-btn.primary{background:var(--ur);color:#fff;border-color:var(--ur);}
+.nav-btn.primary:hover{opacity:.88;}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.nav-btn svg{width:14px;height:14px;}
+
+/* ─── RISK GRID ─── */
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.risk-card{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1.25rem;border-top:3px solid var(--ur);}
+.risk-card.gold{border-top-color:var(--gold);}
+.risk-card.blue{border-top-color:var(--blue);}
+.risk-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+.risk-items{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.risk-items li{font-size:11px;color:var(--t2);padding-left:14px;position:relative;line-height:1.5;}
+.risk-items li::before{content:'›';position:absolute;left:0;color:var(--ur);font-weight:700;}
+.risk-card.gold .risk-items li::before{color:var(--gold);}
+.risk-card.blue .risk-items li::before{color:var(--blue);}
+
+/* ─── AGENT CYCLE ─── */
+.cycle-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.cycle-step{padding:1.25rem;border-right:1px solid var(--b1);position:relative;}
+.cycle-step:last-child{border-right:none;}
+.cycle-step::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--b2);z-index:2;}
+.cycle-step:last-child::after{display:none;}
+.cs-num{font-family:'DM Serif Display',serif;font-size:24px;color:var(--ur);opacity:.25;line-height:1;margin-bottom:4px;}
+.cs-title{font-size:12px;font-weight:500;color:var(--t1);margin-bottom:4px;}
+.cs-text{font-size:11px;color:var(--t3);line-height:1.55;}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-mark">
+    <svg viewBox="0 0 20 20" fill="none"><polyline points="3,14 7,8 10,11 13,6 17,10" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="10" r="1.5" fill="#ffccd4"/></svg>
+  </div>
+  <div class="header-text">
+    <div class="header-title">Módulo 1 · Inteligencia Artificial, Tipologías e IA Agéntica</div>
+    <div class="header-sub">ADVANCE · Universidad del Rosario · Finanzas Corporativas</div>
+  </div>
+  <div class="header-right">
+    <div class="progress-bar-wrap">
+      <div class="progress-label"><span>Progreso</span><span id="pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="badge-session" id="badgeSession">Sesión 1.1</div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Módulo 1</div>
+      <div class="sidebar-mod">IA en Finanzas Corporativas</div>
+    </div>
+    <div class="session-list" id="sessionList"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content" id="contentArea">
+
+    <!-- ═══════════════ SESIÓN 1.1 ═══════════════ -->
+    <div class="session-panel active" id="s1">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.1</div>
+          <div class="hero-title">Evolución histórica de la IA — de los sistemas expertos al deep learning y la IA generativa</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Comprender la evolución de la IA es una condición necesaria para desarrollar <strong>criterio estratégico</strong> en la toma de decisiones financieras. La historia de la IA puede interpretarse como un proceso progresivo de sofisticación del razonamiento automatizado — desde reglas predefinidas hasta la capacidad de inferir, generar y actuar de manera autónoma.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min de lectura</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/><line x1="6" y1="6" x2="10" y2="6"/><line x1="6" y1="9" x2="10" y2="9"/></svg> 4 etapas clave</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> Fundamentos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Línea de evolución histórica</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="tl-dot" style="font-size:10px;">I</div>
+            <div class="tl-content">
+              <div class="tl-era">1950 – 1980</div>
+              <div class="tl-title">IA Simbólica y Sistemas Expertos</div>
+              <div class="tl-text">Replicar el razonamiento humano mediante estructuras lógicas formales. Los sistemas expertos integran una base de conocimiento y un motor de inferencia con reglas "si-entonces". Su limitación clave: <strong>rigidez estructural</strong> — no pueden aprender ni adaptarse.</div>
+              <div class="tl-apps">
+                <span class="tl-app">Evaluación crediticia</span>
+                <span class="tl-app">Auditoría estructurada</span>
+                <span class="tl-app">Diagnóstico contable</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-dot gold" style="font-size:10px;">II</div>
+            <div class="tl-content">
+              <div class="tl-era">1990 – 2010</div>
+              <div class="tl-title">Machine Learning</div>
+              <div class="tl-text">Transición de reglas explícitas a <strong>modelos basados en datos</strong>. Los sistemas aprenden patrones a partir de información histórica. Cambio clave: de un enfoque determinístico a uno probabilístico.</div>
+              <div class="tl-apps">
+                <span class="tl-app">Scoring crediticio</span>
+                <span class="tl-app">Predicción de quiebras</span>
+                <span class="tl-app">Riesgo de mercado</span>
+                <span class="tl-app">Optimización de portafolios</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-dot green" style="font-size:10px;">III</div>
+            <div class="tl-content">
+              <div class="tl-era">2010 – 2020</div>
+              <div class="tl-title">Deep Learning</div>
+              <div class="tl-text">Redes neuronales profundas que modelan relaciones no lineales complejas. Incluye CNN, RNN/LSTM y la arquitectura <strong>Transformer</strong>. Introduce un desafío relevante: la baja interpretabilidad ("caja negra").</div>
+              <div class="tl-apps">
+                <span class="tl-app">Análisis de sentimiento</span>
+                <span class="tl-app">Procesamiento de contratos</span>
+                <span class="tl-app">Detección de fraude</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-dot blue" style="font-size:10px;">IV</div>
+            <div class="tl-content">
+              <div class="tl-era">2020 – presente</div>
+              <div class="tl-title">IA Generativa (LLMs)</div>
+              <div class="tl-text">Modelos de lenguaje de gran escala capaces de <strong>comprender y generar lenguaje natural</strong>. La IA no solo predice resultados; genera contenido y facilita la interacción humano-máquina.</div>
+              <div class="tl-apps">
+                <span class="tl-app">Reportes financieros</span>
+                <span class="tl-app">Modelos de valoración</span>
+                <span class="tl-app">Narrativas para juntas</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-dot rose" style="font-size:10px;">V</div>
+            <div class="tl-content">
+              <div class="tl-era">2024 – en adelante</div>
+              <div class="tl-title">IA Agéntica</div>
+              <div class="tl-text">Sistemas capaces de ejecutar tareas de manera <strong>autónoma</strong> mediante integración de múltiples componentes. El rol del profesional financiero evoluciona: de ejecutor a <em>diseñador y supervisor</em> de sistemas inteligentes.</div>
+              <div class="tl-apps">
+                <span class="tl-app">Modelos DCF automáticos</span>
+                <span class="tl-app">Monitoreo KPIs en tiempo real</span>
+                <span class="tl-app">Planeación multi-agente</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-icon">💡</div>
+        <div><strong>Idea clave:</strong> La evolución de la IA es <strong>acumulativa</strong>. Cada etapa aporta capacidades que se integran en los sistemas actuales. La función financiera experimenta tres transformaciones: automatización de tareas analíticas, reenfoque hacia la interpretación crítica, y generación de valor a través del diseño de arquitecturas de decisión.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" disabled><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(2)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.2 ═══════════════ -->
+    <div class="session-panel" id="s2">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.2</div>
+          <div class="hero-title">Clasificación funcional de la IA — ANI, AGI, ASI e IA Generativa</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La IA no es una tecnología única, sino un conjunto de <strong>capacidades diferenciadas</strong> con distintos niveles de alcance, autonomía y riesgo. Esta clasificación permite responder: ¿qué tipo de IA es más adecuado para un problema específico? ¿qué grado de autonomía es aceptable en un proceso crítico?</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 40 min de lectura</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/><line x1="6" y1="6" x2="10" y2="6"/></svg> 4 categorías</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Categorías funcionales de IA</div>
+        <div class="cards-grid">
+          <div class="concept-card">
+            <div class="card-icon red">🎯</div>
+            <div class="card-title">ANI — Artificial Narrow Intelligence</div>
+            <div class="card-text">IA predominante en la actualidad. Ejecuta tareas específicas con alta precisión dentro de un dominio definido. No puede generalizar fuera de ese dominio. Requiere supervisión humana constante.</div>
+            <span class="card-tag tag-red">Hoy disponible</span>
+          </div>
+          <div class="concept-card gold">
+            <div class="card-icon gold">🧠</div>
+            <div class="card-title">AGI — Artificial General Intelligence</div>
+            <div class="card-text">Capacidad de replicar capacidades cognitivas humanas en múltiples dominios. Puede transferir conocimiento entre contextos. <em>Aún no existe en sentido pleno.</em> Sirve como referencia para el diseño de sistemas integrados.</div>
+            <span class="card-tag tag-gold">Referente conceptual</span>
+          </div>
+          <div class="concept-card blue">
+            <div class="card-icon blue">🚀</div>
+            <div class="card-title">ASI — Artificial Superintelligence</div>
+            <div class="card-text">Nivel hipotético que superaría ampliamente las capacidades humanas. Capacidad de auto-mejora continua y generación autónoma de conocimiento. Plantea riesgos significativos de gobernanza.</div>
+            <span class="card-tag tag-blue">Escenario prospectivo</span>
+          </div>
+          <div class="concept-card rose">
+            <div class="card-icon rose">✨</div>
+            <div class="card-title">IA Generativa</div>
+            <div class="card-text">Categoría transversal basada en sistemas avanzados de ANI. Genera contenido nuevo (texto, código, datos) a partir de patrones aprendidos. Riesgo clave: alucinaciones y dependencia excesiva.</div>
+            <span class="card-tag tag-rose">Transformadora hoy</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Aplicaciones ANI en finanzas corporativas</div>
+        <div class="cards-grid">
+          <div class="concept-card green">
+            <div class="card-icon green">📊</div>
+            <div class="card-title">Scoring crediticio</div>
+            <div class="card-text">Modelos basados en comportamiento histórico para evaluar la probabilidad de incumplimiento de un deudor.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">🔍</div>
+            <div class="card-title">Detección de fraude</div>
+            <div class="card-text">Análisis de patrones transaccionales para identificar operaciones inusuales o sospechosas en tiempo real.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">📈</div>
+            <div class="card-title">Trading algorítmico</div>
+            <div class="card-text">Ejecución automática de órdenes basada en señales de mercado y estrategias predefinidas.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">🎯</div>
+            <div class="card-title">Forecasting financiero</div>
+            <div class="card-text">Proyección de variables críticas (ingresos, costos, flujos de caja) con base en patrones históricos.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">⚠️</div>
+        <div><strong>Riesgos de la IA Generativa en finanzas:</strong> Generación de información incorrecta (alucinaciones), dependencia excesiva de los modelos, y necesidad de validación humana rigurosa. La IA generativa amplifica capacidades pero no reemplaza el juicio experto.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(1)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(3)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.3 ═══════════════ -->
+    <div class="session-panel" id="s3">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.3</div>
+          <div class="hero-title">Tipos de aprendizaje en IA — fundamentos, aplicaciones y uso estratégico en finanzas</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El aprendizaje es el eje central que define la capacidad de un sistema para mejorar su desempeño a partir de datos. Para el profesional financiero, comprender los tipos de aprendizaje permite tomar decisiones más informadas sobre qué modelos adoptar y cuáles son sus limitaciones.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 40 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 3 tipos clave</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Los tres tipos de aprendizaje</div>
+        <div class="cards-grid">
+          <div class="concept-card">
+            <div class="card-icon red">🏷️</div>
+            <div class="card-title">Aprendizaje Supervisado</div>
+            <div class="card-text">Datos etiquetados (inputs + outputs). El modelo aprende la relación y predice en nuevos datos.<br><br><strong>Regresión:</strong> variable continua (ingresos, costos)<br><strong>Clasificación:</strong> variable categórica (riesgo sí/no)<br><br>Aplicaciones: scoring, forecasting, valoración.</div>
+            <span class="card-tag tag-red">Predicción estructurada</span>
+          </div>
+          <div class="concept-card gold">
+            <div class="card-icon gold">🔮</div>
+            <div class="card-title">Aprendizaje No Supervisado</div>
+            <div class="card-text">Datos sin etiquetar. El modelo identifica patrones y estructuras ocultas sin resultado esperado previo.<br><br>Técnicas: clustering, reducción de dimensionalidad, PCA.<br><br>Aplicaciones: segmentación de portafolios, detección de anomalías, análisis exploratorio.</div>
+            <span class="card-tag tag-gold">Descubrimiento de patrones</span>
+          </div>
+          <div class="concept-card blue">
+            <div class="card-icon blue">🎮</div>
+            <div class="card-title">Aprendizaje por Refuerzo</div>
+            <div class="card-text">Aprendizaje por prueba y error. Un agente toma decisiones y recibe recompensas o penalizaciones. Aprende a maximizar la recompensa acumulada.<br><br>Aplicaciones: trading algorítmico, optimización de portafolios, asignación dinámica de recursos.</div>
+            <span class="card-tag tag-blue">Optimización dinámica</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Comparativa estratégica</div>
+        <div class="compare-table">
+          <table>
+            <thead>
+              <tr><th>Criterio</th><th>Supervisado</th><th>No Supervisado</th><th>Por Refuerzo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Objetivo</td><td>Predicción</td><td>Exploración</td><td>Optimización</td></tr>
+              <tr><td>Requiere etiquetas</td><td class="yes">Sí</td><td class="yes" style="color:var(--green)">No</td><td class="limited">Parcialmente</td></tr>
+              <tr><td>Aplicación financiera</td><td>Forecasting, scoring</td><td>Segmentación, anomalías</td><td>Trading, portafolios</td></tr>
+              <tr><td>Complejidad</td><td>Media</td><td>Media-Alta</td><td>Alta</td></tr>
+              <tr><td>Interpretabilidad</td><td class="yes">Alta</td><td class="limited">Media</td><td>Baja</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-icon">🔗</div>
+        <div><strong>Integración en sistemas agénticos:</strong> Los sistemas modernos combinan los tres tipos. Un modelo supervisado realiza predicciones, uno no supervisado detecta anomalías, y un agente con refuerzo optimiza decisiones dinámicas. Esta combinación construye soluciones más robustas y adaptativas.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(2)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(4)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.4 ═══════════════ -->
+    <div class="session-panel" id="s4">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.4</div>
+          <div class="hero-title">Impactos estructurales de la IA en la función financiera</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La IA modifica la <strong>naturaleza del trabajo financiero</strong>, redefine las prioridades del área y reconfigura los mecanismos de decisión. Cambia el "qué" (actividades), el "cómo" (procesos) y el "quién" (roles y responsabilidades). No es una mejora incremental — es una transformación estructural.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> Alta relevancia</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Transformaciones clave en la función financiera</div>
+        <div class="cards-grid">
+          <div class="concept-card">
+            <div class="card-icon red">⚡</div>
+            <div class="card-title">Automatización de lo operativo</div>
+            <div class="card-text">Estados financieros, KPIs, conciliaciones y reportería se automatizan. <strong>Efecto neto:</strong> liberación de capacidad analítica para trabajo de mayor valor.</div>
+          </div>
+          <div class="concept-card gold">
+            <div class="card-icon gold">🧑‍💼</div>
+            <div class="card-title">Evolución del rol del analista</div>
+            <div class="card-text">De ejecutor de cálculos a <strong>intérprete, validador y arquitecto</strong> de soluciones. El valor se genera en el juicio y la calidad de las preguntas, no en el cálculo manual.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">📅</div>
+            <div class="card-title">FP&A dinámico</div>
+            <div class="card-text">La planeación anual estática evoluciona a <strong>rolling forecast</strong> con ciclos cortos. Modelos proforma en tiempo casi real, simulación multi-escenario.</div>
+          </div>
+          <div class="concept-card blue">
+            <div class="card-icon blue">🏢</div>
+            <div class="card-title">Valoración potenciada</div>
+            <div class="card-text">Proyecciones automatizadas, datos de mercado en tiempo real, narrativas de inversión. La IA <strong>amplifica el criterio experto</strong>, no lo reemplaza.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Nuevas competencias clave del analista financiero</div>
+        <div class="cards-grid">
+          <div class="concept-card rose">
+            <div class="card-icon rose">🔎</div>
+            <div class="card-title">Lectura crítica de outputs</div>
+            <div class="card-text">Detectar sesgos, inconsistencias y supuestos implícitos en los resultados generados por modelos de IA.</div>
+          </div>
+          <div class="concept-card rose">
+            <div class="card-icon rose">✅</div>
+            <div class="card-title">Validación de modelos</div>
+            <div class="card-text">Verificar coherencia entre ER, ESF y EFE. Reconciliaciones y pruebas de consistencia estructural.</div>
+          </div>
+          <div class="concept-card rose">
+            <div class="card-icon rose">💬</div>
+            <div class="card-title">Diseño de prompts</div>
+            <div class="card-text">Formular instrucciones de sistema precisas y efectivas para obtener resultados de alta calidad de los modelos de lenguaje.</div>
+          </div>
+          <div class="concept-card rose">
+            <div class="card-icon rose">🔄</div>
+            <div class="card-title">Orquestación IA–Humano</div>
+            <div class="card-text">Diseñar flujos de trabajo con puntos de control y handoffs entre sistemas automatizados y supervisión humana.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout blue">
+        <div class="callout-icon">🏗️</div>
+        <div><strong>Modelo operativo recomendado:</strong> Enfoque <strong>híbrido</strong> — análisis automatizado + validación humana estructurada. La IA fortalece la toma de decisiones basada en evidencia, pero los riesgos de automation bias, garbage in-garbage out y falsa precisión deben gestionarse activamente.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(3)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(5)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.5 ═══════════════ -->
+    <div class="session-panel" id="s5">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.5</div>
+          <div class="hero-title">IA Agéntica — definición avanzada, principios operativos y diferenciación estratégica</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La IA agéntica supera el enfoque de modelos reactivos para avanzar hacia sistemas capaces de <strong>ejecutar tareas de manera autónoma y orientada a objetivos</strong>. Mientras los modelos generativos responden, los sistemas agénticos ejecutan.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Sesión central</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Diferencia clave: IA Generativa vs IA Agéntica</div>
+        <div class="compare-table">
+          <table>
+            <thead><tr><th>Dimensión</th><th>IA Generativa</th><th>IA Agéntica</th></tr></thead>
+            <tbody>
+              <tr><td>Naturaleza</td><td>Reactiva</td><td>Proactiva</td></tr>
+              <tr><td>Unidad funcional</td><td>Modelo</td><td>Sistema</td></tr>
+              <tr><td>Interacción</td><td>Basada en prompts</td><td>Basada en objetivos</td></tr>
+              <tr><td>Ejecución</td><td>Respuestas puntuales</td><td>Procesos completos</td></tr>
+              <tr><td>Autonomía</td><td>Limitada</td><td>Extendida (con control)</td></tr>
+              <tr><td>Integración</td><td>Baja</td><td>Alta (herramientas, datos)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Principios fundamentales de los sistemas agénticos</div>
+        <div class="cards-grid">
+          <div class="concept-card">
+            <div class="card-icon red">🎯</div>
+            <div class="card-title">Orientación a objetivos</div>
+            <div class="card-text">Operan a partir de objetivos definidos, estructurando secuencias de acciones orientadas a resultados concretos — no instrucciones puntuales.</div>
+          </div>
+          <div class="concept-card gold">
+            <div class="card-icon gold">🛡️</div>
+            <div class="card-title">Autonomía controlada</div>
+            <div class="card-text">La autonomía opera dentro de límites definidos mediante reglas, validaciones y puntos de intervención humana. No implica ausencia de control.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">🧩</div>
+            <div class="card-title">Modularidad</div>
+            <div class="card-text">Conjuntos de agentes especializados en funciones específicas. Facilita la escalabilidad, precisión y mantenimiento.</div>
+          </div>
+          <div class="concept-card blue">
+            <div class="card-icon blue">📋</div>
+            <div class="card-title">Trazabilidad</div>
+            <div class="card-text">Cada acción ejecutada puede ser registrada y auditada. Fundamental en entornos donde la transparencia y el control son críticos.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">🔑</div>
+        <div><strong>La diferencia fundamental:</strong> La IA generativa <strong>responde</strong>. La IA agéntica <strong>ejecuta</strong>. Esta diferencia es esencial para entender el salto de valor entre ambas aproximaciones y su impacto en los procesos financieros.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(4)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(6)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.6 ═══════════════ -->
+    <div class="session-panel" id="s6">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.6</div>
+          <div class="hero-title">Componentes de un agente — arquitectura funcional e integración sistémica</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Un agente de IA es una <strong>arquitectura funcional compuesta por 5 componentes interdependientes</strong> que operan de forma coordinada. Esta arquitectura permite la transición desde sistemas que generan respuestas puntuales hacia sistemas que ejecutan procesos completos.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 5 componentes</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 40 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Arquitectura de 5 componentes</div>
+        <div class="arch-grid">
+          <div class="arch-item">
+            <div class="arch-num">1</div>
+            <div class="arch-icon">👁️</div>
+            <div class="arch-name">Percepción</div>
+            <div class="arch-desc">Captura e interpretación de datos: ERP, APIs, documentos, archivos estructurados y no estructurados.</div>
+          </div>
+          <div class="arch-item">
+            <div class="arch-num">2</div>
+            <div class="arch-icon">🧠</div>
+            <div class="arch-name">Razonamiento</div>
+            <div class="arch-desc">Núcleo cognitivo. Transforma datos en información. Modelos de lenguaje, estadísticos y predictivos.</div>
+          </div>
+          <div class="arch-item">
+            <div class="arch-num">3</div>
+            <div class="arch-icon">💾</div>
+            <div class="arch-name">Memoria</div>
+            <div class="arch-desc">Corto plazo: contexto actual. Largo plazo: supuestos, histórico, aprendizajes previos.</div>
+          </div>
+          <div class="arch-item">
+            <div class="arch-num">4</div>
+            <div class="arch-icon">⚡</div>
+            <div class="arch-name">Acción</div>
+            <div class="arch-desc">Traduce conclusiones en resultados tangibles: reportes, modelos, alertas, cálculos.</div>
+          </div>
+          <div class="arch-item">
+            <div class="arch-num">5</div>
+            <div class="arch-icon">🔧</div>
+            <div class="arch-name">Herramientas</div>
+            <div class="arch-desc">Integración con Excel, ERP, APIs financieras, Power BI y sistemas externos.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Aplicaciones financieras por componente</div>
+        <div class="cards-grid">
+          <div class="concept-card">
+            <div class="card-icon red">👁️</div>
+            <div class="card-title">Percepción en finanzas</div>
+            <div class="card-text">Integración de estados financieros, sistemas ERP, archivos Excel/CSV, APIs de mercado (tasas, precios, indicadores macro) y documentos no estructurados (contratos, informes).</div>
+          </div>
+          <div class="concept-card gold">
+            <div class="card-icon gold">🧠</div>
+            <div class="card-title">Razonamiento financiero</div>
+            <div class="card-text">Interpretación de estados financieros, cálculo de KPIs (márgenes, rentabilidad, liquidez), construcción de modelos DCF, análisis de sensibilidad y escenarios.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">💾</div>
+            <div class="card-title">Memoria en análisis</div>
+            <div class="card-text">Consistencia en modelos financieros iterativos, registro y reutilización de supuestos, continuidad en procesos de planeación multi-período.</div>
+          </div>
+          <div class="concept-card blue">
+            <div class="card-icon blue">⚡</div>
+            <div class="card-title">Acciones sobre finanzas</div>
+            <div class="card-text">Generación de reportes, construcción de modelos en hojas de cálculo, ejecución de cálculos DCF, emisión de alertas y recomendaciones accionables.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-icon">⚠️</div>
+        <div><strong>Principio crítico — Percepción:</strong> La calidad del componente de percepción es determinante. Cualquier error en los datos de entrada se propaga a lo largo de todo el sistema. "Garbage in, garbage out" aplica con mayor impacto en arquitecturas agénticas.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(5)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(7)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.7 ═══════════════ -->
+    <div class="session-panel" id="s7">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.7</div>
+          <div class="hero-title">Arquitecturas agénticas — diseño estructural y modelos operativos</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Una arquitectura agéntica define la estructura, interacción y coordinación de los agentes dentro de un sistema. En finanzas corporativas, determina la escalabilidad, el nivel de control, la consistencia de resultados y el grado de automatización alcanzable.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 3 arquitecturas</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Los tres modelos arquitectónicos</div>
+        <div class="cards-grid">
+          <div class="concept-card">
+            <div class="card-icon red">🔹</div>
+            <div class="card-title">Agente Único</div>
+            <div class="card-text">Un solo agente concentra todas las capacidades. Flujo secuencial y lineal.<br><br><strong>✅ Ventajas:</strong> implementación rápida, fácil mantenimiento.<br><strong>❌ Límites:</strong> escalabilidad limitada, baja especialización.<br><br><em>Adecuado para:</em> análisis de estados financieros, generación de reportes estándar.</div>
+            <span class="card-tag tag-red">Baja complejidad</span>
+          </div>
+          <div class="concept-card gold">
+            <div class="card-icon gold">🔷</div>
+            <div class="card-title">Multi-Agente (MAS)</div>
+            <div class="card-text">Múltiples agentes especializados colaboran. Cada uno cumple una función en el proceso global.<br><br><strong>✅ Ventajas:</strong> alta escalabilidad, mayor precisión.<br><strong>❌ Desafíos:</strong> complejidad de coordinación, riesgo de inconsistencias.<br><br><em>Adecuado para:</em> procesos financieros complejos.</div>
+            <span class="card-tag tag-gold">Media-alta complejidad</span>
+          </div>
+          <div class="concept-card blue">
+            <div class="card-icon blue">🔶</div>
+            <div class="card-title">Orquestador–Ejecutor</div>
+            <div class="card-text">Agente central (orquestador) coordina múltiples ejecutores especializados.<br><br><strong>✅ Ventajas:</strong> alto control, trazabilidad, escalabilidad con gobernanza.<br><strong>❌ Desafíos:</strong> alta complejidad de diseño.<br><br><em>Adecuado para:</em> procesos críticos, valoración, planeación integral.</div>
+            <span class="card-tag tag-blue">Alta complejidad</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Sistema MAS en finanzas corporativas</div>
+        <div class="cards-grid">
+          <div class="concept-card green">
+            <div class="card-icon green">📥</div>
+            <div class="card-title">Agente de ingesta de datos</div>
+            <div class="card-text">Integración con ERP, sistemas contables y fuentes externas. Normalización y validación de calidad.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">📊</div>
+            <div class="card-title">Agente de análisis financiero</div>
+            <div class="card-text">Interpretación de estados financieros, cálculo de KPIs, análisis vertical y horizontal.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">📋</div>
+            <div class="card-title">Agente de planeación (FP&A)</div>
+            <div class="card-text">Construcción de modelos proforma, rolling forecast, simulación de escenarios.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">💎</div>
+            <div class="card-title">Agente de valoración</div>
+            <div class="card-text">Ejecución de modelos DCF, análisis comparativo de múltiplos, cálculo de WACC.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">🔍</div>
+            <div class="card-title">Agente de auditoría</div>
+            <div class="card-text">Validación de consistencia entre ER, ESF y EFE. Reconciliaciones y control de integridad.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">📄</div>
+            <div class="card-title">Agente de reporting ejecutivo</div>
+            <div class="card-text">Generación de narrativas, dashboards y presentaciones adaptadas a diferentes audiencias.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(6)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(8)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.8 ═══════════════ -->
+    <div class="session-panel" id="s8">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.8</div>
+          <div class="hero-title">Ciclo de vida de un agente — diseño, operación, control y mejora continua</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El desempeño de un agente no depende solo de su arquitectura, sino de cómo <strong>opera, se controla y evoluciona en el tiempo</strong>. El ciclo de vida forma un bucle iterativo con retroalimentación continua, permitiendo al sistema adaptarse a cambios en datos, entorno y objetivos.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 4 fases</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">El ciclo de vida — 4 fases en bucle iterativo</div>
+        <div class="cycle-row">
+          <div class="cycle-step">
+            <div class="cs-num">01</div>
+            <div class="cs-title">Planificación</div>
+            <div class="cs-text">Definición del problema, objetivos medibles, diseño del flujo, asignación de agentes y herramientas, criterios de éxito (KPIs).</div>
+          </div>
+          <div class="cycle-step">
+            <div class="cs-num">02</div>
+            <div class="cs-title">Ejecución</div>
+            <div class="cs-text">Ingesta y normalización de datos, inferencia con modelos, cálculo financiero, generación de artefactos (tablas, reportes).</div>
+          </div>
+          <div class="cycle-step">
+            <div class="cs-num">03</div>
+            <div class="cs-title">Supervisión</div>
+            <div class="cs-text">Validaciones de consistencia contable, benchmarking, auditoría de lógica, puntos human-in-the-loop en decisiones críticas.</div>
+          </div>
+          <div class="cycle-step">
+            <div class="cs-num">04</div>
+            <div class="cs-title">Aprendizaje</div>
+            <div class="cs-text">Refinamiento de prompts, actualización de supuestos, ajuste de modelos, optimización del flujo. Mejora continua del sistema.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Aplicación del ciclo en valoración de empresas</div>
+        <div class="cards-grid">
+          <div class="concept-card">
+            <div class="card-icon red">📝</div>
+            <div class="card-title">Planificación DCF</div>
+            <div class="card-text">Selección de metodología, definición de supuestos (WACC, crecimiento, CAPEX, NWC), horizonte temporal y fuentes de datos.</div>
+          </div>
+          <div class="concept-card gold">
+            <div class="card-icon gold">⚙️</div>
+            <div class="card-title">Ejecución del modelo</div>
+            <div class="card-text">Cálculo automático de FCF, valor presente, valor terminal. Construcción de tablas de sensibilidad multi-variable.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">🔍</div>
+            <div class="card-title">Supervisión de consistencia</div>
+            <div class="card-text">Validación de coherencia entre WACC y crecimiento terminal. Reconciliación con múltiplos de mercado comparables.</div>
+          </div>
+          <div class="concept-card blue">
+            <div class="card-icon blue">📈</div>
+            <div class="card-title">Aprendizaje e iteración</div>
+            <div class="card-text">Ajuste de inputs críticos basado en resultados previos. Recalibración de supuestos macro y sectoriales en ciclos periódicos.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(7)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(9)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.9 ═══════════════ -->
+    <div class="session-panel" id="s9">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.9</div>
+          <div class="hero-title">Casos de uso agéntico — auditoría continua y monitoreo inteligente de KPIs</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La auditoría continua y el monitoreo inteligente de KPIs son los <strong>casos de uso de mayor valor y rápida adopción</strong>. Permiten transformar la función financiera de un enfoque reactivo a uno proactivo, basado en control permanente y capacidad de respuesta inmediata.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> Alta aplicabilidad</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 40 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Caso 1: Auditoría continua</div>
+        <div class="cards-grid">
+          <div class="concept-card">
+            <div class="card-icon red">📥</div>
+            <div class="card-title">Agente de ingestión</div>
+            <div class="card-text">Integración con ERP, sistemas contables y fuentes externas en tiempo real para captura continua de datos transaccionales.</div>
+          </div>
+          <div class="concept-card gold">
+            <div class="card-icon gold">✅</div>
+            <div class="card-title">Agente de validación</div>
+            <div class="card-text">Control de calidad, completitud y consistencia. Verificación de cumplimiento normativo y políticas internas.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">🔎</div>
+            <div class="card-title">Agente de anomalías</div>
+            <div class="card-text">Identificación de patrones atípicos mediante reglas y modelos estadísticos. Detección de posibles fraudes.</div>
+          </div>
+          <div class="concept-card blue">
+            <div class="card-icon blue">🔔</div>
+            <div class="card-title">Agente de alertas</div>
+            <div class="card-text">Priorización, notificación y documentación de hallazgos. Generación de reportes de auditoría estructurados.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Caso 2: Monitoreo inteligente de KPIs</div>
+        <div class="cards-grid">
+          <div class="concept-card rose">
+            <div class="card-icon rose">📊</div>
+            <div class="card-title">KPIs financieros monitoreados</div>
+            <div class="card-text">Margen bruto · EBITDA · EBIT · Flujo de caja libre · Indicadores de liquidez · Rotación de activos · Cobertura de deuda</div>
+          </div>
+          <div class="concept-card rose">
+            <div class="card-icon rose">⚡</div>
+            <div class="card-title">Capacidades avanzadas</div>
+            <div class="card-text">Análisis automático de variaciones (vertical y horizontal), identificación de causas raíz, generación de recomendaciones operativas y estratégicas en tiempo real.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-icon">🏆</div>
+        <div><strong>Mayor valor: integración de ambos sistemas.</strong> Cuando operan juntos, el monitoreo detecta desviaciones en el desempeño y la auditoría continua valida su consistencia. El sistema prioriza alertas y genera recomendaciones estructuradas — construyendo una función financiera predictiva, preventiva y correctiva.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(8)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(10)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.10 ═══════════════ -->
+    <div class="session-panel" id="s10">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Sesión 1.10</div>
+          <div class="hero-title">Riesgos en sistemas agénticos — alucinaciones en cadena, pérdida de control y opacidad</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La IA agéntica introduce <strong>riesgos estructurales</strong> que difieren de los sistemas tradicionales. A diferencia de los sistemas deterministas, los agentes operan bajo lógicas probabilísticas con distintos niveles de autonomía — lo que puede generar resultados no previstos o de difícil interpretación.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 3 riesgos críticos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Los tres riesgos críticos</div>
+        <div class="risk-grid">
+          <div class="risk-card">
+            <div class="risk-title">🔴 Alucinaciones en cadena</div>
+            <ul class="risk-items">
+              <li>Un agente genera un resultado incorrecto</li>
+              <li>Este se usa como input del siguiente</li>
+              <li>El error se amplifica en el sistema</li>
+              <li>Impacto: distorsión de modelos DCF, KPIs errados</li>
+            </ul>
+          </div>
+          <div class="risk-card gold">
+            <div class="risk-title" style="color:var(--gold);">🟡 Pérdida de control</div>
+            <ul class="risk-items">
+              <li>Autonomía superior a la supervisión definida</li>
+              <li>Ausencia de human-in-the-loop</li>
+              <li>Automatización sin validación estructurada</li>
+              <li>Impacto: errores no detectados en procesos críticos</li>
+            </ul>
+          </div>
+          <div class="risk-card blue">
+            <div class="risk-title" style="color:var(--blue);">🔵 Opacidad</div>
+            <ul class="risk-items">
+              <li>Modelos "caja negra" sin trazabilidad</li>
+              <li>Interacción no lineal entre agentes</li>
+              <li>Sin registro de decisiones y procesos</li>
+              <li>Impacto: dificultad en auditoría y cumplimiento</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="section-label">Estrategias de mitigación</div>
+        <div class="cards-grid">
+          <div class="concept-card green">
+            <div class="card-icon green">🛡️</div>
+            <div class="card-title">Control by design</div>
+            <div class="card-text">Integrar controles desde la fase de diseño. Checkpoints y validaciones obligatorias antes de pasar al siguiente agente.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">👁️</div>
+            <div class="card-title">Human-in-the-loop</div>
+            <div class="card-text">Supervisión humana en decisiones críticas. Definir explícitamente los niveles de autonomía por proceso financiero.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">📋</div>
+            <div class="card-title">Trazabilidad completa</div>
+            <div class="card-text">Logs estructurados de inputs, procesos intermedios y outputs. Versionamiento de modelos, datos y prompts.</div>
+          </div>
+          <div class="concept-card green">
+            <div class="card-icon green">🔍</div>
+            <div class="card-title">Validaciones cruzadas</div>
+            <div class="card-text">Reconciliaciones entre ER, ESF y EFE. Benchmarking contra históricos. Auditoría automática de cálculos.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">⚠️</div>
+        <div><strong>Riesgo sistémico:</strong> Estos riesgos presentan alta interdependencia. Una alucinación puede desencadenar pérdida de control; la falta de control incrementa la opacidad; la opacidad dificulta identificar errores. Esta interacción configura un riesgo que puede comprometer la integridad del sistema financiero.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(9)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(11)">Evaluación final <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SESIÓN 1.11 — QUIZ ═══════════════ -->
+    <div class="session-panel" id="s11">
+      <div class="session-hero">
+        <div class="hero-top">
+          <div class="hero-eyebrow">Evaluación · Módulo 1</div>
+          <div class="hero-title">Quiz de verificación — Inteligencia Artificial en Finanzas Corporativas</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Valide su comprensión de los conceptos clave del módulo. Cada pregunta está diseñada para reforzar los fundamentos de la IA agéntica y su aplicación en finanzas corporativas. Puede navegar entre preguntas libremente.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 8 preguntas</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> ~15 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz-card" id="quizCard"></div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(10)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Volver al módulo</button>
+        <button class="nav-btn" onclick="resetQuiz()">Reiniciar quiz</button>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+const SESSIONS=[
+  {num:"1.1",title:"Evolución histórica de la IA"},
+  {num:"1.2",title:"Clasificación funcional: ANI, AGI, ASI"},
+  {num:"1.3",title:"Tipos de aprendizaje en IA"},
+  {num:"1.4",title:"Impactos en la función financiera"},
+  {num:"1.5",title:"IA Agéntica — definición y principios"},
+  {num:"1.6",title:"Componentes de un agente"},
+  {num:"1.7",title:"Arquitecturas agénticas"},
+  {num:"1.8",title:"Ciclo de vida de un agente"},
+  {num:"1.9",title:"Casos de uso: auditoría y KPIs"},
+  {num:"1.10",title:"Riesgos en sistemas agénticos"},
+  {num:"Quiz",title:"Evaluación final del módulo"}
+];
+
+const QUIZ=[
+  {q:"¿Cuál es la limitación principal de los sistemas expertos (IA simbólica) en el contexto financiero?",opts:["Su alto costo de implementación","Su rigidez estructural — no pueden aprender ni adaptarse a nuevos contextos","Su incapacidad para procesar grandes volúmenes de datos","Su dependencia de internet para funcionar"],correct:1,feedback:"Correcto. Los sistemas expertos dependen exclusivamente de reglas predefinidas y no pueden aprender ni adaptarse, lo que restringe su aplicabilidad en entornos financieros dinámicos e inciertos."},
+  {q:"¿Qué diferencia fundamental existe entre la IA Generativa y la IA Agéntica?",opts:["La IA Generativa es más costosa que la IA Agéntica","La IA Generativa responde a prompts puntuales; la IA Agéntica ejecuta procesos completos orientados a objetivos","La IA Agéntica solo funciona con datos estructurados","La IA Generativa puede operar de forma completamente autónoma"],correct:1,feedback:"Exacto. Esta es la diferencia clave: la IA Generativa responde, la IA Agéntica ejecuta. La IA agéntica introduce planificación, autonomía extendida e integración con sistemas externos."},
+  {q:"En el contexto de los tipos de aprendizaje, ¿cuál es el enfoque más adecuado para construir un modelo de forecasting de ingresos?",opts:["Aprendizaje por refuerzo","Aprendizaje no supervisado","Aprendizaje supervisado","Aprendizaje generativo"],correct:2,feedback:"Correcto. El aprendizaje supervisado es el más adecuado para el forecasting, ya que utiliza datos históricos etiquetados (ingresos pasados) para aprender patrones y predecir valores futuros."},
+  {q:"¿Cuál de los siguientes NO es un componente fundamental de un agente de IA?",opts:["Percepción","Razonamiento","Publicidad","Acción"],correct:2,feedback:"Correcto. Los 5 componentes de un agente son: Percepción, Razonamiento, Memoria, Acción y Herramientas. La publicidad no es un componente de la arquitectura agéntica."},
+  {q:"¿Qué riesgo describe la situación en que un agente genera información incorrecta que es utilizada como input por otro agente, amplificando el error?",opts:["Pérdida de control","Opacidad sistémica","Alucinación en cadena","Overfitting financiero"],correct:2,feedback:"Correcto. Las alucinaciones en cadena se producen cuando un error generado por un agente se propaga como input al siguiente, amplificándose a lo largo de la arquitectura multi-agente."},
+  {q:"¿Cuál es la arquitectura agéntica más adecuada para procesos financieros críticos que requieren alto nivel de control, trazabilidad y gobernanza?",opts:["Agente único","Sistema multi-agente sin coordinación central","Orquestador–ejecutor","Modelo generativo estándar"],correct:2,feedback:"Correcto. La arquitectura orquestador–ejecutor es ideal para procesos críticos porque combina alta escalabilidad, control centralizado y trazabilidad completa del proceso."},
+  {q:"¿Qué transformación estructural genera la IA en el rol del analista financiero?",opts:["Elimina el rol del analista financiero","Eleva al analista de ejecutor de cálculos a intérprete, validador y arquitecto de soluciones","Reduce las responsabilidades del analista a tareas puramente operativas","Obliga al analista a especializarse exclusivamente en programación"],correct:1,feedback:"Correcto. La IA no elimina el rol del analista — lo eleva. El valor se desplaza del cálculo manual hacia el juicio crítico, la validación de modelos y el diseño de arquitecturas de decisión."},
+  {q:"En el ciclo de vida de un agente, ¿qué fase tiene como objetivo garantizar que los resultados sean coherentes, trazables y alineados con criterios financieros?",opts:["Planificación","Ejecución","Supervisión","Aprendizaje"],correct:2,feedback:"Correcto. La fase de Supervisión introduce la capa de gobernanza del sistema, con validaciones de consistencia, auditoría de lógica, benchmarking y puntos human-in-the-loop."}
+];
+
+let current=1,completed=new Set(),quizIdx=0,quizScore=0,quizAnswered=new Set();
+
+function buildSidebar(){
+  const list=document.getElementById("sessionList");
+  list.innerHTML=SESSIONS.map((s,i)=>{
+    const n=i+1,isCurrent=n===current,isDone=completed.has(n);
+    return `<div class="session-item ${isCurrent?"active":""} ${isDone?"completed":""}" onclick="goTo(${n})">
+      <div class="si-num">${s.num}</div>
+      <div class="si-text">
+        <div class="si-label">Sesión ${s.num}</div>
+        <div class="si-title">${s.title}</div>
+      </div>
+      <div class="si-check ${isCurrent?"current":isDone?"done":"pending"}">
+        ${isCurrent?`<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>`:isDone?`<svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,4 3,6 7,2"/></svg>`:""}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function updateProgress(){
+  const total=SESSIONS.length,done=completed.size;
+  const pct=Math.round((done/total)*100);
+  document.getElementById("progressFill").style.width=pct+"%";
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("badgeSession").textContent="Sesión "+SESSIONS[current-1].num;
+}
+
+function goTo(n){
+  completed.add(current);
+  document.querySelectorAll(".session-panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById("s"+n).classList.add("active");
+  document.getElementById("contentArea").scrollTop=0;
+  current=n;
+  buildSidebar();updateProgress();
+  if(n===11) renderQuiz();
+}
+
+// QUIZ ENGINE
+function renderQuiz(){
+  const q=QUIZ[quizIdx];
+  const answered=quizAnswered.has(quizIdx);
+  document.getElementById("quizCard").innerHTML=`
+    <div class="quiz-header">
+      <div class="quiz-header-title">Pregunta ${quizIdx+1} de ${QUIZ.length}</div>
+      <div class="quiz-header-sub">Módulo 1 · IA en Finanzas Corporativas</div>
+    </div>
+    <div class="quiz-body">
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o,i)=>{
+          let cls="quiz-opt"+(answered?" disabled":"");
+          if(answered){
+            if(i===q.correct) cls+=" correct";
+            else if(quizAnswered.get&&quizAnswered.get===i) cls+=" wrong";
+          }
+          return `<div class="${cls}" onclick="${answered?"":"answer("+i+")"}">
+            <span class="opt-letter">${"ABCD"[i]}</span>
+            <span>${o}</span>
+          </div>`;
+        }).join("")}
+      </div>
+      <div class="quiz-feedback ${answered?"show":""} ${answered?(quizAnswered.get===q.correct||typeof quizAnswered===typeof{}&&answered?"ok":"fail"):""}">
+        ${answered?`${typeof quizAnswered==="object"&&quizAnswered.size?q.feedback:q.feedback}`:""}
+      </div>
+      <div class="quiz-footer">
+        <div class="quiz-score">Puntaje: <strong>${quizScore}</strong> / ${quizIdx+1} respondidas</div>
+        <div style="display:flex;gap:8px;">
+          ${quizIdx>0?`<button class="nav-btn" onclick="prevQ()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg></button>`:""}
+          ${quizIdx<QUIZ.length-1?`<button class="nav-btn primary" onclick="nextQ()">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>`
+            :`<div style="font-size:13px;font-weight:500;color:var(--green);padding:8px 16px;background:var(--green-light);border-radius:8px;">✅ Módulo completado — ${quizScore}/${QUIZ.length} correctas</div>`}
+        </div>
+      </div>
+    </div>`;
+}
+
+let answerMap={};
+function answer(i){
+  if(answerMap[quizIdx]!==undefined) return;
+  answerMap[quizIdx]=i;
+  quizAnswered.add(quizIdx);
+  const q=QUIZ[quizIdx];
+  if(i===q.correct) quizScore++;
+  const opts=document.querySelectorAll(".quiz-opt");
+  opts.forEach((o,idx)=>{
+    o.classList.add("disabled");
+    if(idx===q.correct) o.classList.add("correct");
+    else if(idx===i) o.classList.add("wrong");
+  });
+  const fb=document.querySelector(".quiz-feedback");
+  if(fb){fb.textContent=q.feedback;fb.classList.add("show");fb.classList.add(i===q.correct?"ok":"fail");}
+  document.querySelector(".quiz-score").innerHTML=`Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas`;
+}
+function nextQ(){if(quizIdx<QUIZ.length-1){quizIdx++;renderQuiz();}}
+function prevQ(){if(quizIdx>0){quizIdx--;renderQuiz();}}
+function resetQuiz(){quizIdx=0;quizScore=0;quizAnswered=new Set();answerMap={};renderQuiz();}
+
+buildSidebar();updateProgress();
+</script>
+</body>
+</html>
+HTMLEOF
+echo "Size: $(wc -c < /home/claude/modulo1_ia_finanzas.html) bytes"
