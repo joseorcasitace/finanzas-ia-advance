@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Módulo 3 · Prompting e Interacción Cognitiva · ADVANCE UR</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ur:#C8102E;--url:#F5E6E9;--urm:#E8899A;
+  --rose:#D4536E;--rose-light:#FBEAEE;
+  --bg:#F2F0EE;--white:#FFFFFF;
+  --b1:#E0DDDA;--b2:#C8C4C0;
+  --t1:#2C2C2C;--t2:#666560;--t3:#9E9B97;
+  --gold:#B8860B;--gold-light:#FDF8EC;
+  --green:#1A6B3C;--green-light:#EAF5EE;
+  --blue:#1A3A6B;--blue-light:#EAF0F8;
+  --purple:#4A1D8F;--purple-light:#F0EBF8;
+  --teal:#0E6B6B;--teal-light:#E6F5F5;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;}
+header{flex-shrink:0;background:var(--white);border-bottom:2px solid var(--ur);padding:.75rem 2rem;display:flex;align-items:center;gap:16px;z-index:100;}
+.logo-mark{width:36px;height:36px;background:var(--ur);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:18px;height:18px;}
+.header-text{flex:1;}
+.header-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--t1);line-height:1.2;}
+.header-sub{font-size:11px;color:var(--t3);letter-spacing:.04em;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.progress-bar-wrap{width:180px;}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px;}
+.progress-track{height:4px;background:var(--b1);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--ur);border-radius:2px;transition:width .5s ease;}
+.badge-session{font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;background:var(--url);color:var(--ur);border:1px solid var(--urm);white-space:nowrap;}
+.main{flex:1;display:flex;overflow:hidden;}
+.sidebar{width:280px;flex-shrink:0;background:var(--white);border-right:1px solid var(--b1);overflow-y:auto;display:flex;flex-direction:column;}
+.sidebar-header{padding:1.25rem 1.5rem 1rem;border-bottom:1px solid var(--b1);}
+.sidebar-module-tag{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ur);margin-bottom:4px;}
+.sidebar-module-title{font-family:'DM Serif Display',serif;font-size:15px;color:var(--t1);line-height:1.3;}
+.sidebar-nav{flex:1;padding:.75rem 0;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:.6rem 1.5rem;cursor:pointer;transition:background .15s;border-left:3px solid transparent;user-select:none;}
+.nav-item:hover{background:var(--bg);}
+.nav-item.active{background:var(--url);border-left-color:var(--ur);}
+.nav-item.completed .nav-dot{background:var(--green);border-color:var(--green);}
+.nav-item.active .nav-dot{background:var(--ur);border-color:var(--ur);}
+.nav-dot{width:8px;height:8px;border-radius:50%;border:2px solid var(--b2);background:transparent;flex-shrink:0;transition:all .2s;}
+.nav-text{flex:1;}
+.nav-num{font-size:10px;color:var(--t3);font-weight:500;letter-spacing:.05em;}
+.nav-title{font-size:12.5px;color:var(--t2);line-height:1.35;margin-top:1px;}
+.nav-item.active .nav-title{color:var(--ur);font-weight:500;}
+.nav-item.active .nav-num{color:var(--ur);}
+.sidebar-footer{padding:1rem 1.5rem;border-top:1px solid var(--b1);}
+.sidebar-footer-text{font-size:11px;color:var(--t3);line-height:1.5;}
+.content-area{flex:1;overflow-y:auto;padding:2.5rem 3rem;}
+.session-panel{display:none;max-width:820px;margin:0 auto;animation:fadeIn .3s ease;}
+.session-panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.session-hero{background:var(--white);border:1px solid var(--b1);border-radius:12px;padding:2rem 2.5rem;margin-bottom:1.75rem;position:relative;overflow:hidden;}
+.session-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--ur);}
+.sh-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ur);background:var(--url);padding:4px 12px;border-radius:20px;margin-bottom:1rem;}
+.sh-title{font-family:'DM Serif Display',serif;font-size:1.65rem;color:var(--t1);line-height:1.25;margin-bottom:.75rem;}
+.sh-desc{font-size:.9rem;color:var(--t2);line-height:1.7;max-width:680px;}
+.sh-meta{display:flex;gap:1.5rem;margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--b1);}
+.sh-meta-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--t3);}
+.sh-meta-dot{width:6px;height:6px;border-radius:50%;background:var(--ur);}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.card{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1.25rem;transition:box-shadow .2s;}
+.card:hover{box-shadow:0 2px 12px rgba(200,16,46,.08);}
+.card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:.75rem;}
+.card-label{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem;}
+.card-title{font-size:.92rem;font-weight:500;color:var(--t1);margin-bottom:.4rem;}
+.card-desc{font-size:.82rem;color:var(--t2);line-height:1.6;}
+.ci-red{background:var(--url);} .ci-gold{background:var(--gold-light);} .ci-green{background:var(--green-light);}
+.ci-blue{background:var(--blue-light);} .ci-purple{background:var(--purple-light);} .ci-teal{background:var(--teal-light);}
+.cl-red{color:var(--ur);} .cl-gold{color:var(--gold);} .cl-green{color:var(--green);}
+.cl-blue{color:var(--blue);} .cl-purple{color:var(--purple);} .cl-teal{color:var(--teal);}
+.section-block{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1.5rem;margin-bottom:1.25rem;}
+.sb-title{font-size:.83rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--b1);}
+.prompt-box{background:#1e1e2e;border-radius:10px;overflow:hidden;margin-bottom:1.25rem;}
+.pb-header{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:#2a2a3e;border-bottom:1px solid rgba(255,255,255,.08);}
+.pb-label{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.07em;text-transform:uppercase;}
+.pb-badge{font-size:10px;font-weight:500;padding:2px 10px;border-radius:20px;}
+.pb-weak{background:rgba(200,16,46,.2);color:#f87171;}
+.pb-strong{background:rgba(26,107,60,.25);color:#4ade80;}
+.pb-body{padding:1.1rem 1.25rem;font-family:'DM Mono','Courier New',monospace;font-size:.78rem;color:rgba(220,215,250,.8);line-height:1.7;white-space:pre-wrap;}
+.pb-body .hl{color:#90cdf4;} .pb-body .kw{color:#fef08a;} .pb-body .str{color:#86efac;}
+.callout{border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.25rem;border-left:3px solid;}
+.callout-info{background:var(--blue-light);border-color:var(--blue);}
+.callout-gold{background:var(--gold-light);border-color:var(--gold);}
+.callout-green{background:var(--green-light);border-color:var(--green);}
+.callout-red{background:var(--url);border-color:var(--ur);}
+.callout-teal{background:var(--teal-light);border-color:var(--teal);}
+.callout-purple{background:var(--purple-light);border-color:var(--purple);}
+.callout-label{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem;}
+.ci-b .callout-label{color:var(--blue);} .ci-g .callout-label{color:var(--gold);} .ci-gr .callout-label{color:var(--green);}
+.ci-r .callout-label{color:var(--ur);} .ci-t .callout-label{color:var(--teal);} .ci-p .callout-label{color:var(--purple);}
+.callout p{font-size:.85rem;color:var(--t2);margin:0;line-height:1.65;}
+.steps-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.25rem;}
+.step-item{display:flex;align-items:flex-start;gap:10px;font-size:.88rem;color:var(--t2);}
+.step-num{flex-shrink:0;width:22px;height:22px;background:var(--url);border:1px solid var(--urm);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--ur);margin-top:1px;}
+.step-text strong{color:var(--t1);font-weight:500;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+@media(max-width:640px){.two-col{grid-template-columns:1fr;}}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+@media(max-width:640px){.metrics-grid{grid-template-columns:1fr;}}
+.metric-card{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1.1rem 1.25rem;}
+.mc-label{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;}
+.mc-q{font-size:.82rem;color:var(--t2);line-height:1.65;padding-left:.8rem;border-left:2px solid var(--b1);}
+.mc-blue .mc-label{color:var(--blue);} .mc-gold .mc-label{color:var(--gold);}
+.mc-green .mc-label{color:var(--green);} .mc-teal .mc-label{color:var(--teal);}
+.timeline{display:flex;flex-direction:column;gap:0;margin-bottom:1.25rem;}
+.tl-item{display:flex;gap:1rem;position:relative;padding-bottom:1.25rem;}
+.tl-item::after{content:'';position:absolute;left:17px;top:36px;bottom:0;width:1px;background:var(--b1);}
+.tl-item:last-child::after{display:none;}
+.tl-dot{flex-shrink:0;width:34px;height:34px;background:var(--white);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--ur);z-index:1;}
+.tl-body{}
+.tl-title{font-size:.88rem;font-weight:500;color:var(--t1);margin-bottom:2px;}
+.tl-desc{font-size:.82rem;color:var(--t2);line-height:1.6;}
+.antipattern{background:var(--url);border:1px solid rgba(200,16,46,.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.ap-title{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ur);margin-bottom:.4rem;}
+.ap-body{font-size:.83rem;color:var(--t2);line-height:1.6;}
+.nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--b1);}
+.btn{padding:.7rem 1.5rem;border-radius:8px;font-size:.88rem;font-weight:500;cursor:pointer;transition:all .15s;border:none;}
+.btn-outline{background:transparent;border:1px solid var(--b1);color:var(--t2);}
+.btn-outline:hover{border-color:var(--ur);color:var(--ur);}
+.btn-primary{background:var(--ur);color:#fff;}
+.btn-primary:hover{background:#a00d23;}
+/* QUIZ */
+.quiz-wrap{max-width:820px;margin:0 auto;}
+.quiz-header{background:var(--white);border:1px solid var(--b1);border-radius:12px;padding:1.75rem 2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.quiz-header::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--ur);}
+.quiz-htag{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ur);background:var(--url);padding:3px 12px;border-radius:20px;display:inline-block;margin-bottom:.75rem;}
+.quiz-htitle{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--t1);margin-bottom:.5rem;}
+.quiz-hdesc{font-size:.85rem;color:var(--t2);line-height:1.6;}
+.quiz-score{margin-top:.75rem;font-size:.82rem;color:var(--t3);}
+.q-card{background:var(--white);border:1px solid var(--b1);border-radius:12px;padding:1.75rem 2rem;margin-bottom:1rem;}
+.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.q-num{font-size:11px;font-weight:500;color:var(--t3);}
+.q-text{font-size:.97rem;font-weight:500;color:var(--t1);margin-bottom:1rem;line-height:1.5;}
+.q-options{display:flex;flex-direction:column;gap:.5rem;}
+.q-opt{display:flex;align-items:flex-start;gap:10px;padding:.75rem 1rem;border-radius:8px;border:1px solid var(--b1);cursor:pointer;transition:all .15s;font-size:.875rem;color:var(--t2);}
+.q-opt:hover{border-color:var(--ur);color:var(--t1);background:var(--url);}
+.q-opt.selected{border-color:var(--ur);background:var(--url);color:var(--ur);}
+.q-opt.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.q-opt.wrong{border-color:var(--ur);background:var(--url);color:var(--ur);}
+.q-letter{flex-shrink:0;width:22px;height:22px;border-radius:5px;background:var(--bg);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--t3);}
+.q-feedback{margin-top:.75rem;padding:.75rem 1rem;border-radius:8px;font-size:.82rem;line-height:1.55;display:none;}
+.q-feedback.ok{background:var(--green-light);color:var(--green);border:1px solid rgba(26,107,60,.2);display:block;}
+.q-feedback.fail{background:var(--url);color:var(--ur);border:1px solid rgba(200,16,46,.2);display:block;}
+.quiz-controls{display:flex;gap:1rem;margin-top:1rem;justify-content:flex-end;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+    </svg>
+  </div>
+  <div class="header-text">
+    <div class="header-title">Módulo 3 · Prompting e Interacción Cognitiva con Modelos Generativos</div>
+    <div class="header-sub">ADVANCE · Universidad del Rosario · Finanzas con IA</div>
+  </div>
+  <div class="header-right">
+    <div class="progress-bar-wrap">
+      <div class="progress-label"><span>Progreso</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="badge-session" id="header-badge">Sesión 3.1</div>
+  </div>
+</header>
+
+<div class="main">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-module-tag">Módulo 3</div>
+      <div class="sidebar-module-title">Prompting e Interacción Cognitiva</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav"></nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">Usa los botones de navegación o selecciona cualquier sesión del menú.</div>
+    </div>
+  </aside>
+
+  <div class="content-area" id="content-area">
+
+    <!-- ========== SESIÓN 3.1 ========== -->
+    <div class="session-panel" id="panel-0">
+      <div class="session-hero">
+        <div class="sh-tag">Sesión 3.1</div>
+        <div class="sh-title">Fundamentos del Prompting: la Interface Semántica</div>
+        <div class="sh-desc">El prompting no es "dar instrucciones" — es una práctica de mediación cognitiva entre la intención del usuario y los mecanismos probabilísticos de los modelos generativos. El prompt opera como una interface semántica que traduce objetivos humanos en condiciones de procesamiento algorítmico.</div>
+        <div class="sh-meta">
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Interface semántica</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Configuración analítica</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Proceso iterativo</div>
+        </div>
+      </div>
+
+      <div class="callout callout-info ci-b">
+        <div class="callout-label">Definición clave</div>
+        <p>Un prompt es un <strong>mecanismo de configuración analítica</strong>: delimita el tipo de tarea, el marco conceptual, el nivel de profundidad, los criterios de control y la forma esperada de la salida. Cumple una función estructurante, no solo comunicativa.</p>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Los 5 componentes de un prompt robusto</div>
+        <ul class="steps-list">
+          <li class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Objetivo de la tarea:</strong> establece con claridad qué se espera del modelo.</div></li>
+          <li class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Contexto del problema:</strong> aporta información sobre el caso, el negocio o la situación analizada.</div></li>
+          <li class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Marco de rol o especialidad:</strong> orienta la perspectiva desde la cual el modelo debe responder.</div></li>
+          <li class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Criterios metodológicos o restricciones:</strong> define reglas, límites, supuestos y controles.</div></li>
+          <li class="step-item"><div class="step-num">5</div><div class="step-text"><strong>Formato de salida:</strong> especifica la estructura del entregable esperado.</div></li>
+        </ul>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Comparación: prompt débil vs. alta densidad analítica</div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Ejemplo débil</span><span class="pb-badge pb-weak">Evitar</span></div>
+          <div class="pb-body">"Analiza esta empresa."</div>
+        </div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Alta densidad analítica</span><span class="pb-badge pb-strong">Recomendado</span></div>
+          <div class="pb-body"><span class="kw">"Actúa como especialista en finanzas corporativas.</span> <span class="hl">Evalúa la situación de esta empresa desde la perspectiva de planeación financiera y valoración.</span> <span class="str">Analiza crecimiento, rentabilidad, liquidez, apalancamiento y generación de caja.</span> Presenta hallazgos en formato ejecutivo, distingue riesgos estructurales y concluye con recomendaciones para la toma de decisiones."</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">El prompting como proceso iterativo de refinamiento</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot">1</div><div class="tl-body"><div class="tl-title">Definir el objetivo general del análisis</div><div class="tl-desc">Establecer el propósito y la audiencia antes de formular la primera instrucción.</div></div></div>
+          <div class="tl-item"><div class="tl-dot">2</div><div class="tl-body"><div class="tl-title">Solicitar una primera estructura interpretativa</div><div class="tl-desc">Obtener un borrador analítico como punto de partida.</div></div></div>
+          <div class="tl-item"><div class="tl-dot">3</div><div class="tl-body"><div class="tl-title">Profundizar sobre variables o métricas críticas</div><div class="tl-desc">Dirigir el razonamiento hacia los indicadores más relevantes para la decisión.</div></div></div>
+          <div class="tl-item"><div class="tl-dot">4</div><div class="tl-body"><div class="tl-title">Corregir imprecisiones y supuestos débiles</div><div class="tl-desc">Auditar la respuesta, tensionar hipótesis y redirigir si es necesario.</div></div></div>
+          <div class="tl-item"><div class="tl-dot">5</div><div class="tl-body"><div class="tl-title">Requerir versión final orientada a la audiencia</div><div class="tl-desc">Traducir el análisis en un producto intelectualmente útil y defendible.</div></div></div>
+        </div>
+      </div>
+
+      <div class="callout callout-gold ci-g">
+        <div class="callout-label">Conclusión de sesión</div>
+        <p>El prompting debe entenderse como una extensión del pensamiento analítico. Cuanto más claro sea el dominio conceptual del profesional, mayor será su capacidad para construir prompts que produzcan resultados útiles, consistentes y defendibles. <strong>Saber preguntar con rigor equivale a saber pensar con estructura.</strong></p>
+      </div>
+      <div class="nav-btns"><div></div><button class="btn btn-primary" onclick="goTo(1)">Siguiente sesión →</button></div>
+    </div>
+
+    <!-- ========== SESIÓN 3.2 ========== -->
+    <div class="session-panel" id="panel-1">
+      <div class="session-hero">
+        <div class="sh-tag">Sesión 3.2</div>
+        <div class="sh-title">Principios de Claridad, Contención y Especificidad</div>
+        <div class="sh-desc">Estos tres principios no son simples recomendaciones de estilo — son condiciones estructurales para obtener respuestas útiles, auditables y coherentes con la lógica del análisis financiero corporativo.</div>
+        <div class="sh-meta">
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Claridad analítica</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Contención inferencial</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Especificidad operativa</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon ci-blue"><span style="font-size:18px;color:var(--blue)">◎</span></div>
+          <div class="card-label cl-blue">Principio 1</div>
+          <div class="card-title">Claridad</div>
+          <div class="card-desc">Expresa de manera directa e inequívoca qué se espera del modelo. Reduce la carga interpretativa y mejora la alineación entre intención y respuesta.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon ci-gold"><span style="font-size:18px;color:var(--gold)">▣</span></div>
+          <div class="card-label cl-gold">Principio 2</div>
+          <div class="card-title">Contención</div>
+          <div class="card-desc">Establece límites explícitos que eviten la expansión innecesaria del análisis y la dispersión temática. Preserva la disciplina analítica del modelo.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon ci-teal"><span style="font-size:18px;color:var(--teal)">⧫</span></div>
+          <div class="card-label cl-teal">Principio 3</div>
+          <div class="card-title">Especificidad</div>
+          <div class="card-desc">Determina el grado de detalle con el que debe ejecutarse la tarea. Orienta al modelo hacia una ejecución alineada con las exigencias reales del análisis.</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Especificidad en acción — ejemplo financiero</div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Sin especificidad</span><span class="pb-badge pb-weak">Insuficiente</span></div>
+          <div class="pb-body">"Haz una proyección financiera."</div>
+        </div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Con especificidad operativa</span><span class="pb-badge pb-strong">Recomendado</span></div>
+          <div class="pb-body"><span class="kw">"Construye una proyección financiera a cinco años para una empresa B2B del sector tecnológico,</span> <span class="hl">separando ingresos, costo de ventas, EBITDA, CAPEX, capital de trabajo y flujo de caja libre.</span> <span class="str">Utiliza un enfoque basado en drivers, desarrolla tres escenarios y explicita los supuestos críticos de crecimiento, margen y reinversión."</span></div>
+        </div>
+      </div>
+
+      <div class="callout callout-red ci-r">
+        <div class="callout-label">Principio de integración</div>
+        <p>Claridad sin contención produce respuestas amplias pero excesivamente abiertas. Contención sin claridad restringe sin haber definido el objetivo. Especificidad sin claridad convierte el prompt en una lista técnica fragmentada. <strong>Los tres principios deben articularse equilibradamente.</strong></p>
+      </div>
+      <div class="nav-btns"><button class="btn btn-outline" onclick="goTo(0)">← Anterior</button><button class="btn btn-primary" onclick="goTo(2)">Siguiente sesión →</button></div>
+    </div>
+
+    <!-- ========== SESIÓN 3.3 ========== -->
+    <div class="session-panel" id="panel-2">
+      <div class="session-hero">
+        <div class="sh-tag">Sesión 3.3</div>
+        <div class="sh-title">Estructuras Especializadas para KPIs, Estados Financieros, DCF y Escenarios</div>
+        <div class="sh-desc">En contextos de planeación financiera y valoración, la interacción con el modelo exige arquitecturas de prompt diferenciadas. Distintos problemas financieros requieren distintas estructuras instruccionales.</div>
+        <div class="sh-meta">
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>KPIs y gestión</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Estados financieros</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>DCF y escenarios</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Prompt especializado para KPIs</div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Estructura KPIs</span><span class="pb-badge pb-strong">Recomendado</span></div>
+          <div class="pb-body"><span class="kw">"Actúa como analista senior de desempeño financiero.</span> <span class="hl">Con base en la información suministrada, calcula margen bruto, EBITDA, margen EBITDA, liquidez corriente, endeudamiento total y flujo de caja libre.</span> <span class="str">Presenta los resultados en una tabla, compáralos con el período anterior, identifica variaciones relevantes</span> y concluye con tres alertas gerenciales y tres recomendaciones de acción."</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Prompt especializado para estados financieros</div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Estructura estados financieros</span><span class="pb-badge pb-strong">Recomendado</span></div>
+          <div class="pb-body"><span class="kw">"Actúa como especialista en análisis financiero corporativo.</span> <span class="hl">Analiza el Estado de Resultados y el Estado de Situación Financiera desde una perspectiva de planeación financiera.</span> <span class="str">Realiza lectura vertical y horizontal, identifica los principales drivers de ingresos, costos, gastos, liquidez y apalancamiento,</span> y concluye con una narrativa ejecutiva sobre fortalezas, debilidades y riesgos."</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-block" style="height:100%;">
+            <div class="sb-title">Prompt para DCF</div>
+            <div class="prompt-box" style="margin-bottom:0;">
+              <div class="pb-header"><span class="pb-label">Valoración DCF</span><span class="pb-badge pb-strong">Recomendado</span></div>
+              <div class="pb-body" style="font-size:.74rem;"><span class="kw">"Actúa como especialista en valoración.</span> <span class="hl">Construye la lógica de un modelo DCF con flujo de caja libre a la firma.</span> <span class="str">Define los componentes del cálculo, incorpora WACC y valor terminal por perpetuidad,</span> y concluye con supuestos críticos y riesgos metodológicos."</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-block" style="height:100%;">
+            <div class="sb-title">Prompt para escenarios</div>
+            <div class="prompt-box" style="margin-bottom:0;">
+              <div class="pb-header"><span class="pb-label">Escenarios</span><span class="pb-badge pb-strong">Recomendado</span></div>
+              <div class="pb-body" style="font-size:.74rem;"><span class="kw">"Actúa como gerente de planeación financiera.</span> <span class="hl">Diseña tres escenarios —base, optimista y pesimista— en un horizonte de tres años.</span> <span class="str">Varía crecimiento, margen EBITDA y capital de trabajo.</span> Presenta impacto sobre EBITDA, FCL y necesidad de financiación."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-teal ci-t">
+        <div class="callout-label">Elementos transversales</div>
+        <p>Todos los prompts especializados comparten: definición del rol, objetivo explícito, alcance delimitado, especificación metodológica, restricciones de control y formato de salida. La efectividad depende más del diseño lógico que de la apariencia conversacional.</p>
+      </div>
+      <div class="nav-btns"><button class="btn btn-outline" onclick="goTo(1)">← Anterior</button><button class="btn btn-primary" onclick="goTo(3)">Siguiente sesión →</button></div>
+    </div>
+
+    <!-- ========== SESIÓN 3.4 ========== -->
+    <div class="session-panel" id="panel-3">
+      <div class="session-hero">
+        <div class="sh-tag">Sesión 3.4</div>
+        <div class="sh-title">Técnicas de Optimización: Chain-of-Thought, Few-Shot y Self-Reflection</div>
+        <div class="sh-desc">A medida que los problemas financieros se vuelven más complejos, ya no basta con formular correctamente una solicitud. Estas técnicas intervienen en cómo el modelo organiza, desarrolla y revisa su respuesta.</div>
+        <div class="sh-meta">
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Chain-of-Thought</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Few-Shot</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Self-Reflection</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon ci-blue"><span style="font-size:16px;color:var(--blue)">⇢</span></div>
+          <div class="card-label cl-blue">Técnica 1</div>
+          <div class="card-title">Chain-of-Thought</div>
+          <div class="card-desc">Induce al modelo a desarrollar la respuesta en etapas lógicas sucesivas. Reduce la dispersión y mejora la estructura del análisis financiero.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon ci-gold"><span style="font-size:16px;color:var(--gold)">≡</span></div>
+          <div class="card-label cl-gold">Técnica 2</div>
+          <div class="card-title">Few-Shot Prompting</div>
+          <div class="card-desc">Incluye ejemplos del tipo de respuesta esperada. Estandariza formato, nivel técnico y criterio de análisis entre distintos casos o períodos.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon ci-teal"><span style="font-size:16px;color:var(--teal)">↺</span></div>
+          <div class="card-label cl-teal">Técnica 3</div>
+          <div class="card-title">Self-Reflection</div>
+          <div class="card-desc">Solicita al modelo revisar críticamente su propia respuesta. Detecta supuestos no sustentados, inconsistencias y debilidades metodológicas.</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Chain-of-Thought aplicado a planeación financiera</div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Prompt con secuencia lógica</span><span class="pb-badge pb-strong">Chain-of-Thought</span></div>
+          <div class="pb-body"><span class="kw">"Actúa como especialista en planeación financiera. Analiza esta empresa en cinco etapas:</span>
+<span class="str">Primero</span> <span class="hl">identifica los principales drivers de ingresos y costos;</span>
+<span class="str">Segundo</span> evalúa la evolución de márgenes;
+<span class="str">Tercero</span> revisa liquidez y capital de trabajo;
+<span class="str">Cuarto</span> determina los principales riesgos financieros;
+<span class="str">Quinto</span> presenta una conclusión ejecutiva con recomendaciones."</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Few-Shot: ejemplo de salida esperada para KPIs</div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Patrón Few-Shot</span><span class="pb-badge pb-strong">Estandarización</span></div>
+          <div class="pb-body"><span class="kw">"Ejemplo de salida esperada:</span>
+<span class="hl">• Margen EBITDA:</span> mejora de 2 puntos porcentuales, impulsada por mayor eficiencia operativa.
+<span class="hl">• Liquidez corriente:</span> se deteriora frente al período anterior, sugiriendo presión sobre capital de trabajo.
+<span class="hl">• Conclusión:</span> la empresa mejora rentabilidad pero enfrenta tensiones de caja.
+
+<span class="str">Ahora analiza la siguiente empresa con la misma estructura."</span></div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Self-Reflection: instrucciones de revisión crítica</div>
+        <ul class="steps-list">
+          <li class="step-item"><div class="step-num">→</div><div class="step-text">"Revisa tu análisis e identifica posibles supuestos no sustentados."</div></li>
+          <li class="step-item"><div class="step-num">→</div><div class="step-text">"Evalúa si la conclusión es consistente con los datos presentados."</div></li>
+          <li class="step-item"><div class="step-num">→</div><div class="step-text">"Separa qué afirmaciones están respaldadas por información explícita y cuáles son inferencias."</div></li>
+          <li class="step-item"><div class="step-num">→</div><div class="step-text">"Identifica debilidades metodológicas en el modelo propuesto."</div></li>
+        </ul>
+      </div>
+
+      <div class="callout callout-green ci-gr">
+        <div class="callout-label">Integración de las tres técnicas</div>
+        <p>Un análisis financiero robusto puede combinar Chain-of-Thought para ordenar la secuencia lógica, Few-Shot para estandarizar el formato, y Self-Reflection para revisar coherencia y supuestos críticos. Esta combinación reproduce la lógica del trabajo financiero profesional iterativo.</p>
+      </div>
+      <div class="nav-btns"><button class="btn btn-outline" onclick="goTo(2)">← Anterior</button><button class="btn btn-primary" onclick="goTo(4)">Siguiente sesión →</button></div>
+    </div>
+
+    <!-- ========== SESIÓN 3.5 ========== -->
+    <div class="session-panel" id="panel-4">
+      <div class="session-hero">
+        <div class="sh-tag">Sesión 3.5</div>
+        <div class="sh-title">Métricas de Calidad del Prompt: Pertinencia, Coherencia, Rigor y Auditabilidad</div>
+        <div class="sh-desc">Un prompt no debe juzgarse únicamente por si produjo una respuesta convincente. Debe evaluarse por la calidad del razonamiento que induce y el nivel de control que ofrece al profesional financiero — una capa de gobernanza sobre el trabajo asistido por IA.</div>
+        <div class="sh-meta">
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>4 métricas clave</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Gobernanza analítica</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Activos de prompting</div>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card mc-blue">
+          <div class="mc-label" style="color:var(--blue);">Pertinencia</div>
+          <div class="mc-q">¿Está formulado en función de una necesidad real de negocio?<br>¿Corresponde al tipo de decisión que se desea apoyar?<br>¿Se ajusta a la audiencia del análisis?</div>
+        </div>
+        <div class="metric-card mc-gold">
+          <div class="mc-label" style="color:var(--gold);">Coherencia</div>
+          <div class="mc-q">¿El objetivo del prompt coincide con el tipo de análisis?<br>¿Las instrucciones metodológicas son compatibles?<br>¿El formato de salida corresponde al propósito?</div>
+        </div>
+        <div class="metric-card mc-teal">
+          <div class="mc-label" style="color:var(--teal);">Rigor</div>
+          <div class="mc-q">¿El prompt define con claridad el método de análisis?<br>¿Exige explicitación de supuestos y limitaciones?<br>¿Permite obtener un output técnicamente defendible?</div>
+        </div>
+        <div class="metric-card mc-green">
+          <div class="mc-label" style="color:var(--green);">Auditabilidad</div>
+          <div class="mc-q">¿El prompt facilita revisar cómo se construyó la respuesta?<br>¿Permite distinguir datos, supuestos e inferencias?<br>¿La interacción puede replicarse con criterios consistentes?</div>
+        </div>
+      </div>
+
+      <div class="callout callout-gold ci-g">
+        <div class="callout-label">Matriz práctica de evaluación</div>
+        <p><strong>Pertinencia:</strong> ¿responde al problema correcto? — <strong>Coherencia:</strong> ¿sus componentes están alineados? — <strong>Rigor:</strong> ¿incorpora exigencia metodológica suficiente? — <strong>Auditabilidad:</strong> ¿permite revisar y rastrear la lógica? Esta matriz puede aplicarse antes de ejecutar (filtro de diseño) o después de obtener el resultado (mecanismo de mejora).</p>
+      </div>
+
+      <div class="callout callout-purple ci-p">
+        <div class="callout-label">Aplicación en equipos financieros</div>
+        <p>Un área de FP&A, corporate finance o estrategia puede tratar los prompts como <strong>activos analíticos</strong> gestionados con criterios de calidad — revisados, comparados y refinados continuamente como parte del gobierno del análisis financiero asistido por IA.</p>
+      </div>
+      <div class="nav-btns"><button class="btn btn-outline" onclick="goTo(3)">← Anterior</button><button class="btn btn-primary" onclick="goTo(5)">Siguiente sesión →</button></div>
+    </div>
+
+    <!-- ========== SESIÓN 3.6 ========== -->
+    <div class="session-panel" id="panel-5">
+      <div class="session-hero">
+        <div class="sh-tag">Sesión 3.6</div>
+        <div class="sh-title">Anti-patrones: Vagueza, Contradicción y Ausencia de Estructura Jerárquica</div>
+        <div class="sh-desc">Una proporción significativa de errores en el trabajo con IA se origina en la forma en que el usuario diseña la interacción. Los anti-patrones son estructuras defectuosas de formulación que deterioran la calidad del resultado.</div>
+        <div class="sh-meta">
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Prompts vagos</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Contradicción interna</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Sin jerarquía lógica</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Anti-patrón 1: Prompts vagos</div>
+        <div class="antipattern">
+          <div class="ap-title">⚠ Riesgo de vaguedad</div>
+          <div class="ap-body">Un prompt vago obliga al modelo a completar grandes vacíos interpretativos, produciendo respuestas genéricas o metodológicamente superficiales. La principal consecuencia es la pérdida de control sobre el razonamiento inducido.</div>
+        </div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Anti-patrón</span><span class="pb-badge pb-weak">Evitar</span></div>
+          <div class="pb-body">"Analiza estos estados financieros."</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Anti-patrón 2: Prompts contradictorios</div>
+        <div class="antipattern">
+          <div class="ap-title">⚠ Riesgo de contradicción</div>
+          <div class="ap-body">Cuando el prompt contiene exigencias que compiten o se anulan mutuamente, el modelo produce respuestas híbridas, confusas o inconsistentes. El resultado puede sonar correcto retóricamente pero perder profundidad y precisión.</div>
+        </div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Anti-patrón</span><span class="pb-badge pb-weak">Evitar</span></div>
+          <div class="pb-body">"Haz una valoración DCF completa, sin hacer ningún supuesto, en un párrafo breve y con todos los detalles metodológicos."</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Corrección: prompt con jerarquía explícita</div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Prompt con jerarquía</span><span class="pb-badge pb-strong">Corrección</span></div>
+          <div class="pb-body"><span class="kw">"Actúa como especialista en corporate finance.</span>
+<span class="hl">Objetivo:</span> evaluar la empresa desde una perspectiva preliminar de inversión.
+<span class="str">Analiza en este orden:</span> rentabilidad, apalancamiento, liquidez y generación de caja.
+Luego identifica riesgos clave y presenta una conclusión ejecutiva.
+<span class="kw">No inventes cifras no proporcionadas.</span> Entrega el resultado en una tabla resumen seguida de una narrativa breve."</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Secuencia de corrección: del anti-patrón al prompt de calidad</div>
+        <ul class="steps-list">
+          <li class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Precisar el objetivo:</strong> definir con claridad qué problema se desea resolver.</div></li>
+          <li class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Eliminar contradicciones:</strong> priorizar exigencias y separar elementos incompatibles.</div></li>
+          <li class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Introducir jerarquía:</strong> organizar rol, objetivo, contexto, tareas, restricciones y formato.</div></li>
+          <li class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Controlar el alcance:</strong> evitar la expansión innecesaria del análisis.</div></li>
+          <li class="step-item"><div class="step-num">5</div><div class="step-text"><strong>Definir criterios de calidad:</strong> explicitar método, supuestos y forma de revisión.</div></li>
+        </ul>
+      </div>
+      <div class="nav-btns"><button class="btn btn-outline" onclick="goTo(4)">← Anterior</button><button class="btn btn-primary" onclick="goTo(6)">Siguiente sesión →</button></div>
+    </div>
+
+    <!-- ========== SESIÓN 3.7 ========== -->
+    <div class="session-panel" id="panel-6">
+      <div class="session-hero">
+        <div class="sh-tag">Sesión 3.7</div>
+        <div class="sh-title">Prompting Agéntico: Diseño de Instrucciones de Sistema para Agentes Financieros</div>
+        <div class="sh-desc">A medida que la IA evoluciona hacia sistemas agénticos, el prompting se convierte en un mecanismo de diseño estructural. Las instrucciones de sistema definen la lógica estable bajo la cual debe comportarse el agente — identidad, límites, criterios y protocolos.</div>
+        <div class="sh-meta">
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Instrucciones de sistema</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Gobernanza del agente</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Comportamiento estable</div>
+        </div>
+      </div>
+
+      <div class="callout callout-teal ci-t">
+        <div class="callout-label">Diferencia clave</div>
+        <p><strong>El prompt de usuario activa una tarea. La instrucción de sistema configura el marco operativo.</strong> La instrucción actúa como una capa superior de gobernanza que determina el comportamiento relativamente permanente del agente financiero.</p>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Seis componentes de una instrucción de sistema de alta calidad</div>
+        <ul class="steps-list">
+          <li class="step-item"><div class="step-num">A</div><div class="step-text"><strong>Identidad funcional:</strong> define qué tipo de agente es y qué rol desempeña (análisis, FP&A, valoración, reporting).</div></li>
+          <li class="step-item"><div class="step-num">B</div><div class="step-text"><strong>Objetivo central:</strong> filtra respuestas irrelevantes y orienta la conducta hacia el valor analítico esperado.</div></li>
+          <li class="step-item"><div class="step-num">C</div><div class="step-text"><strong>Criterios metodológicos:</strong> define análisis vertical/horizontal, separación de hechos e inferencias, explicitación de supuestos.</div></li>
+          <li class="step-item"><div class="step-num">D</div><div class="step-text"><strong>Límites operativos:</strong> no inventar cifras, no asumir datos faltantes sin advertencia, no mezclar observaciones con recomendaciones.</div></li>
+          <li class="step-item"><div class="step-num">E</div><div class="step-text"><strong>Formato de salida:</strong> tablas, narrativas ejecutivas, estructuras por etapas o informes para junta directiva.</div></li>
+          <li class="step-item"><div class="step-num">F</div><div class="step-text"><strong>Protocolos de validación:</strong> cuándo revisar coherencia, señalar inconsistencias y reconocer insuficiencia de información.</div></li>
+        </ul>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Ejemplo conceptual de instrucción de sistema — agente financiero</div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">System Prompt</span><span class="pb-badge pb-strong">Referencia</span></div>
+          <div class="pb-body"><span class="kw">"Eres un agente especializado en finanzas corporativas,</span> enfocado en análisis financiero, planeación financiera y valoración de empresas. <span class="hl">Tu prioridad es producir respuestas técnicamente sólidas, estructuradas y auditables.</span> <span class="str">Debes diferenciar hechos, inferencias y recomendaciones.</span> No debes inventar cifras faltantes; cuando la información sea insuficiente, debes advertirlo explícitamente. Cuando analices información financiera, estructura tu respuesta en etapas lógicas y resalta supuestos críticos, riesgos y limitaciones. <span class="kw">Presenta salidas en formato ejecutivo cuando la audiencia lo requiera, pero sin sacrificar rigor técnico."</span></div>
+        </div>
+      </div>
+
+      <div class="callout callout-gold ci-g">
+        <div class="callout-label">Gobernanza analítica</div>
+        <p>Diseñar instrucciones de sistema equivale a diseñar gobernanza analítica. Definen cómo se comporta el agente, qué estándares respeta, bajo qué condiciones advierte incertidumbre, y cómo puede integrarse en procesos de análisis, planeación y valoración con consistencia y valor estratégico.</p>
+      </div>
+      <div class="nav-btns"><button class="btn btn-outline" onclick="goTo(5)">← Anterior</button><button class="btn btn-primary" onclick="goTo(7)">Siguiente sesión →</button></div>
+    </div>
+
+    <!-- ========== SESIÓN 3.8 ========== -->
+    <div class="session-panel" id="panel-7">
+      <div class="session-hero">
+        <div class="sh-tag">Sesión 3.8</div>
+        <div class="sh-title">Diseño de Flujos Multi-turno y Coordinación entre Agentes</div>
+        <div class="sh-desc">Los problemas financieros complejos rara vez se resuelven en una única interacción. Requieren secuencias de trabajo, refinamiento progresivo, validación iterativa y, en muchos casos, coordinación entre múltiples agentes especializados.</div>
+        <div class="sh-meta">
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Flujos multi-turno</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Agentes especializados</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Handoff entre agentes</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Estructura típica de un flujo multi-turno en finanzas</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot">1</div><div class="tl-body"><div class="tl-title">Definición del objetivo y marco de análisis</div><div class="tl-desc">Establece el propósito general, el enfoque metodológico, la audiencia y el alcance.</div></div></div>
+          <div class="tl-item"><div class="tl-dot">2</div><div class="tl-body"><div class="tl-title">Análisis exploratorio o diagnóstico inicial</div><div class="tl-desc">Lectura estructural preliminar para identificar señales clave y focos de profundización.</div></div></div>
+          <div class="tl-item"><div class="tl-dot">3</div><div class="tl-body"><div class="tl-title">Profundización analítica</div><div class="tl-desc">Examen de variables específicas: márgenes, capital de trabajo, apalancamiento, supuestos de valoración.</div></div></div>
+          <div class="tl-item"><div class="tl-dot">4</div><div class="tl-body"><div class="tl-title">Validación y control</div><div class="tl-desc">Revisión de supuestos, inconsistencias y tensiones entre datos, inferencias y conclusiones.</div></div></div>
+          <div class="tl-item"><div class="tl-dot">5</div><div class="tl-body"><div class="tl-title">Síntesis y traducción ejecutiva</div><div class="tl-desc">Transformación del análisis en reporte ejecutivo, alertas, recomendaciones o narrativa para comité.</div></div></div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon ci-blue"><span style="font-size:14px;color:var(--blue)">📊</span></div>
+          <div class="card-label cl-blue">Agente 1</div>
+          <div class="card-title">Análisis financiero</div>
+          <div class="card-desc">Interpreta estados financieros y KPIs con criterios estables entre períodos y compañías.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon ci-gold"><span style="font-size:14px;color:var(--gold)">📈</span></div>
+          <div class="card-label cl-gold">Agente 2</div>
+          <div class="card-title">Planeación financiera</div>
+          <div class="card-desc">Trabaja proyecciones, supuestos, escenarios y desviaciones presupuestales.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon ci-teal"><span style="font-size:14px;color:var(--teal)">💎</span></div>
+          <div class="card-label cl-teal">Agente 3</div>
+          <div class="card-title">Valoración</div>
+          <div class="card-desc">Construye y revisa la lógica del DCF, documenta supuestos y señala riesgos metodológicos.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon ci-green"><span style="font-size:14px;color:var(--green)">📋</span></div>
+          <div class="card-label cl-green">Agente 4</div>
+          <div class="card-title">Reporting ejecutivo</div>
+          <div class="card-desc">Traduce hallazgos en lenguaje ejecutivo para tomadores de decisión con trazabilidad.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-info ci-b">
+        <div class="callout-label">Principios de diseño</div>
+        <p>Secuencialidad lógica, claridad de roles, trazabilidad del proceso, control de calidad iterativo, consistencia entre etapas y orientación a la decisión. La inconsistencia acumulada es la principal amenaza en arquitecturas distribuidas. <strong>Diseñar flujos multi-turno equivale a diseñar procesos financieros asistidos por IA.</strong></p>
+      </div>
+      <div class="nav-btns"><button class="btn btn-outline" onclick="goTo(6)">← Anterior</button><button class="btn btn-primary" onclick="goTo(8)">Siguiente sesión →</button></div>
+    </div>
+
+    <!-- ========== SESIÓN 3.9 ========== -->
+    <div class="session-panel" id="panel-8">
+      <div class="session-hero">
+        <div class="sh-tag">Sesión 3.9</div>
+        <div class="sh-title">Prompt Engineering para Function Calling en Valoración y Planeación</div>
+        <div class="sh-desc">El function calling permite articular el razonamiento conversacional con cálculos, APIs financieras, motores de simulación y módulos especializados. El valor de esta capacidad depende del diseño del prompting que gobierna cuándo, cómo y para qué se invocan las funciones.</div>
+        <div class="sh-meta">
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Function calling</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Orquestación analítica</div>
+          <div class="sh-meta-item"><div class="sh-meta-dot"></div>Control de ejecución</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Cinco componentes de un prompt eficaz para function calling</div>
+        <ul class="steps-list">
+          <li class="step-item"><div class="step-num">A</div><div class="step-text"><strong>Definición del objetivo analítico:</strong> el sistema debe comprender con precisión qué problema se desea resolver.</div></li>
+          <li class="step-item"><div class="step-num">B</div><div class="step-text"><strong>Criterios de activación:</strong> indicar cuándo corresponde usar una función (cálculos, consultas, simulaciones) y cuándo no (interpretaciones ejecutivas).</div></li>
+          <li class="step-item"><div class="step-num">C</div><div class="step-text"><strong>Restricciones frente a datos faltantes:</strong> el sistema no debe inventar inputs; si faltan datos, debe advertirlo o limitar el alcance.</div></li>
+          <li class="step-item"><div class="step-num">D</div><div class="step-text"><strong>Orden de ejecución:</strong> validar inputs → proyectar variables → descontar flujos → generar sensibilidad → consolidar resultados.</div></li>
+          <li class="step-item"><div class="step-num">E</div><div class="step-text"><strong>Integración interpretativa:</strong> orientar cómo resumir e interpretar los resultados devueltos por la herramienta.</div></li>
+        </ul>
+      </div>
+
+      <div class="section-block">
+        <div class="sb-title">Orquestación de función DCF — secuencia metodológica</div>
+        <div class="prompt-box">
+          <div class="pb-header"><span class="pb-label">Prompt de orquestación DCF</span><span class="pb-badge pb-strong">Referencia</span></div>
+          <div class="pb-body"><span class="kw">Verificar:</span> ¿existen supuestos suficientes para proyectar flujos?
+<span class="hl">Si sí:</span> usar función para calcular costo de capital (estructura + costo de deuda + parámetros de mercado).
+<span class="str">Activar función de sensibilidad</span> únicamente después de obtener una valoración base.
+<span class="kw">Presentar el resultado final</span> diferenciando cifras calculadas, supuestos críticos y riesgos metodológicos.
+<span class="str">Si faltan datos:</span> advertirlo explícitamente antes de continuar.</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon ci-green"><span style="font-size:14px;color:var(--green)">✓</span></div>
+          <div class="card-label cl-green">Usar funciones cuando</div>
+          <div class="card-title">Agregan precisión y trazabilidad</div>
+          <div class="card-desc">No por automatismo. Las funciones deben usarse cuando mejoran la calidad del análisis financiero.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon ci-red"><span style="font-size:14px;color:var(--ur)">✗</span></div>
+          <div class="card-label cl-red">No invocar funciones con</div>
+          <div class="card-title">Datos incompletos sin advertencia</div>
+          <div class="card-desc">Siempre verificar la calidad de los inputs antes de activar una función de cálculo o simulación.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-purple ci-p">
+        <div class="callout-label">Orquestación analítica</div>
+        <p>Diseñar prompts para function calling equivale a diseñar mecanismos de coordinación entre lenguaje, método y ejecución. Esta es la transición definitiva del prompting como habilidad táctica hacia el <strong>prompting como arquitectura de trabajo intelectual ampliado.</strong></p>
+      </div>
+      <div class="nav-btns"><button class="btn btn-outline" onclick="goTo(7)">← Anterior</button><button class="btn btn-primary" onclick="goTo(9)">Ir a evaluación →</button></div>
+    </div>
+
+    <!-- ========== QUIZ ========== -->
+    <div class="session-panel" id="panel-9">
+      <div class="quiz-wrap">
+        <div class="quiz-header">
+          <div class="quiz-htag">Evaluación · Módulo 3</div>
+          <div class="quiz-htitle">Prompting e Interacción Cognitiva</div>
+          <div class="quiz-hdesc">Valida tu comprensión de los fundamentos del prompting, los principios de calidad y las técnicas avanzadas aplicadas a finanzas corporativas.</div>
+          <div class="quiz-score" id="quiz-score">Puntaje: <strong>0</strong> / 10 respondidas</div>
+        </div>
+        <div id="quiz-container"></div>
+        <div class="quiz-controls">
+          <button class="btn btn-outline" onclick="prevQ()">← Anterior</button>
+          <button class="btn btn-primary" onclick="nextQ()">Siguiente →</button>
+          <button class="btn btn-outline" onclick="resetQuiz()">Reiniciar</button>
+        </div>
+      </div>
+      <div class="nav-btns" style="margin-top:1rem;"><button class="btn btn-outline" onclick="goTo(8)">← Volver a Sesión 3.9</button><div></div></div>
+    </div>
+
+  </div><!-- end content-area -->
+</div><!-- end main -->
+
+<script>
+const SESSIONS=[
+  {num:"3.1",title:"Fundamentos del Prompting"},
+  {num:"3.2",title:"Claridad, Contención y Especificidad"},
+  {num:"3.3",title:"Estructuras Especializadas"},
+  {num:"3.4",title:"Chain-of-Thought, Few-Shot, Self-Reflection"},
+  {num:"3.5",title:"Métricas de Calidad del Prompt"},
+  {num:"3.6",title:"Anti-patrones del Prompting"},
+  {num:"3.7",title:"Prompting Agéntico"},
+  {num:"3.8",title:"Flujos Multi-turno y Multi-agente"},
+  {num:"3.9",title:"Prompt Engineering para Function Calling"},
+  {num:"—",title:"Evaluación Final"}
+];
+const TOTAL=SESSIONS.length;
+let completed=new Set();
+let currentIdx=0;
+
+function buildSidebar(){
+  const nav=document.getElementById('sidebar-nav');
+  nav.innerHTML='';
+  SESSIONS.forEach((s,i)=>{
+    const item=document.createElement('div');
+    item.className='nav-item'+(i===0?' active':'');
+    item.id='nav-'+i;
+    item.onclick=()=>goTo(i);
+    item.innerHTML=`<div class="nav-dot"></div><div class="nav-text"><div class="nav-num">Sesión ${s.num}</div><div class="nav-title">${s.title}</div></div>`;
+    nav.appendChild(item);
+  });
+}
+
+function updateProgress(){
+  const pct=Math.round((completed.size/TOTAL)*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+
+function goTo(idx){
+  document.querySelectorAll('.session-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+idx).classList.add('active');
+  const navItem=document.getElementById('nav-'+idx);
+  navItem.classList.add('active');
+  completed.add(idx);
+  navItem.classList.add('completed');
+  currentIdx=idx;
+  document.getElementById('content-area').scrollTop=0;
+  const s=SESSIONS[idx];
+  document.getElementById('header-badge').textContent='Sesión '+s.num;
+  updateProgress();
+}
+
+// QUIZ
+const QUIZ=[
+  {q:"¿Cuál es la definición más precisa de un prompt en el contexto de IA generativa aplicada a finanzas?",opts:["Una pregunta simple dirigida al modelo","Un mecanismo de configuración analítica que delimita tarea, marco conceptual, profundidad y formato de salida","Un comando técnico de programación","Una instrucción verbal informal"],ans:1,fb:"Correcto. Un prompt es un mecanismo de configuración analítica que cumple una función estructurante, no solo comunicativa."},
+  {q:"¿Qué principio del prompting establece límites explícitos para evitar la expansión innecesaria del análisis y la dispersión temática?",opts:["Claridad","Especificidad","Contención","Coherencia"],ans:2,fb:"Correcto. La contención evita que el modelo complete vacíos con inferencias plausibles pero no pertinentes para la necesidad concreta del usuario."},
+  {q:"¿Cuál es el principal riesgo de un prompt vago en un contexto de valoración de empresas?",opts:["Que el modelo no entienda el idioma","Pérdida de control sobre el razonamiento inducido, produciendo respuestas metodológicamente superficiales","Que el análisis sea demasiado técnico","Que el resultado sea demasiado corto"],ans:1,fb:"Correcto. La vaguedad obliga al modelo a completar grandes vacíos interpretativos, lo que produce análisis débiles o desalineados con la necesidad real."},
+  {q:"La técnica de Chain-of-Thought tiene como propósito principal:",opts:["Mostrar ejemplos de respuestas esperadas al modelo","Inducir al modelo a desarrollar la respuesta en etapas lógicas sucesivas","Pedirle al modelo que revise críticamente su propia salida","Estandarizar el formato de los KPIs"],ans:1,fb:"Correcto. Chain-of-Thought estructura la interacción en secuencias que aproximan el razonamiento al proceso analítico financiero real."},
+  {q:"¿Cuál de las siguientes métricas de calidad evalúa si un prompt apunta efectivamente al núcleo del problema analítico y conduce al modelo hacia una respuesta útil para el contexto específico?",opts:["Auditabilidad","Coherencia","Rigor","Pertinencia"],ans:3,fb:"Correcto. La pertinencia evalúa la alineación entre el prompt y el problema real de negocio o la decisión que se busca soportar."},
+  {q:"En el prompting agéntico, ¿cuál es la diferencia fundamental entre un prompt de usuario y una instrucción de sistema?",opts:["El prompt de usuario es más largo","El prompt activa una tarea; la instrucción de sistema configura el marco operativo permanente del agente","La instrucción de sistema se escribe en inglés","No hay diferencia significativa entre ambos"],ans:1,fb:"Correcto. La instrucción de sistema define identidad, límites, criterios metodológicos y protocolos de validación del agente — es gobernanza, no solo activación."},
+  {q:"¿Qué anti-patrón produce respuestas que intentan conciliar demandas incompatibles, resultando en análisis mezclados y poco profundos?",opts:["Prompt vago","Prompt sin estructura jerárquica","Prompt contradictorio","Prompt demasiado específico"],ans:2,fb:"Correcto. Los prompts contradictorios introducen exigencias que se anulan mutuamente, forzando al modelo a producir respuestas artificialmente balanceadas y metodológicamente débiles."},
+  {q:"En un flujo multi-agente para finanzas corporativas, ¿qué función cumple el prompt de handoff entre agentes?",opts:["Activar la interfaz gráfica del sistema","Traducir el output de un agente en el input funcional del siguiente agente especializado","Reiniciar la conversación desde cero","Evaluar el desempeño del agente anterior"],ans:1,fb:"Correcto. El handoff define qué información del turno anterior es relevante, qué tarea debe ejecutar el siguiente agente y qué formato mantiene la trazabilidad."},
+  {q:"¿Cuándo NO debe invocarse una función en un entorno de function calling para valoración?",opts:["Cuando se requiere calcular el WACC","Cuando se necesita ejecutar análisis de sensibilidad","Cuando los datos de entrada son incompletos o ambiguos sin advertencia previa","Cuando se quiere proyectar flujos de caja"],ans:2,fb:"Correcto. No invocar funciones con datos incompletos sin advertencia es un principio fundamental — el sistema debe advertir la insuficiencia antes de ejecutar cualquier cálculo."},
+  {q:"¿Qué significa tratar los prompts como 'activos analíticos' dentro de un área de FP&A o corporate finance?",opts:["Guardarlos en una carpeta sin revisarlos","Diseñarlos, documentarlos, revisarlos y refinarlos continuamente como parte del gobierno del análisis financiero asistido por IA","Compartirlos con el equipo de TI","Reemplazarlos con plantillas genéricas de Excel"],ans:1,fb:"Correcto. Los prompts de uso recurrente pueden estandarizarse, compararse y mejorarse sistemáticamente, funcionando como activos de gobernanza analítica dentro de la función financiera."}
+];
+
+let quizIdx=0,quizScore=0,quizAnswered=new Set(),answerMap={};
+
+function renderQuiz(){
+  const container=document.getElementById('quiz-container');
+  if(quizIdx>=QUIZ.length){container.innerHTML='<div class="section-block" style="text-align:center;padding:2rem;"><div style="font-family:DM Serif Display,serif;font-size:1.5rem;margin-bottom:.5rem;">Evaluación completada</div><div style="color:var(--t2);font-size:.9rem;">Puntaje final: '+quizScore+' / '+QUIZ.length+'</div></div>';return;}
+  const q=QUIZ[quizIdx];
+  const letters=['A','B','C','D'];
+  const answered=quizAnswered.has(quizIdx);
+  const selected=answerMap[quizIdx];
+  container.innerHTML=`
+    <div class="q-card">
+      <div class="q-top"><span class="q-num">Pregunta ${quizIdx+1} de ${QUIZ.length}</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="q-options">
+        ${q.opts.map((o,i)=>{
+          let cls='q-opt';
+          if(answered){
+            if(i===q.ans)cls+=' correct';
+            else if(i===selected&&i!==q.ans)cls+=' wrong';
+          }else if(i===selected)cls+=' selected';
+          return `<div class="${cls}" onclick="${answered?'':'selectOpt('+i+')'}" style="${answered?'cursor:default;':''}">
+            <div class="q-letter">${letters[i]}</div><span>${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      ${answered?`<div class="q-feedback ${selected===q.ans?'ok':'fail'}">${selected===q.ans?'✓ ':' ✗ '}${q.fb}</div>`:''}
+    </div>`;
+  document.getElementById('quiz-score').innerHTML=`Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas`;
+}
+
+function selectOpt(i){
+  if(quizAnswered.has(quizIdx))return;
+  answerMap[quizIdx]=i;
+  quizAnswered.add(quizIdx);
+  if(i===QUIZ[quizIdx].ans)quizScore++;
+  renderQuiz();
+}
+function nextQ(){if(quizIdx<QUIZ.length){quizIdx++;renderQuiz();}}
+function prevQ(){if(quizIdx>0){quizIdx--;renderQuiz();}}
+function resetQuiz(){quizIdx=0;quizScore=0;quizAnswered=new Set();answerMap={};renderQuiz();}
+
+buildSidebar();
+goTo(0);
+renderQuiz();
+</script>
+</body>
+</html>
