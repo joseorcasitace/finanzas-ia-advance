@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Módulo 5 · IA Agéntica Aplicada a Finanzas Corporativas · ADVANCE UR</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ur:#C8102E;--url:#F5E6E9;--urm:#E8899A;
+  --bg:#F2F0EE;--white:#FFFFFF;
+  --b1:#E0DDDA;--b2:#C8C4C0;
+  --t1:#2C2C2C;--t2:#666560;--t3:#9E9B97;
+  --gold:#B8860B;--gold-light:#FDF8EC;
+  --green:#1A6B3C;--green-light:#EAF5EE;
+  --blue:#1A3A6B;--blue-light:#EAF0F8;
+  --purple:#4A1D8F;--purple-light:#F0EBF8;
+  --teal:#0E6B6B;--teal-light:#E6F5F5;
+  --coral:#8B3A2E;--coral-light:#F9EEEC;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;}
+
+/* HEADER */
+header{flex-shrink:0;background:var(--white);border-bottom:2px solid var(--ur);padding:.75rem 2rem;display:flex;align-items:center;gap:16px;z-index:100;}
+.logo-mark{width:36px;height:36px;background:var(--ur);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:18px;height:18px;}
+.header-text{flex:1;}
+.header-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--t1);line-height:1.2;}
+.header-sub{font-size:11px;color:var(--t3);letter-spacing:.04em;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.progress-bar-wrap{width:180px;}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px;}
+.progress-track{height:4px;background:var(--b1);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--ur);border-radius:2px;transition:width .5s ease;}
+.badge-session{font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;background:var(--url);color:var(--ur);border:1px solid var(--urm);white-space:nowrap;}
+
+/* LAYOUT */
+.main{flex:1;display:flex;overflow:hidden;}
+.sidebar{width:280px;flex-shrink:0;background:var(--white);border-right:1px solid var(--b1);overflow-y:auto;display:flex;flex-direction:column;}
+.sidebar-header{padding:1rem 1.25rem .75rem;border-bottom:1px solid var(--b1);position:sticky;top:0;background:var(--white);z-index:10;}
+.sidebar-mod-num{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--ur);text-transform:uppercase;margin-bottom:2px;}
+.sidebar-title{font-size:11px;font-weight:500;letter-spacing:.05em;color:var(--t3);text-transform:uppercase;}
+.sidebar-mod{font-size:13px;font-weight:500;color:var(--t1);margin-top:3px;}
+.session-list{padding:.5rem 0;}
+.session-item{display:flex;align-items:center;gap:10px;padding:.6rem 1.25rem;cursor:pointer;transition:background .12s;border-left:3px solid transparent;}
+.session-item:hover{background:var(--bg);}
+.session-item.active{background:var(--url);border-left-color:var(--ur);}
+.si-num{font-family:'DM Serif Display',serif;font-size:15px;color:var(--t3);width:24px;flex-shrink:0;text-align:center;}
+.session-item.active .si-num{color:var(--ur);}
+.si-text{flex:1;min-width:0;}
+.si-label{font-size:10px;color:var(--t3);}
+.si-title{font-size:12px;font-weight:500;color:var(--t1);line-height:1.3;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.session-item.active .si-title{color:var(--ur);}
+.si-check{width:16px;height:16px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.si-check.done{background:var(--green);color:#fff;}
+.si-check.current{background:var(--ur);color:#fff;}
+.si-check.pending{background:var(--b1);}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:2rem 2.5rem 3rem;display:flex;flex-direction:column;gap:2rem;}
+.session-panel{display:none;}
+.session-panel.active{display:flex;flex-direction:column;gap:1.5rem;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* HERO */
+.session-hero{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.hero-top{padding:1.75rem 2rem 1.25rem;}
+.hero-top.teal{background:linear-gradient(135deg,#050f0f 0%,var(--teal) 100%);}
+.hero-top.purple{background:linear-gradient(135deg,#0a051a 0%,var(--purple) 100%);}
+.hero-top.gold{background:linear-gradient(135deg,#1a1000 0%,#8B6914 100%);}
+.hero-top.green{background:linear-gradient(135deg,#051209 0%,var(--green) 100%);}
+.hero-top.blue{background:linear-gradient(135deg,#040d1a 0%,var(--blue) 100%);}
+.hero-top.red{background:linear-gradient(135deg,#1a0408 0%,var(--ur) 100%);}
+.hero-top.dark{background:linear-gradient(135deg,#0a0a1a 0%,#1A3A6B 100%);}
+.hero-top.coral{background:linear-gradient(135deg,#1a0805 0%,var(--coral) 100%);}
+.hero-eyebrow{font-size:10px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:8px;}
+.hero-title{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;line-height:1.3;}
+.hero-body{padding:1.5rem 2rem;display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;}
+.hero-desc{flex:1;min-width:200px;font-size:14px;color:var(--t2);line-height:1.75;}
+.hero-meta{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);padding:5px 12px;border-radius:20px;border:1px solid var(--b1);background:var(--bg);white-space:nowrap;}
+.meta-pill svg{width:12px;height:12px;color:var(--ur);}
+
+/* SECTION LABEL */
+.section-label{font-size:11px;font-weight:500;letter-spacing:.07em;color:var(--ur);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--url);}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+.cards-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.cards-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.concept-card{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1.25rem;transition:all .2s;position:relative;overflow:hidden;}
+.concept-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--ur);}
+.concept-card.gold::before{background:var(--gold);}
+.concept-card.green::before{background:var(--green);}
+.concept-card.blue::before{background:var(--blue);}
+.concept-card.purple::before{background:var(--purple);}
+.concept-card.teal::before{background:var(--teal);}
+.concept-card.coral::before{background:var(--coral);}
+.concept-card:hover{border-color:var(--b2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px;}
+.card-icon.red{background:var(--url);}
+.card-icon.gold{background:var(--gold-light);}
+.card-icon.green{background:var(--green-light);}
+.card-icon.blue{background:var(--blue-light);}
+.card-icon.purple{background:var(--purple-light);}
+.card-icon.teal{background:var(--teal-light);}
+.card-icon.coral{background:var(--coral-light);}
+.card-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:5px;}
+.card-text{font-size:12px;color:var(--t2);line-height:1.65;}
+.card-tag{display:inline-flex;margin-top:10px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;}
+.tag-red{background:var(--url);color:var(--ur);}
+.tag-gold{background:var(--gold-light);color:var(--gold);}
+.tag-green{background:var(--green-light);color:var(--green);}
+.tag-blue{background:var(--blue-light);color:var(--blue);}
+.tag-purple{background:var(--purple-light);color:var(--purple);}
+.tag-teal{background:var(--teal-light);color:var(--teal);}
+.tag-coral{background:var(--coral-light);color:var(--coral);}
+
+/* COMPARE TABLE */
+.compare-table{background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.compare-table table{width:100%;border-collapse:collapse;}
+.compare-table th{background:var(--url);font-size:11px;font-weight:500;color:var(--ur);padding:.65rem 1rem;text-align:left;border-bottom:1px solid var(--b1);}
+.compare-table th:first-child{border-right:1px solid var(--b1);width:200px;}
+.compare-table td{font-size:12px;color:var(--t2);padding:.65rem 1rem;border-bottom:1px solid var(--bg);vertical-align:top;line-height:1.5;}
+.compare-table tr:last-child td{border-bottom:none;}
+.compare-table td:first-child{font-weight:500;color:var(--t1);border-right:1px solid var(--b1);background:var(--bg);}
+.td-yes{color:var(--green)!important;}
+.td-mid{color:var(--gold)!important;}
+.td-no{color:var(--ur)!important;}
+
+/* ANATOMY DIAGRAM */
+.anatomy{background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.anatomy-header{background:linear-gradient(135deg,#050f0f,var(--teal));padding:1rem 1.25rem;}
+.anatomy-title{font-family:'DM Serif Display',serif;font-size:15px;color:#fff;}
+.anatomy-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;}
+.anatomy-body{padding:1.25rem;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.anatomy-item{padding:1rem;border-radius:8px;border:1px solid var(--b1);background:var(--bg);text-align:center;}
+.anatomy-item.active{background:var(--teal-light);border-color:rgba(14,107,107,.25);}
+.anatomy-num{font-family:'DM Serif Display',serif;font-size:24px;color:var(--teal);opacity:.3;line-height:1;}
+.anatomy-icon{font-size:22px;margin:4px 0 6px;}
+.anatomy-name{font-size:12px;font-weight:500;color:var(--t1);margin-bottom:3px;}
+.anatomy-desc{font-size:10px;color:var(--t3);line-height:1.5;}
+
+/* STACK FLOW */
+.stack-flow{display:flex;align-items:center;gap:0;background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.sf-step{flex:1;padding:1.1rem .9rem;border-right:1px solid var(--b1);text-align:center;transition:background .15s;position:relative;}
+.sf-step:last-child{border-right:none;}
+.sf-step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--b2);z-index:2;pointer-events:none;}
+.sf-step:last-child::after{display:none;}
+.sf-step:hover{background:var(--bg);}
+.sf-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ur);opacity:.25;line-height:1;}
+.sf-model{font-size:11px;font-weight:500;color:var(--teal);margin:3px 0;padding:2px 8px;background:var(--teal-light);border-radius:20px;display:inline-block;}
+.sf-task{font-size:11px;color:var(--t1);font-weight:500;margin-bottom:2px;}
+.sf-desc{font-size:10px;color:var(--t3);line-height:1.5;}
+
+/* AGENT CARD SPECIAL */
+.agent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.agent-card{background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;transition:all .2s;}
+.agent-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.07);}
+.ac-top{padding:.85rem 1rem;border-bottom:1px solid var(--b1);}
+.ac-icon{font-size:20px;margin-bottom:6px;}
+.ac-name{font-size:12px;font-weight:500;color:var(--t1);}
+.ac-role{font-size:10px;color:var(--t3);margin-top:1px;}
+.ac-body{padding:.85rem 1rem;}
+.ac-desc{font-size:11px;color:var(--t2);line-height:1.6;margin-bottom:8px;}
+.ac-tag{font-size:9px;font-weight:500;padding:2px 8px;border-radius:20px;display:inline-flex;}
+
+/* DCF FLOW */
+.dcf-flow{display:flex;flex-direction:column;gap:0;background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.dcf-step{display:flex;align-items:center;gap:0;border-bottom:1px solid var(--bg);}
+.dcf-step:last-child{border-bottom:none;}
+.dcf-left{width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:.9rem .5rem;font-family:'DM Serif Display',serif;font-size:18px;color:var(--t3);background:var(--bg);border-right:1px solid var(--b1);}
+.dcf-center{flex:1;padding:.8rem 1rem;}
+.dcf-name{font-size:12px;font-weight:500;color:var(--t1);margin-bottom:3px;}
+.dcf-desc{font-size:11px;color:var(--t2);line-height:1.5;}
+.dcf-right{width:110px;flex-shrink:0;padding:.8rem 1rem;border-left:1px solid var(--b1);text-align:center;}
+.dcf-right.auto{background:var(--teal-light);}
+.dcf-right.human{background:#FFF8E6;}
+.dcf-right.critical{background:var(--url);}
+.dcf-right-label{font-size:10px;font-weight:500;color:var(--t3);}
+.dcf-right.auto .dcf-right-label{color:var(--teal);}
+.dcf-right.human .dcf-right-label{color:var(--gold);}
+.dcf-right.critical .dcf-right-label{color:var(--ur);}
+
+/* CALLOUTS */
+.callout{border-radius:10px;padding:1.1rem 1.25rem;font-size:13px;line-height:1.65;display:flex;gap:12px;align-items:flex-start;}
+.callout.red{background:var(--url);border:1px solid var(--urm);color:#7a0010;}
+.callout.gold{background:var(--gold-light);border:1px solid #e6d080;color:#7a5800;}
+.callout.green{background:var(--green-light);border:1px solid #b3dfc2;color:#0a4a25;}
+.callout.blue{background:var(--blue-light);border:1px solid #b3c9e6;color:#0d2a55;}
+.callout.purple{background:var(--purple-light);border:1px solid #c5a8e6;color:#2a0a6a;}
+.callout.teal{background:var(--teal-light);border:1px solid #a8d8d8;color:#0a4a4a;}
+.callout-icon{font-size:18px;flex-shrink:0;line-height:1.3;}
+.callout strong{font-weight:500;}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.kpi-card{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1rem;text-align:center;border-top:3px solid var(--teal);}
+.kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--teal);line-height:1;}
+.kpi-label{font-size:11px;color:var(--t2);margin-top:5px;}
+.kpi-sub{font-size:10px;color:var(--t3);margin-top:2px;}
+
+/* NAV BUTTONS */
+.session-nav{display:flex;justify-content:space-between;align-items:center;padding-top:1.5rem;border-top:1px solid var(--b1);margin-top:.5rem;}
+.nav-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;border:1px solid var(--b2);color:var(--t2);background:var(--white);}
+.nav-btn:hover{background:var(--bg);color:var(--t1);}
+.nav-btn.primary{background:var(--ur);color:#fff;border-color:var(--ur);}
+.nav-btn.primary:hover{opacity:.88;}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.nav-btn svg{width:14px;height:14px;}
+
+/* QUIZ */
+.quiz-card{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.quiz-header{background:linear-gradient(135deg,#050f0f,var(--teal));padding:1.25rem 1.5rem;}
+.quiz-header-title{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:3px;}
+.quiz-header-sub{font-size:11px;color:rgba(255,255,255,.6);}
+.quiz-body{padding:1.5rem;}
+.quiz-q{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:14px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:.75rem 1rem;border-radius:8px;border:1px solid var(--b1);cursor:pointer;transition:all .15s;font-size:13px;color:var(--t2);background:var(--bg);}
+.quiz-opt:hover{border-color:var(--urm);background:var(--url);color:var(--t1);}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.quiz-opt.wrong{border-color:var(--ur);background:var(--url);color:var(--ur);}
+.quiz-opt.disabled{cursor:default;pointer-events:none;}
+.opt-letter{width:22px;height:22px;border-radius:50%;background:var(--b1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+.quiz-opt.correct .opt-letter{background:var(--green);color:#fff;}
+.quiz-opt.wrong .opt-letter{background:var(--ur);color:#fff;}
+.quiz-feedback{margin-top:14px;padding:.9rem 1rem;border-radius:8px;font-size:13px;line-height:1.55;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.ok{background:var(--green-light);color:var(--green);border:1px solid #b3dfc2;}
+.quiz-feedback.fail{background:var(--url);color:var(--ur);border:1px solid var(--urm);}
+.quiz-footer{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--b1);}
+.quiz-score{font-size:12px;color:var(--t3);}
+
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">
+    <svg viewBox="0 0 20 20" fill="none"><polyline points="3,14 7,8 10,11 13,6 17,10" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="10" r="1.5" fill="#ffccd4"/></svg>
+  </div>
+  <div class="header-text">
+    <div class="header-title">Módulo 5 · IA Agéntica Aplicada a Finanzas Corporativas</div>
+    <div class="header-sub">ADVANCE · Universidad del Rosario · Finanzas Corporativas</div>
+  </div>
+  <div class="header-right">
+    <div class="progress-bar-wrap">
+      <div class="progress-label"><span>Progreso</span><span id="pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="badge-session" id="badgeSession">Sesión 5.1</div>
+  </div>
+</header>
+
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-mod-num">Módulo 5</div>
+      <div class="sidebar-title">Contenidos</div>
+      <div class="sidebar-mod">IA Agéntica en Finanzas Corporativas</div>
+    </div>
+    <div class="session-list" id="sessionList"></div>
+  </div>
+
+  <div class="content" id="contentArea">
+
+    <!-- S5.1 -->
+    <div class="session-panel active" id="s1">
+      <div class="session-hero">
+        <div class="hero-top teal">
+          <div class="hero-eyebrow">Sesión 5.1</div>
+          <div class="hero-title">IA Agéntica en Finanzas — Estado del arte 2025–2026 y casos de uso reales</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">En 2025–2026, la IA agéntica dejó de ser un concepto experimental y comenzó a materializarse en plataformas empresariales. El foco se desplazó del modelo a la <strong>orquestación</strong>: herramientas, handoffs, observabilidad y gobernanza. El patrón dominante no es sustitución, sino <strong>ampliación de capacidad analítica</strong>.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> 2025–2026</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">6 rasgos dominantes del estado del arte</div>
+      <div class="cards-grid">
+        <div class="concept-card teal">
+          <div class="card-icon teal">⚡</div>
+          <div class="card-title">De conversación a ejecución</div>
+          <div class="card-text">Los sistemas más avanzados coordinan flujos, activan herramientas, consultan datos externos y ejecutan acciones dentro de procesos de trabajo. El modelo pasa de intérprete a coordinador operativo.</div>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">🔌</div>
+          <div class="card-title">Integración nativa con herramientas</div>
+          <div class="card-text">La IA agéntica opera conectada con ERP, hojas de cálculo, APIs y bases documentales. La utilidad del agente depende tanto de su razonamiento como de su conexión con datos reales.</div>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🎯</div>
+          <div class="card-title">Especialización por rol</div>
+          <div class="card-text">Los agentes más útiles se diseñan por dominios: análisis financiero, conciliación, forecast, cierre, auditoría metodológica o valoración — consistente con la separación de funciones financiera.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🔍</div>
+          <div class="card-title">Observabilidad y trazabilidad</div>
+          <div class="card-text">La confianza no depende solo del resultado final, sino de la capacidad para entender cómo se produjo. Trazabilidad de herramientas, handoffs y decisiones se volvió componente central.</div>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">🛡️</div>
+          <div class="card-title">Gobernanza como condición de despliegue</div>
+          <div class="card-text">La pregunta decisiva pasó a ser cómo gobernar agentes: límites de autonomía, herramientas autorizadas y puntos de supervisión humana obligatoria en el flujo financiero.</div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">🤝</div>
+          <div class="card-title">Flujos híbridos IA–humano</div>
+          <div class="card-text">El patrón dominante no es sustitución sino hibridación: la IA prepara, monitorea y acelera, mientras el profesional valida, prioriza, contextualiza y decide.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Plataformas empresariales líderes — adopción 2025–2026</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Plataforma</th><th>Movimiento agéntico clave</th><th>Relevancia para finanzas</th></tr></thead>
+          <tbody>
+            <tr><td>OpenAI</td><td>Agents SDK con tracing, Responses API y herramientas (marzo 2025 → abril 2026)</td><td>Normaliza observabilidad, modularidad y handoffs como diseño estándar</td></tr>
+            <tr><td>Microsoft</td><td>Agentes de finanzas en Microsoft 365 — Excel, Outlook, Teams + Copilot financiero</td><td>IA integrada en el espacio natural del analista, no como herramienta separada</td></tr>
+            <tr><td>Workday</td><td>Agentes Illuminate para procesos complejos de contabilidad y finanzas (2025–2026)</td><td>Agentes para trabajo de cierre y orquestación sobre datos de sistema</td></tr>
+            <tr><td>Oracle</td><td>AI Agent Studio + Fusion Agentic Applications (finanzas + supply chain) — octubre 2025, abril 2026</td><td>IA agéntica en el núcleo operativo del ERP financiero</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout teal">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Conclusión estratégica:</strong> El mercado está transitando de "fascinación por el modelo" a "madurez arquitectónica". La IA agéntica entra en finanzas como <strong>capa de coordinación embebida</strong> en el stack empresarial, no como producto aislado. Eso alínea la evolución tecnológica con las exigencias históricas de control, separación de funciones y explicabilidad del proceso financiero.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" disabled><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(2)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S5.2 -->
+    <div class="session-panel" id="s2">
+      <div class="session-hero">
+        <div class="hero-top teal">
+          <div class="hero-eyebrow">Sesión 5.2</div>
+          <div class="hero-title">Anatomía de un agente financiero — Percepción, Memoria, Razonamiento y Acción</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Para gobernar un agente financiero, primero hay que entender cómo funciona. La anatomía de un agente se articula en cuatro dimensiones que forman una cadena operativa: el agente <strong>percibe datos, conserva memoria, razona</strong> sobre el problema y <strong>actúa</strong> dentro del flujo financiero.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Arquitectura cognitiva</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Las 4 dimensiones de la anatomía del agente financiero</div>
+      <div class="anatomy">
+        <div class="anatomy-header">
+          <div class="anatomy-title">Cadena operativa del agente financiero</div>
+          <div class="anatomy-sub">Las cuatro dimensiones operan integradas — no en secuencia aislada</div>
+        </div>
+        <div class="anatomy-body">
+          <div class="anatomy-item active">
+            <div class="anatomy-num">1</div>
+            <div class="anatomy-icon">👁️</div>
+            <div class="anatomy-name">Percepción</div>
+            <div class="anatomy-desc">Lee datos estructurados (ERP, Excel), documentos no estructurados (informes, contratos) y señales externas (tasas, mercado)</div>
+          </div>
+          <div class="anatomy-item active">
+            <div class="anatomy-num">2</div>
+            <div class="anatomy-icon">🧠</div>
+            <div class="anatomy-name">Memoria</div>
+            <div class="anatomy-desc">Conserva supuestos aprobados, históricos, umbrales de alerta y decisiones previas. Base de la continuidad analítica</div>
+          </div>
+          <div class="anatomy-item active">
+            <div class="anatomy-num">3</div>
+            <div class="anatomy-icon">⚙️</div>
+            <div class="anatomy-name">Razonamiento</div>
+            <div class="anatomy-desc">Identifica relaciones, evalúa consistencia entre drivers, descompone problemas y estructura análisis dentro de límites definidos</div>
+          </div>
+          <div class="anatomy-item active">
+            <div class="anatomy-num">4</div>
+            <div class="anatomy-icon">⚡</div>
+            <div class="anatomy-name">Acción</div>
+            <div class="anatomy-desc">Genera reportes, activa herramientas, escala a otro agente, emite alertas o prepara output para revisión humana</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Implicaciones de diseño por dimensión</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Dimensión</th><th>Qué determina</th><th>Riesgo si falla</th><th>Control requerido</th></tr></thead>
+          <tbody>
+            <tr><td>Percepción</td><td>Calidad de la base epistémica del análisis</td><td class="td-no">Diagnóstico basado en datos incorrectos o incompletos</td><td>Validación de fuentes, estructura de datos, pertinencia</td></tr>
+            <tr><td>Memoria</td><td>Continuidad y coherencia del proceso analítico</td><td class="td-no">Contaminación contextual, persistencia de errores</td><td>Criterios de qué guardar, durante cuánto tiempo y con qué seguridad</td></tr>
+            <tr><td>Razonamiento</td><td>Calidad interpretativa y secuencia metodológica</td><td class="td-mid">Inferencias débiles presentadas como conclusiones firmes</td><td>Instrucciones metodológicas y límites de inferencia</td></tr>
+            <tr><td>Acción</td><td>Impacto real del agente en el proceso financiero</td><td class="td-no">Ejecución fuera de contexto o sin validación adecuada</td><td>Permisos, restricciones y supervisión en nodos críticos</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout teal">
+        <div class="callout-icon">🔑</div>
+        <div><strong>Principio de diseño:</strong> Un agente financiero útil no es aquel que sobresale en una dimensión aislada, sino el que <strong>coordina las cuatro con consistencia</strong>. Entender esta anatomía no es un ejercicio teórico — es la condición práctica para construir sistemas trazables y confiables dentro del ecosistema financiero ampliado por IA.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(1)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(3)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S5.3 -->
+    <div class="session-panel" id="s3">
+      <div class="session-hero">
+        <div class="hero-top purple">
+          <div class="hero-eyebrow">Sesión 5.3</div>
+          <div class="hero-title">Arquitecturas para finanzas — Agente único vs. Sistema Multi-Agente (Orquestador + Especialistas)</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La arquitectura importa tanto como el modelo. Un problema relativamente sencillo puede resolverse con un <strong>agente único</strong>. Procesos como cierre, FP&A o valoración se benefician de <strong>estructuras multi-agente</strong> bien diseñadas. La decisión correcta no surge de una preferencia tecnológica, sino del análisis del proceso financiero real.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Decisión arquitectural</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Agente único vs. Sistema multi-agente — comparativa metodológica</div>
+      <div class="cards-grid-2">
+        <div class="concept-card blue">
+          <div class="card-icon blue">🤖</div>
+          <div class="card-title">Agente único</div>
+          <div class="card-text"><strong>Cuándo usar:</strong> procesos acotados y lineales, análisis preliminar de EF, forecasting simple, borradores narrativos.<br><br><strong>✅ Ventajas:</strong> menor complejidad, implementación rápida, gobernanza inicial más simple.<br><strong>⚠️ Límite:</strong> riesgo de sobrecarga funcional en procesos complejos.</div>
+          <span class="card-tag tag-blue">Simplicidad y velocidad</span>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🏗️</div>
+          <div class="card-title">Sistema multi-agente</div>
+          <div class="card-text"><strong>Cuándo usar:</strong> cierre financiero, FP&A integral, valoración completa, sistemas con múltiples etapas y especialización diferenciada.<br><br><strong>✅ Ventajas:</strong> especialización funcional, trazabilidad por etapas, modularidad para escalar.<br><strong>⚠️ Límite:</strong> exige handoffs bien diseñados y orquestador sólido.</div>
+          <span class="card-tag tag-purple">Especialización y control</span>
+        </div>
+      </div>
+
+      <div class="section-label">El orquestador — función crítica del sistema multi-agente</div>
+      <div class="cards-grid">
+        <div class="concept-card teal">
+          <div class="card-icon teal">🎯</div>
+          <div class="card-title">Interpretación del objetivo</div>
+          <div class="card-text">Comprende si el problema es análisis de desempeño, forecasting, valoración o reporting, y distribuye trabajo en consecuencia.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">🔀</div>
+          <div class="card-title">Descomposición de tareas</div>
+          <div class="card-text">Divide el problema en subtareas lógicas y las asigna al agente especializado más adecuado para cada etapa del proceso.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">🔗</div>
+          <div class="card-title">Administración de handoffs</div>
+          <div class="card-text">Asegura que la transferencia entre agentes preserve continuidad: qué se transfiere, en qué estado y qué debe hacer el agente receptor.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">✅</div>
+          <div class="card-title">Coherencia general</div>
+          <div class="card-text">Verifica que outputs parciales sean consistentes entre sí antes de consolidar el resultado final para revisión humana o entrega ejecutiva.</div>
+        </div>
+      </div>
+
+      <div class="section-label">5 criterios para decidir la arquitectura en finanzas corporativas</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Criterio</th><th>Favorece agente único</th><th>Favorece multi-agente</th></tr></thead>
+          <tbody>
+            <tr><td>Complejidad del proceso</td><td class="td-yes">Proceso acotado y lineal</td><td class="td-mid">Múltiples etapas especializadas</td></tr>
+            <tr><td>Necesidad de especialización</td><td class="td-yes">Análisis y comunicación similares</td><td class="td-mid">Análisis, validación y comunicación con lógicas muy distintas</td></tr>
+            <tr><td>Requisitos de control</td><td class="td-yes">Proceso de baja sensibilidad</td><td class="td-mid">Alta criticidad, separación de funciones requerida</td></tr>
+            <tr><td>Capacidad de gobernanza</td><td class="td-yes">Organización en etapa temprana</td><td class="td-mid">Organización con disciplina de arquitectura establecida</td></tr>
+            <tr><td>Escalabilidad futura</td><td class="td-yes">Caso de uso acotado</td><td class="td-mid">Múltiples procesos financieros en el mediano plazo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout purple">
+        <div class="callout-icon">⚖️</div>
+        <div><strong>Regla de oro:</strong> La arquitectura adecuada no es la más sofisticada — es la que permite que la IA trabaje con <strong>mayor claridad funcional, trazabilidad y alineación con las exigencias reales de la función financiera</strong>. Un agente técnicamente interesante sin arquitectura adecuada tiene poco valor corporativo.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(2)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(4)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S5.4 -->
+    <div class="session-panel" id="s4">
+      <div class="session-hero">
+        <div class="hero-top blue">
+          <div class="hero-eyebrow">Sesión 5.4</div>
+          <div class="hero-title">Implementación con OpenAI Agents SDK — Roles, Herramientas, Handoffs y Trazabilidad en finanzas</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La implementación no comienza en el código — comienza en el diseño del proceso financiero. El Agents SDK ofrece una lógica de implementación donde <strong>roles, herramientas, handoffs y trazabilidad</strong> se articulan como componentes de un sistema coherente, no como piezas técnicas aisladas.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Técnico · Aplicado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Los 4 ejes de implementación del Agents SDK en finanzas</div>
+      <div class="cards-grid-2">
+        <div class="concept-card blue">
+          <div class="card-icon blue">🎭</div>
+          <div class="card-title">Roles — identidad funcional</div>
+          <div class="card-text">Cada agente necesita un rol preciso: agente de análisis financiero, planeación, valoración, control metodológico o reporting ejecutivo. El rol orienta instrucciones, límites y herramientas. Un agente sin rol claro genera sobrecarga y pérdida de foco metodológico.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">🔨</div>
+          <div class="card-title">Herramientas — extensión operativa</div>
+          <div class="card-text">Funciones que el agente puede invocar: cálculo de indicadores, proyección de escenarios, consulta de APIs, acceso a repositorios. El diseño de herramientas debe definir cuándo activarlas y cómo interpretar sus outputs dentro del proceso financiero.</div>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🔁</div>
+          <div class="card-title">Handoffs — preservar coherencia en la transferencia</div>
+          <div class="card-text">La transferencia entre agentes debe dejar claro qué problema se traslada, qué información lo acompaña y qué formato debe tener el output receptor. Un handoff mal diseñado genera pérdida de contexto y fragmentación analítica.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">📋</div>
+          <div class="card-title">Trazabilidad — base de confianza</div>
+          <div class="card-text">Registra qué agente intervino, qué herramienta activó, qué handoff ocurrió y qué output intermedio produjo. En finanzas, es el equivalente funcional de un papel de trabajo. Sin trazabilidad, el sistema no es auditable.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Arquitectura de referencia — flujo multi-agente para valoración + planeación</div>
+      <div class="stack-flow">
+        <div class="sf-step"><div class="sf-num">1</div><span class="sf-model">Ingestión</span><div class="sf-task">Lee ERP y archivos</div><div class="sf-desc">Normaliza estados financieros para análisis</div></div>
+        <div class="sf-step"><div class="sf-num">2</div><span class="sf-model">Análisis</span><div class="sf-task">Diagnóstico histórico</div><div class="sf-desc">Ratios, variaciones y señales de desempeño</div></div>
+        <div class="sf-step"><div class="sf-num">3</div><span class="sf-model">Planeación</span><div class="sf-task">Supuestos + proyección</div><div class="sf-desc">ER proyectado con escenarios validados</div></div>
+        <div class="sf-step"><div class="sf-num">4</div><span class="sf-model">Valoración</span><div class="sf-task">DCF + sensibilidad</div><div class="sf-desc">Flujos descontados y rangos de valor</div></div>
+        <div class="sf-step"><div class="sf-num">5</div><span class="sf-model">Control</span><div class="sf-task">Auditoría metodológica</div><div class="sf-desc">Coherencia entre supuestos y outputs</div></div>
+        <div class="sf-step"><div class="sf-num">6</div><span class="sf-model">Reporte</span><div class="sf-task">Narrativa ejecutiva</div><div class="sf-desc">Síntesis para junta o comité de inversión</div></div>
+      </div>
+
+      <div class="callout blue">
+        <div class="callout-icon">💡</div>
+        <div><strong>Principio de implementación:</strong> La calidad del sistema no depende solo del modelo base. Depende de cómo se combinan <strong>estructura, herramientas, coordinación y control</strong>. Una implementación madura no comienza en el código — comienza en la lógica funcional del proceso financiero que se busca optimizar.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(3)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(5)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S5.5 -->
+    <div class="session-panel" id="s5">
+      <div class="session-hero">
+        <div class="hero-top gold">
+          <div class="hero-eyebrow">Sesión 5.5</div>
+          <div class="hero-title">Agente de Análisis Financiero — Diagnóstico automatizado de estados financieros</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El agente de análisis financiero transforma estados financieros en un <strong>diagnóstico preliminar estructurado, comparable y escalable</strong>. Su aporte real no está en calcular ratios — cualquier hoja de cálculo lo hace. Está en conectar cálculo con contexto analítico: distinguir señales relevantes, detectar patrones y producir una primera capa de interpretación trazable.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Diagnóstico automatizado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Componentes del diagnóstico automatizado de EF</div>
+      <div class="cards-grid">
+        <div class="concept-card gold">
+          <div class="card-icon gold">📐</div>
+          <div class="card-title">Lectura estructural</div>
+          <div class="card-text">Identifica composición del ER y balance. Reconoce qué rubros explican la estructura financiera y cómo se relacionan entre sí dentro del negocio.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">📊</div>
+          <div class="card-title">Análisis horizontal</div>
+          <div class="card-text">Compara períodos, detecta variaciones absolutas y relativas. Identifica crecimiento, deterioro o volatilidad en las principales cuentas.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">📏</div>
+          <div class="card-title">Análisis vertical</div>
+          <div class="card-text">Evalúa participación relativa de cada rubro: costos sobre ventas, gastos sobre ingresos, activos corrientes sobre total, deuda sobre patrimonio.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🚦</div>
+          <div class="card-title">Indicadores e insights</div>
+          <div class="card-text">Calcula ratios de liquidez, rentabilidad, eficiencia y endeudamiento. Prioriza señales: compresión de margen, deterioro de capital de trabajo, presión de apalancamiento.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Flujo operativo del agente de análisis — 5 etapas</div>
+      <div class="stack-flow">
+        <div class="sf-step"><div class="sf-num">1</div><span class="sf-model">Ingestión</span><div class="sf-task">Valida estructura</div><div class="sf-desc">Verifica períodos comparables y calidad del dato</div></div>
+        <div class="sf-step"><div class="sf-num">2</div><span class="sf-model">Cálculo</span><div class="sf-task">Análisis H+V+Ratios</div><div class="sf-desc">Horizontal, vertical e indicadores clave</div></div>
+        <div class="sf-step"><div class="sf-num">3</div><span class="sf-model">Señales</span><div class="sf-task">Detecta alertas</div><div class="sf-desc">Variaciones significativas y relaciones inusuales</div></div>
+        <div class="sf-step"><div class="sf-num">4</div><span class="sf-model">Síntesis</span><div class="sf-task">Agrupa hallazgos</div><div class="sf-desc">Por dimensión: rentabilidad, liquidez, deuda</div></div>
+        <div class="sf-step"><div class="sf-num">5</div><span class="sf-model">Salida</span><div class="sf-task">Reporte + escalamiento</div><div class="sf-desc">Diagnóstico para revisión humana o siguiente agente</div></div>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-icon">⚠️</div>
+        <div><strong>Límite crítico:</strong> Un reporte bien estructurado puede generar la impresión de haber cubierto toda la realidad financiera. El diagnóstico automatizado es una <strong>capa de apoyo analítico — no sustituto de la validación profesional</strong>. El analista aporta contexto estratégico, interpretación de eventos y criterio sobre anomalías estructurales vs. transitorias.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(4)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(6)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S5.6 -->
+    <div class="session-panel" id="s6">
+      <div class="session-hero">
+        <div class="hero-top green">
+          <div class="hero-eyebrow">Sesión 5.6</div>
+          <div class="hero-title">Agente de Planeación — Generación y validación de supuestos y proyección del Estado de Resultados</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El agente de planeación conecta historia, supuestos y proyección. Su valor no está en generar cifras futuras — está en hacer <strong>más explícita la lógica que conecta esas cifras con las hipótesis subyacentes</strong>. La calidad del modelo proyectado nunca será superior a la calidad de los supuestos que lo sustentan.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> FP&A · Supuestos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Ciclo del agente de planeación financiera</div>
+      <div class="stack-flow">
+        <div class="sf-step"><div class="sf-num">1</div><span class="sf-model">Historia</span><div class="sf-task">Lee tendencias</div><div class="sf-desc">Patrones históricos de crecimiento, margen y estructura</div></div>
+        <div class="sf-step"><div class="sf-num">2</div><span class="sf-model">Drivers</span><div class="sf-task">Identifica variables</div><div class="sf-desc">Precio, volumen, mezcla, inflación, eficiencia</div></div>
+        <div class="sf-step"><div class="sf-num">3</div><span class="sf-model">Supuestos</span><div class="sf-task">Formula hipótesis</div><div class="sf-desc">Ancla en evidencia histórica y contexto estratégico</div></div>
+        <div class="sf-step"><div class="sf-num">4</div><span class="sf-model">Validación</span><div class="sf-task">Prueba coherencia</div><div class="sf-desc">Consistencia histórica, interna y económica del supuesto</div></div>
+        <div class="sf-step"><div class="sf-num">5</div><span class="sf-model">ER Proforma</span><div class="sf-task">Proyecta el ER</div><div class="sf-desc">Ingresos → márgenes → EBITDA → utilidad neta</div></div>
+        <div class="sf-step"><div class="sf-num">6</div><span class="sf-model">Escenarios</span><div class="sf-task">Base / Opt / Estrés</div><div class="sf-desc">Sensibilidad sobre supuestos críticos</div></div>
+      </div>
+
+      <div class="section-label">Validación de supuestos — 4 niveles de consistencia</div>
+      <div class="cards-grid-2">
+        <div class="concept-card green">
+          <div class="card-icon green">📈</div>
+          <div class="card-title">Coherencia histórica</div>
+          <div class="card-text">¿Guarda relación plausible con la trayectoria del negocio? Si representa una ruptura significativa, exige justificación explícita y no puede aceptarse como supuesto por defecto.</div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">🔗</div>
+          <div class="card-title">Coherencia interna</div>
+          <div class="card-text">¿Son compatibles todos los supuestos entre sí? Un fuerte crecimiento en ingresos con gastos totalmente planos puede indicar inconsistencia que el agente debe señalar.</div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">🏭</div>
+          <div class="card-title">Coherencia económica</div>
+          <div class="card-text">¿Tiene sentido desde la lógica operativa del negocio? No basta con que el número "cuadre" — debe resultar razonable en el contexto sectorial y estratégico.</div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">📊</div>
+          <div class="card-title">Sensibilidad y riesgo</div>
+          <div class="card-text">¿Qué supuestos son más críticos? El agente debe identificar cuáles, si cambian, alteran materialmente el resultado final y cuáles tienen menor peso relativo.</div>
+        </div>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Principio del agente de planeación:</strong> Proyectar mejor no es automatizar más — es <strong>estructurar mejor los supuestos</strong>. Un ER proforma generado con supuestos débiles o implícitos es menos útil que uno simple con hipótesis explícitas y validadas. La formalización numérica nunca debe confundirse con certeza sobre el futuro.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(5)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(7)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S5.7 -->
+    <div class="session-panel" id="s7">
+      <div class="session-hero">
+        <div class="hero-top coral">
+          <div class="hero-eyebrow">Sesión 5.7</div>
+          <div class="hero-title">Agente de Valoración — DCF automatizado con verificación humana en nodos críticos</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El agente de valoración no elimina al profesional — <strong>redistribuye inteligentemente su intervención</strong>. Automatiza partes estructurales del DCF para que el criterio experto se concentre donde realmente determina la calidad del valor estimado: supuestos, WACC, crecimiento terminal y consistencia metodológica.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> DCF agéntico</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Flujo del DCF — qué automatiza el agente y dónde interviene el humano</div>
+      <div class="dcf-flow">
+        <div class="dcf-step">
+          <div class="dcf-left">1</div>
+          <div class="dcf-center"><div class="dcf-name">Ingestión y lectura histórica</div><div class="dcf-desc">El agente recibe EF históricos, organiza la base operativa y estructura el contexto para comprender la evolución del negocio</div></div>
+          <div class="dcf-right auto"><div class="dcf-right-label">🤖 Automático</div></div>
+        </div>
+        <div class="dcf-step">
+          <div class="dcf-left">2</div>
+          <div class="dcf-center"><div class="dcf-name">Propuesta de supuestos operativos</div><div class="dcf-desc">El agente propone hipótesis de crecimiento, márgenes, reinversión y CAPEX basadas en tendencias históricas</div></div>
+          <div class="dcf-right human"><div class="dcf-right-label">👁️ Revisión humana</div></div>
+        </div>
+        <div class="dcf-step">
+          <div class="dcf-left">3</div>
+          <div class="dcf-center"><div class="dcf-name">Determinación del WACC</div><div class="dcf-desc">Tasa libre de riesgo, prima de mercado, beta, costo de deuda y estructura de capital — cada parámetro encierra un juicio sobre el negocio</div></div>
+          <div class="dcf-right critical"><div class="dcf-right-label">🛑 Control experto</div></div>
+        </div>
+        <div class="dcf-step">
+          <div class="dcf-left">4</div>
+          <div class="dcf-center"><div class="dcf-name">Cálculo del flujo de caja libre</div><div class="dcf-desc">El agente transforma proyecciones operativas en FCL incorporando impuestos, reinversión y capital de trabajo</div></div>
+          <div class="dcf-right auto"><div class="dcf-right-label">🤖 Automático</div></div>
+        </div>
+        <div class="dcf-step">
+          <div class="dcf-left">5</div>
+          <div class="dcf-center"><div class="dcf-name">Valor terminal</div><div class="dcf-desc">Dado su peso dominante en el resultado del DCF, la construcción del valor terminal exige revisión crítica obligatoria del profesional</div></div>
+          <div class="dcf-right critical"><div class="dcf-right-label">🛑 Control experto</div></div>
+        </div>
+        <div class="dcf-step">
+          <div class="dcf-left">6</div>
+          <div class="dcf-center"><div class="dcf-name">Descuento y consolidación</div><div class="dcf-desc">El agente ejecuta el descuento matemático y consolida el valor presente con alta consistencia</div></div>
+          <div class="dcf-right auto"><div class="dcf-right-label">🤖 Automático</div></div>
+        </div>
+        <div class="dcf-step">
+          <div class="dcf-left">7</div>
+          <div class="dcf-center"><div class="dcf-name">Sensibilidad y escenarios</div><div class="dcf-desc">El agente recalcula múltiples combinaciones de tasa, crecimiento y márgenes generando rangos de valor comparables</div></div>
+          <div class="dcf-right auto"><div class="dcf-right-label">🤖 Automático</div></div>
+        </div>
+        <div class="dcf-step">
+          <div class="dcf-left">8</div>
+          <div class="dcf-center"><div class="dcf-name">Interpretación del resultado final</div><div class="dcf-desc">El valor obtenido debe leerse como resultado condicionado por hipótesis — revisión humana verifica razonabilidad frente al negocio real</div></div>
+          <div class="dcf-right critical"><div class="dcf-right-label">🛑 Control experto</div></div>
+        </div>
+      </div>
+
+      <div class="callout coral" style="background:#F9EEEC;border:1px solid rgba(139,58,46,.2);color:#5a1a10;">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Lección central:</strong> Un DCF automatizado solo es financieramente robusto si incorpora verificación humana en nodos críticos. La automatización del DCF exige <strong>diseñar mejor la intervención humana — no eliminarla</strong>. La verdadera madurez no es automatizar todo lo posible, sino automatizar lo que puede estandarizarse sin perder control metodológico.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(6)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(8)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S5.8 -->
+    <div class="session-panel" id="s8">
+      <div class="session-hero">
+        <div class="hero-top red">
+          <div class="hero-eyebrow">Sesión 5.8</div>
+          <div class="hero-title">Agente de Cumplimiento y Monitoreo — Alertas regulatorias y KPI tracking en tiempo real</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El agente de monitoreo reduce la latencia entre el evento y su visibilidad organizacional. Su valor no está en multiplicar notificaciones — está en construir una <strong>arquitectura de vigilancia con lógica financiera y regulatoria</strong>: detectar antes, clasificar mejor y escalar con criterio proporcional.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> Control continuo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Tipología de alertas del agente de monitoreo</div>
+      <div class="cards-grid-2">
+        <div class="concept-card">
+          <div class="card-icon red">📋</div>
+          <div class="card-title">Alertas regulatorias</div>
+          <div class="card-text">Se activan ante novedades normativas, cambios en requerimientos de reporte, modificaciones tributarias o condiciones que exigen revisión de políticas internas.</div>
+          <span class="card-tag tag-red">Cumplimiento</span>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🚦</div>
+          <div class="card-title">Alertas de umbral financiero</div>
+          <div class="card-text">Se generan cuando un KPI cruza un límite predefinido: liquidez mínima, apalancamiento máximo, deterioro de cobertura de intereses o desviación presupuestal crítica.</div>
+          <span class="card-tag tag-gold">KPI crítico</span>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">📉</div>
+          <div class="card-title">Alertas de tendencia</div>
+          <div class="card-text">Responden a deterioro gradual aunque no se haya cruzado un límite formal: compresión sostenida de margen, capital de trabajo en expansión progresiva, carga financiera en ascenso.</div>
+          <span class="card-tag tag-teal">Señal temprana</span>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">⚡</div>
+          <div class="card-title">Alertas de excepción</div>
+          <div class="card-text">Se activan ante comportamientos atípicos respecto del patrón histórico, incluso sin cruzar límite formal. Detecta anomalías que requieren análisis inmediato.</div>
+          <span class="card-tag tag-purple">Anomalía</span>
+        </div>
+      </div>
+
+      <div class="section-label">Arquitectura del agente de cumplimiento y monitoreo</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Etapa operativa</th><th>Qué hace el agente</th><th>Control requerido</th></tr></thead>
+          <tbody>
+            <tr><td>Definición de fuentes</td><td>Establece qué fuentes regulatorias, financieras y operativas observa</td><td class="td-mid">Humano define fuentes autorizadas</td></tr>
+            <tr><td>Reglas y umbrales</td><td>Opera con criterios explícitos: límites, políticas, covenants, plazos</td><td class="td-no">Humano aprueba umbrales antes de operar</td></tr>
+            <tr><td>Monitoreo continuo</td><td>Compara estado observado con condiciones esperadas</td><td class="td-yes">Automático</td></tr>
+            <tr><td>Clasificación de eventos</td><td>Distingue criticidad, urgencia e impacto potencial de cada señal</td><td class="td-yes">Automático con reglas definidas</td></tr>
+            <tr><td>Escalamiento</td><td>Emite alerta, registra evento y escala al responsable apropiado</td><td class="td-no">Humano recibe y decide acción</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">⚠️</div>
+        <div><strong>Riesgo de sobrealerta:</strong> Si los umbrales están mal definidos o la lógica de priorización es deficiente, la organización puede inundarse de alertas irrelevantes. La arquitectura debe distinguir entre señal y ruido. <strong>Monitorear mejor no es alertar más — es alertar con criterio proporcional al riesgo real.</strong></div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(7)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(9)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S5.9 -->
+    <div class="session-panel" id="s9">
+      <div class="session-hero">
+        <div class="hero-top dark">
+          <div class="hero-eyebrow">Sesión 5.9</div>
+          <div class="hero-title">Gobernanza de agentes — Trazabilidad, control humano, límites y auditoría en finanzas corporativas</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La gobernanza de agentes es la condición que convierte una capacidad técnica en una herramienta institucionalmente confiable. No es una capa administrativa que se agrega al final del diseño — es <strong>parte constitutiva de la arquitectura agéntica</strong>. La sofisticación sin control es un pasivo institucional.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 4 dimensiones</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Las 4 dimensiones de gobernanza del sistema agéntico</div>
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-val">🔍</div>
+          <div class="kpi-label">Trazabilidad</div>
+          <div class="kpi-sub">Ver qué ocurrió y cómo — base de explicabilidad</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-val">👁️</div>
+          <div class="kpi-label">Puntos de control</div>
+          <div class="kpi-sub">Intervención humana en nodos críticos del flujo</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-val">🛑</div>
+          <div class="kpi-label">Límites</div>
+          <div class="kpi-sub">Contención funcional del espacio de acción del agente</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-val">📋</div>
+          <div class="kpi-label">Auditoría</div>
+          <div class="kpi-sub">Revisión estructurada del comportamiento del sistema</div>
+        </div>
+      </div>
+
+      <div class="section-label">Tipos de límites que el agente debe respetar</div>
+      <div class="cards-grid">
+        <div class="concept-card">
+          <div class="card-icon red">🗺️</div>
+          <div class="card-title">Límites de alcance</div>
+          <div class="card-text">Un agente de análisis no puede redefinir políticas de financiación. Un agente de valoración no puede actuar como agente de cumplimiento. Cada agente opera en su dominio.</div>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">🗄️</div>
+          <div class="card-title">Límites de datos</div>
+          <div class="card-text">Restricciones sobre fuentes no autorizadas, datos incompletos o información sensible sin validación. Especialmente crítico cuando el agente accede a datos financieros confidenciales.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">💭</div>
+          <div class="card-title">Límites de inferencia</div>
+          <div class="card-text">El agente no puede convertir hipótesis débiles en conclusiones firmes ni extrapolar más allá de lo razonable. La incertidumbre debe hacerse visible, no ocultarse.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">📣</div>
+          <div class="card-title">Límites narrativos</div>
+          <div class="card-text">El agente no puede suavizar riesgos o comunicar hacia audiencias externas sin revisión. La adaptación narrativa no puede comprometer la exactitud del núcleo financiero.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Riesgos de gobernanza deficiente</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Riesgo</th><th>Manifestación en finanzas</th><th>Salvaguarda</th></tr></thead>
+          <tbody>
+            <tr><td>Outputs persuasivos pero frágiles</td><td class="td-no">Proyecciones o valoraciones bien estructuradas con supuestos débiles</td><td>Auditoría de supuestos + validación experta obligatoria</td></tr>
+            <tr><td>Pérdida de visibilidad del proceso</td><td class="td-no">No es posible reconstruir cómo se generó una recomendación financiera</td><td>Trazabilidad obligatoria de cada etapa del flujo</td></tr>
+            <tr><td>Escalamiento tardío de errores</td><td class="td-mid">Error en agente de ingesta se propaga hasta el reporte ejecutivo</td><td>Puntos de control humano en nodos de alta sensibilidad</td></tr>
+            <tr><td>Sobreextensión funcional</td><td class="td-mid">Agente actúa fuera de su dominio diseñado</td><td>Límites de alcance explícitos con restricciones operativas</td></tr>
+            <tr><td>Confianza excesiva en automatización</td><td class="td-no">Debilitamiento del juicio financiero por dependencia del sistema</td><td>Cultura de revisión crítica + auditoría periódica del sistema</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout blue">
+        <div class="callout-icon">🏆</div>
+        <div><strong>Conclusión del módulo:</strong> La madurez en IA agéntica no consiste en maximizar autonomía — consiste en diseñar sistemas donde <strong>automatización y control evolucionen en equilibrio</strong>. La verdadera sofisticación no reside en construir agentes más autónomos, sino en construir agentes cada vez mejor gobernados. Esa es la condición que convierte la IA en capacidad financiera sostenible.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(8)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(10)">Evaluación final <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="session-panel" id="s10">
+      <div class="session-hero">
+        <div class="hero-top teal">
+          <div class="hero-eyebrow">Evaluación · Módulo 5</div>
+          <div class="hero-title">Quiz de verificación — IA Agéntica Aplicada a Finanzas Corporativas</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Preguntas diseñadas para evaluar criterio estratégico sobre IA agéntica en finanzas: anatomía del agente, arquitecturas, implementación, casos de uso específicos y gobernanza.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 8 preguntas</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> ~15 min</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-card" id="quizCard"></div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(9)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Volver al módulo</button>
+        <button class="nav-btn" onclick="resetQuiz()">Reiniciar quiz</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SESSIONS=[
+  {num:"5.1",title:"Estado del arte IA Agéntica 2025–2026"},
+  {num:"5.2",title:"Anatomía del agente financiero"},
+  {num:"5.3",title:"Agente único vs. Sistema multi-agente"},
+  {num:"5.4",title:"OpenAI Agents SDK — implementación"},
+  {num:"5.5",title:"Agente de análisis financiero"},
+  {num:"5.6",title:"Agente de planeación financiera"},
+  {num:"5.7",title:"Agente de valoración — DCF + nodos críticos"},
+  {num:"5.8",title:"Agente de cumplimiento y monitoreo"},
+  {num:"5.9",title:"Gobernanza de agentes financieros"},
+  {num:"Quiz",title:"Evaluación final del módulo"}
+];
+
+const QUIZ=[
+  {q:"¿Cuál es el rasgo más relevante que distingue a la IA agéntica de los modelos conversacionales tradicionales en el contexto de finanzas corporativas?",opts:["Los modelos agénticos son más baratos y rápidos que los conversacionales","La IA agéntica coordina flujos de trabajo, activa herramientas, consulta datos externos y ejecuta acciones — el sistema pasa de intérprete a coordinador operativo","Los modelos agénticos pueden calcular automáticamente todos los ratios financieros sin supervisión","La IA agéntica reemplaza completamente al analista financiero en tareas de valoración"],correct:1,feedback:"Correcto. La diferencia central no es de estilo sino de función. En 2025–2026, el foco se desplazó del modelo a la orquestación: herramientas, handoffs, observabilidad y gobernanza. El agente deja de ser solo un intérprete y comienza a actuar como coordinador operativo dentro de procesos financieros reales."},
+  {q:"En la anatomía de un agente financiero, ¿qué dimensión permite que el agente mantenga coherencia entre supuestos aprobados en sesiones anteriores y proyecciones actuales de planeación?",opts:["Percepción — porque lee los datos históricos del ERP","Memoria — porque conserva supuestos, umbrales y decisiones previas garantizando continuidad analítica entre etapas","Razonamiento — porque evalúa consistencia entre variables financieras","Acción — porque genera los reportes de planeación para revisión humana"],correct:1,feedback:"Correcto. La memoria es la dimensión que permite que el agente mantenga continuidad entre interacciones. En planeación, permite retener escenarios anteriores y supuestos aprobados. Sin memoria, cada solicitud se trataría como evento aislado y el agente no podría participar en procesos secuenciales y acumulativos como el forecasting."},
+  {q:"Un CFO necesita construir un sistema agéntico para el proceso completo de FP&A: consolidación de datos de 8 unidades de negocio, análisis de variaciones, construcción de escenarios, validación metodológica y reporte para junta. ¿Qué arquitectura recomienda y por qué?",opts:["Agente único, porque simplifica la gobernanza y es más rápido de implementar","Sistema multi-agente, porque el proceso exige especialización diferenciada en análisis, escenarios, validación y comunicación ejecutiva — con un orquestador que preserve coherencia entre etapas","Ninguna arquitectura agéntica — este proceso debe mantenerse completamente manual","Un agente único con múltiples instrucciones de sistema para cada tarea del proceso"],correct:1,feedback:"Correcto. Un proceso de FP&A integral con múltiples unidades, etapas especializadas y requisitos de control requiere una arquitectura multi-agente. El análisis, la validación metodológica y la comunicación ejecutiva responden a lógicas distintas. Sin distribución funcional, el agente único se sobrecarga y pierde claridad metodológica."},
+  {q:"En el Agents SDK, ¿cuál es la función estratégica de un handoff bien diseñado dentro de una arquitectura de valoración multi-agente?",opts:["Permite que el agente ejecute más cálculos en menos tiempo reduciendo costos operativos","Preserva la coherencia metodológica en la transferencia: deja claro qué problema se traslada, qué información lo acompaña y qué formato debe tener el output del agente receptor","Es una función de respaldo que activa cuando el agente principal comete errores de cálculo","Permite que el usuario humano intervenga directamente en el sistema sin instrucciones previas"],correct:1,feedback:"Correcto. Un handoff no es simplemente 'pasar el trabajo'. Es diseñar una relación funcional entre agentes donde la transferencia preserva la coherencia metodológica del sistema. Un handoff mal diseñado genera pérdida de contexto y fragmentación analítica — la calidad del handoff puede ser tan importante como la calidad del razonamiento del agente."},
+  {q:"Un agente de análisis financiero detecta que el margen bruto cayó 8 puntos porcentuales en el último trimestre. ¿Cuál es el alcance correcto de su diagnóstico automatizado?",opts:["El agente debe emitir una recomendación ejecutiva definitiva sobre la estrategia de precios para corregir el margen","El agente debe señalar la caída, priorizar la señal, intentar identificar si proviene de presión de costos o debilidad de ingresos, y preparar un diagnóstico preliminar para revisión del analista","El agente debe esperar instrucciones del analista antes de hacer cualquier observación sobre el margen","El agente no tiene capacidad para detectar variaciones de margen — eso requiere un modelo especializado de valoración"],correct:1,feedback:"Correcto. El diagnóstico automatizado produce una primera capa de interpretación: señala el hallazgo, prioriza su relevancia e intenta conectarlo con posibles causas. Pero no emite conclusiones definitivas ni estratégicas. El analista aporta contexto estratégico, interpreta eventos específicos y decide sobre acciones correctivas. La diferencia entre un sistema que calcula y uno que diagnostica está en conectar cálculo con contexto."},
+  {q:"¿En cuál de las siguientes etapas del DCF es obligatorio el control experto humano — incluso en un sistema agéntico bien diseñado?",opts:["Ejecución matemática del descuento de flujos — porque es la etapa más compleja del cálculo","Determinación del WACC y crecimiento terminal — porque cada parámetro encierra un juicio sobre el negocio que no puede delegarse completamente al sistema","Ingestión y organización de datos históricos — porque el agente puede cometer errores al leer los estados financieros","Generación de sensibilidades — porque el agente no puede recalcular múltiples escenarios automáticamente"],correct:1,feedback:"Correcto. El WACC y el valor terminal son los nodos más críticos del DCF. La selección de tasa libre de riesgo, beta, prima de mercado y costo de deuda encierra juicios sobre el negocio, la industria y el riesgo que requieren criterio experto. El valor terminal puede representar más del 60% del valor del DCF — una variación pequeña allí altera materialmente el resultado final."},
+  {q:"¿Qué diferencia crítica existe entre una alerta de umbral financiero y una alerta de tendencia en un agente de monitoreo bien diseñado?",opts:["No hay diferencia — ambas señalan que un KPI ha cruzado un límite predefinido y requieren acción inmediata","La alerta de umbral se activa cuando un KPI cruza un límite formal. La alerta de tendencia detecta deterioro gradual aunque aún no se haya cruzado ningún límite — actúa como señal temprana preventiva","La alerta de tendencia solo aplica para variables macroeconómicas externas; la de umbral solo para KPIs internos","Las alertas de tendencia son menos importantes y pueden ignorarse hasta que se convierta en alerta de umbral"],correct:1,feedback:"Correcto. Esta distinción es clave en el diseño del agente de monitoreo. Una compresión sostenida de margen del 0.5% mensual durante 6 meses puede no haber cruzado ningún umbral formal, pero representa una señal temprana crítica que merece atención antes de convertirse en una crisis de rentabilidad. La capacidad de detectar tendencias es lo que separa el monitoreo reactivo del preventivo."},
+  {q:"¿Cuál es la consecuencia más peligrosa de una gobernanza deficiente en un sistema agéntico aplicado a finanzas corporativas?",opts:["El sistema se vuelve más lento y menos eficiente en la producción de análisis financieros","Los outputs del agente pueden ser técnicamente persuasivos pero metodológicamente frágiles — una proyección o valoración bien estructurada pero con supuestos débiles puede llevar a decisiones estratégicas incorrectas","El costo computacional del sistema aumenta significativamente sin retorno financiero","El sistema requiere más intervención humana de lo esperado, reduciendo la productividad del equipo financiero"],correct:1,feedback:"Correcto. La consecuencia más peligrosa de gobernanza deficiente es exactamente el exceso de confianza algorítmica: outputs bien estructurados que son técnicamente persuasivos pero metodológicamente frágiles. En finanzas corporativas, una valoración o proyección con esa característica puede llevar a decisiones de inversión, endeudamiento o estrategia con fundamento analítico débil — y el riesgo es mayor porque la apariencia de solidez oculta la fragilidad de fondo."}
+];
+
+let current=1,completed=new Set(),quizIdx=0,quizScore=0,answerMap={};
+
+function buildSidebar(){
+  const list=document.getElementById("sessionList");
+  list.innerHTML=SESSIONS.map((s,i)=>{
+    const n=i+1,isCurrent=n===current,isDone=completed.has(n);
+    return `<div class="session-item ${isCurrent?"active":""}" onclick="goTo(${n})">
+      <div class="si-num">${s.num}</div>
+      <div class="si-text"><div class="si-label">Sesión ${s.num}</div><div class="si-title">${s.title}</div></div>
+      <div class="si-check ${isCurrent?"current":isDone?"done":"pending"}">
+        ${isCurrent?`<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>`:isDone?`<svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,4 3,6 7,2"/></svg>`:""}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function updateProgress(){
+  const pct=Math.round((completed.size/SESSIONS.length)*100);
+  document.getElementById("progressFill").style.width=pct+"%";
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("badgeSession").textContent="Sesión "+SESSIONS[current-1].num;
+}
+
+function goTo(n){
+  completed.add(current);
+  document.querySelectorAll(".session-panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById("s"+n).classList.add("active");
+  document.getElementById("contentArea").scrollTop=0;
+  current=n;buildSidebar();updateProgress();
+  if(n===10) renderQuiz();
+}
+
+function renderQuiz(){
+  const q=QUIZ[quizIdx];
+  const answered=answerMap[quizIdx]!==undefined;
+  document.getElementById("quizCard").innerHTML=`
+    <div class="quiz-header">
+      <div class="quiz-header-title">Pregunta ${quizIdx+1} de ${QUIZ.length}</div>
+      <div class="quiz-header-sub">Módulo 5 · IA Agéntica Aplicada a Finanzas Corporativas</div>
+    </div>
+    <div class="quiz-body">
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o,i)=>{
+          let cls="quiz-opt"+(answered?" disabled":"");
+          if(answered){if(i===q.correct)cls+=" correct";else if(answerMap[quizIdx]===i)cls+=" wrong";}
+          return `<div class="${cls}" onclick="${answered?"":"answer("+i+")"}"><span class="opt-letter">${"ABCD"[i]}</span><span>${o}</span></div>`;
+        }).join("")}
+      </div>
+      <div class="quiz-feedback ${answered?"show":""} ${answered?(answerMap[quizIdx]===q.correct?"ok":"fail"):""}">
+        ${answered?q.feedback:""}
+      </div>
+      <div class="quiz-footer">
+        <div class="quiz-score">Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas</div>
+        <div style="display:flex;gap:8px;">
+          ${quizIdx>0?`<button class="nav-btn" onclick="prevQ()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg></button>`:""}
+          ${quizIdx<QUIZ.length-1
+            ?`<button class="nav-btn primary" onclick="nextQ()">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>`
+            :`<div style="font-size:13px;font-weight:500;color:var(--green);padding:8px 16px;background:var(--green-light);border-radius:8px;">✅ Módulo 5 completado — ${quizScore}/${QUIZ.length} correctas</div>`}
+        </div>
+      </div>
+    </div>`;
+}
+
+function answer(i){
+  if(answerMap[quizIdx]!==undefined)return;
+  answerMap[quizIdx]=i;
+  if(i===QUIZ[quizIdx].correct) quizScore++;
+  const opts=document.querySelectorAll(".quiz-opt");
+  opts.forEach((o,idx)=>{
+    o.classList.add("disabled");
+    if(idx===QUIZ[quizIdx].correct) o.classList.add("correct");
+    else if(idx===i) o.classList.add("wrong");
+  });
+  const fb=document.querySelector(".quiz-feedback");
+  if(fb){fb.textContent=QUIZ[quizIdx].feedback;fb.classList.add("show");fb.classList.add(i===QUIZ[quizIdx].correct?"ok":"fail");}
+  document.querySelector(".quiz-score").innerHTML=`Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas`;
+}
+function nextQ(){if(quizIdx<QUIZ.length-1){quizIdx++;renderQuiz();}}
+function prevQ(){if(quizIdx>0){quizIdx--;renderQuiz();}}
+function resetQuiz(){quizIdx=0;quizScore=0;answerMap={};renderQuiz();}
+buildSidebar();updateProgress();
+</script>
+</body>
+</html>

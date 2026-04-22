@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Módulo 4 · Ecosistema Multi-LLM Financiero · ADVANCE UR</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ur:#C8102E;--url:#F5E6E9;--urm:#E8899A;
+  --bg:#F2F0EE;--white:#FFFFFF;
+  --b1:#E0DDDA;--b2:#C8C4C0;
+  --t1:#2C2C2C;--t2:#666560;--t3:#9E9B97;
+  --gold:#B8860B;--gold-light:#FDF8EC;
+  --green:#1A6B3C;--green-light:#EAF5EE;
+  --blue:#1A3A6B;--blue-light:#EAF0F8;
+  --purple:#4A1D8F;--purple-light:#F0EBF8;
+  --teal:#0E6B6B;--teal-light:#E6F5F5;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;}
+
+/* HEADER */
+header{flex-shrink:0;background:var(--white);border-bottom:2px solid var(--ur);padding:.75rem 2rem;display:flex;align-items:center;gap:16px;z-index:100;}
+.logo-mark{width:36px;height:36px;background:var(--ur);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:18px;height:18px;}
+.header-text{flex:1;}
+.header-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--t1);line-height:1.2;}
+.header-sub{font-size:11px;color:var(--t3);letter-spacing:.04em;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.progress-bar-wrap{width:180px;}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px;}
+.progress-track{height:4px;background:var(--b1);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--ur);border-radius:2px;transition:width .5s ease;}
+.badge-session{font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;background:var(--url);color:var(--ur);border:1px solid var(--urm);white-space:nowrap;}
+
+/* LAYOUT */
+.main{flex:1;display:flex;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:280px;flex-shrink:0;background:var(--white);border-right:1px solid var(--b1);overflow-y:auto;display:flex;flex-direction:column;}
+.sidebar-header{padding:1rem 1.25rem .75rem;border-bottom:1px solid var(--b1);position:sticky;top:0;background:var(--white);z-index:10;}
+.sidebar-mod-num{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--ur);text-transform:uppercase;margin-bottom:2px;}
+.sidebar-title{font-size:11px;font-weight:500;letter-spacing:.05em;color:var(--t3);text-transform:uppercase;}
+.sidebar-mod{font-size:13px;font-weight:500;color:var(--t1);margin-top:3px;}
+.session-list{padding:.5rem 0;}
+.session-item{display:flex;align-items:center;gap:10px;padding:.6rem 1.25rem;cursor:pointer;transition:background .12s;border-left:3px solid transparent;}
+.session-item:hover{background:var(--bg);}
+.session-item.active{background:var(--url);border-left-color:var(--ur);}
+.si-num{font-family:'DM Serif Display',serif;font-size:15px;color:var(--t3);width:24px;flex-shrink:0;text-align:center;}
+.session-item.active .si-num{color:var(--ur);}
+.si-text{flex:1;min-width:0;}
+.si-label{font-size:10px;color:var(--t3);}
+.si-title{font-size:12px;font-weight:500;color:var(--t1);line-height:1.3;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.session-item.active .si-title{color:var(--ur);}
+.si-check{width:16px;height:16px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.si-check.done{background:var(--green);color:#fff;}
+.si-check.current{background:var(--ur);color:#fff;}
+.si-check.pending{background:var(--b1);}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:2rem 2.5rem 3rem;display:flex;flex-direction:column;gap:2rem;}
+.session-panel{display:none;}
+.session-panel.active{display:flex;flex-direction:column;gap:1.5rem;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* HERO */
+.session-hero{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.hero-top{padding:1.75rem 2rem 1.25rem;}
+.hero-top.purple{background:linear-gradient(135deg,#0a051a 0%,var(--purple) 100%);}
+.hero-top.gold{background:linear-gradient(135deg,#1a1000 0%,#8B6914 100%);}
+.hero-top.green{background:linear-gradient(135deg,#051209 0%,var(--green) 100%);}
+.hero-top.blue{background:linear-gradient(135deg,#040d1a 0%,var(--blue) 100%);}
+.hero-top.teal{background:linear-gradient(135deg,#050f0f 0%,var(--teal) 100%);}
+.hero-top.red{background:linear-gradient(135deg,#1a0408 0%,var(--ur) 100%);}
+.hero-top.dark{background:linear-gradient(135deg,#0a0a1a 0%,#1A3A6B 100%);}
+.hero-eyebrow{font-size:10px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:8px;}
+.hero-title{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;line-height:1.3;}
+.hero-body{padding:1.5rem 2rem;display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;}
+.hero-desc{flex:1;min-width:200px;font-size:14px;color:var(--t2);line-height:1.75;}
+.hero-meta{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);padding:5px 12px;border-radius:20px;border:1px solid var(--b1);background:var(--bg);white-space:nowrap;}
+.meta-pill svg{width:12px;height:12px;color:var(--ur);}
+
+/* SECTION LABEL */
+.section-label{font-size:11px;font-weight:500;letter-spacing:.07em;color:var(--ur);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--url);}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+.cards-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.cards-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.concept-card{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1.25rem;transition:all .2s;position:relative;overflow:hidden;}
+.concept-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--ur);}
+.concept-card.gold::before{background:var(--gold);}
+.concept-card.green::before{background:var(--green);}
+.concept-card.blue::before{background:var(--blue);}
+.concept-card.purple::before{background:var(--purple);}
+.concept-card.teal::before{background:var(--teal);}
+.concept-card:hover{border-color:var(--b2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px;}
+.card-icon.red{background:var(--url);}
+.card-icon.gold{background:var(--gold-light);}
+.card-icon.green{background:var(--green-light);}
+.card-icon.blue{background:var(--blue-light);}
+.card-icon.purple{background:var(--purple-light);}
+.card-icon.teal{background:var(--teal-light);}
+.card-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:5px;}
+.card-text{font-size:12px;color:var(--t2);line-height:1.65;}
+.card-tag{display:inline-flex;margin-top:10px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;}
+.tag-red{background:var(--url);color:var(--ur);}
+.tag-gold{background:var(--gold-light);color:var(--gold);}
+.tag-green{background:var(--green-light);color:var(--green);}
+.tag-blue{background:var(--blue-light);color:var(--blue);}
+.tag-purple{background:var(--purple-light);color:var(--purple);}
+.tag-teal{background:var(--teal-light);color:var(--teal);}
+
+/* COMPARE TABLE */
+.compare-table{background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.compare-table table{width:100%;border-collapse:collapse;}
+.compare-table th{background:var(--url);font-size:11px;font-weight:500;color:var(--ur);padding:.65rem 1rem;text-align:left;border-bottom:1px solid var(--b1);}
+.compare-table th:first-child{border-right:1px solid var(--b1);width:200px;}
+.compare-table td{font-size:12px;color:var(--t2);padding:.65rem 1rem;border-bottom:1px solid var(--bg);vertical-align:top;line-height:1.5;}
+.compare-table tr:last-child td{border-bottom:none;}
+.compare-table td:first-child{font-weight:500;color:var(--t1);border-right:1px solid var(--b1);background:var(--bg);}
+.td-yes{color:var(--green)!important;}
+.td-mid{color:var(--gold)!important;}
+.td-no{color:var(--ur)!important;}
+
+/* STACK FLOW */
+.stack-flow{display:flex;align-items:center;gap:0;background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.sf-step{flex:1;padding:1.1rem .9rem;border-right:1px solid var(--b1);text-align:center;transition:background .15s;position:relative;}
+.sf-step:last-child{border-right:none;}
+.sf-step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--b2);z-index:2;pointer-events:none;}
+.sf-step:last-child::after{display:none;}
+.sf-step:hover{background:var(--bg);}
+.sf-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ur);opacity:.25;line-height:1;}
+.sf-model{font-size:11px;font-weight:500;color:var(--ur);margin:3px 0;padding:2px 8px;background:var(--url);border-radius:20px;display:inline-block;}
+.sf-task{font-size:11px;color:var(--t1);font-weight:500;margin-bottom:2px;}
+.sf-desc{font-size:10px;color:var(--t3);line-height:1.5;}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0;background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.tl-item{display:flex;align-items:flex-start;gap:0;border-bottom:1px solid var(--bg);}
+.tl-item:last-child{border-bottom:none;}
+.tl-left{width:110px;flex-shrink:0;padding:.9rem 1rem;border-right:1px solid var(--b1);background:var(--bg);}
+.tl-era{font-size:11px;font-weight:500;color:var(--ur);}
+.tl-version{font-size:10px;color:var(--t3);margin-top:2px;}
+.tl-right{flex:1;padding:.9rem 1rem;}
+.tl-title{font-size:12px;font-weight:500;color:var(--t1);margin-bottom:4px;}
+.tl-desc{font-size:11px;color:var(--t2);line-height:1.6;}
+
+/* AGENT DIAGRAM */
+.agent-diagram{background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.ad-header{background:linear-gradient(135deg,#0a051a,var(--purple));padding:1rem 1.25rem;}
+.ad-title{font-family:'DM Serif Display',serif;font-size:15px;color:#fff;}
+.ad-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;}
+.ad-body{padding:1.25rem;}
+.ad-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:12px;}
+.ad-box{padding:.85rem 1rem;border-radius:8px;border:1px solid var(--b1);font-size:11px;}
+.ad-box.orchestrator{background:linear-gradient(135deg,var(--purple-light),var(--white));border-color:rgba(74,29,143,.2);}
+.ad-box.agent{background:var(--bg);border-color:var(--b1);}
+.ad-box-title{font-size:12px;font-weight:500;color:var(--t1);margin-bottom:3px;}
+.ad-box-sub{font-size:10px;color:var(--t3);line-height:1.5;}
+.ad-arrow{font-size:16px;color:var(--b2);text-align:center;}
+.ad-agents-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.ad-agent-card{padding:.75rem;border-radius:8px;border:1px solid var(--b1);background:var(--bg);text-align:center;}
+.ad-agent-icon{font-size:18px;margin-bottom:4px;}
+.ad-agent-name{font-size:10px;font-weight:500;color:var(--t1);}
+.ad-agent-role{font-size:9px;color:var(--t3);margin-top:2px;line-height:1.4;}
+
+/* CALLOUTS */
+.callout{border-radius:10px;padding:1.1rem 1.25rem;font-size:13px;line-height:1.65;display:flex;gap:12px;align-items:flex-start;}
+.callout.red{background:var(--url);border:1px solid var(--urm);color:#7a0010;}
+.callout.gold{background:var(--gold-light);border:1px solid #e6d080;color:#7a5800;}
+.callout.green{background:var(--green-light);border:1px solid #b3dfc2;color:#0a4a25;}
+.callout.blue{background:var(--blue-light);border:1px solid #b3c9e6;color:#0d2a55;}
+.callout.purple{background:var(--purple-light);border:1px solid #c5a8e6;color:#2a0a6a;}
+.callout.teal{background:var(--teal-light);border:1px solid #a8d8d8;color:#0a4a4a;}
+.callout-icon{font-size:18px;flex-shrink:0;line-height:1.3;}
+.callout strong{font-weight:500;}
+
+/* NAV BUTTONS */
+.session-nav{display:flex;justify-content:space-between;align-items:center;padding-top:1.5rem;border-top:1px solid var(--b1);margin-top:.5rem;}
+.nav-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;border:1px solid var(--b2);color:var(--t2);background:var(--white);}
+.nav-btn:hover{background:var(--bg);color:var(--t1);}
+.nav-btn.primary{background:var(--ur);color:#fff;border-color:var(--ur);}
+.nav-btn.primary:hover{opacity:.88;}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.nav-btn svg{width:14px;height:14px;}
+
+/* QUIZ */
+.quiz-card{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.quiz-header{background:linear-gradient(135deg,#0a051a,var(--purple));padding:1.25rem 1.5rem;}
+.quiz-header-title{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:3px;}
+.quiz-header-sub{font-size:11px;color:rgba(255,255,255,.6);}
+.quiz-body{padding:1.5rem;}
+.quiz-q{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:14px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:.75rem 1rem;border-radius:8px;border:1px solid var(--b1);cursor:pointer;transition:all .15s;font-size:13px;color:var(--t2);background:var(--bg);}
+.quiz-opt:hover{border-color:var(--urm);background:var(--url);color:var(--t1);}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.quiz-opt.wrong{border-color:var(--ur);background:var(--url);color:var(--ur);}
+.quiz-opt.disabled{cursor:default;pointer-events:none;}
+.opt-letter{width:22px;height:22px;border-radius:50%;background:var(--b1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+.quiz-opt.correct .opt-letter{background:var(--green);color:#fff;}
+.quiz-opt.wrong .opt-letter{background:var(--ur);color:#fff;}
+.quiz-feedback{margin-top:14px;padding:.9rem 1rem;border-radius:8px;font-size:13px;line-height:1.55;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.ok{background:var(--green-light);color:var(--green);border:1px solid #b3dfc2;}
+.quiz-feedback.fail{background:var(--url);color:var(--ur);border:1px solid var(--urm);}
+.quiz-footer{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--b1);}
+.quiz-score{font-size:12px;color:var(--t3);}
+
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">
+    <svg viewBox="0 0 20 20" fill="none"><polyline points="3,14 7,8 10,11 13,6 17,10" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="10" r="1.5" fill="#ffccd4"/></svg>
+  </div>
+  <div class="header-text">
+    <div class="header-title">Módulo 4 · Ecosistema Multi-LLM Financiero: de ChatGPT a Agentes</div>
+    <div class="header-sub">ADVANCE · Universidad del Rosario · Finanzas Corporativas</div>
+  </div>
+  <div class="header-right">
+    <div class="progress-bar-wrap">
+      <div class="progress-label"><span>Progreso</span><span id="pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="badge-session" id="badgeSession">Sesión 4.1</div>
+  </div>
+</header>
+
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-mod-num">Módulo 4</div>
+      <div class="sidebar-title">Contenidos</div>
+      <div class="sidebar-mod">Ecosistema Multi-LLM Financiero</div>
+    </div>
+    <div class="session-list" id="sessionList"></div>
+  </div>
+
+  <div class="content" id="contentArea">
+
+    <!-- S4.1 -->
+    <div class="session-panel active" id="s1">
+      <div class="session-hero">
+        <div class="hero-top purple">
+          <div class="hero-eyebrow">Sesión 4.1</div>
+          <div class="hero-title">ChatGPT como infraestructura cognitiva financiera — evolución, capacidades y fundamentos estratégicos</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">ChatGPT no es una herramienta de generación de texto: es una <strong>arquitectura cognitiva</strong> que conecta información, lógica, decisión y comunicación financiera. Comprenderlo a este nivel es el punto de partida para transformar procesos, redefinir roles y construir inteligencia institucional aumentada.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> GPT-1 → GPT-5.4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Evolución cognitiva de GPT — de herramienta a infraestructura</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-era">2018–2019</div><div class="tl-version">GPT-1 / GPT-2</div></div>
+          <div class="tl-right"><div class="tl-title">Aprendizaje autoregresivo y generación fluida</div><div class="tl-desc">GPT-1 introdujo el aprendizaje sobre corpus no etiquetado. GPT-2 sorprendió con generación coherente y trajo cuestionamientos éticos sobre la autonomía del texto generado.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-era">2020–2022</div><div class="tl-version">GPT-3 / GPT-3.5</div></div>
+          <div class="tl-right"><div class="tl-title">Prompting profesional y adopción masiva</div><div class="tl-desc">GPT-3 profesionalizó el uso del prompting y dio lugar a ChatGPT. Millones de usuarios corporativos descubrieron su potencial para análisis, redacción y síntesis financiera.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-era">2023–2024</div><div class="tl-version">GPT-4 / GPT-4o</div></div>
+          <div class="tl-right"><div class="tl-title">Multimodalidad nativa e integración sensorial</div><div class="tl-desc">GPT-4 introdujo razonamiento lógico mejorado y lectura de gráficos. GPT-4o consolidó la multimodalidad: texto, voz, imagen y video simultáneamente en una sola arquitectura. Los asistentes financieros pueden ahora visualizar e interactuar en lenguaje natural.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-era">2025–2026</div><div class="tl-version">GPT-5.4 / o3</div></div>
+          <div class="tl-right"><div class="tl-title">Infraestructura cognitiva y orquestación agéntica</div><div class="tl-desc">GPT-5.4 orquesta procesos financieros end-to-end. o3 introduce razonamiento deliberativo profundo. El modelo pasa de herramienta a componente de infraestructura cognitiva institucional.</div></div>
+        </div>
+      </div>
+
+      <div class="section-label">Aplicaciones financieras clave de ChatGPT</div>
+      <div class="cards-grid">
+        <div class="concept-card purple">
+          <div class="card-icon purple">📊</div>
+          <div class="card-title">Automatización de reportes financieros</div>
+          <div class="card-text">Generación de análisis de KPIs directamente desde estados contables. Producción de respuestas regulatorias con estructura y lenguaje técnico apropiado.</div>
+          <span class="card-tag tag-purple">Reporting</span>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">🔀</div>
+          <div class="card-title">Simulación de escenarios estratégicos</div>
+          <div class="card-text">Simulación de escenarios de inversión y planeación con prompting estructurado y retroalimentación contextual sobre supuestos y sensibilidades.</div>
+          <span class="card-tag tag-blue">Planeación</span>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">📝</div>
+          <div class="card-title">Comunicación ejecutiva financiera</div>
+          <div class="card-text">Redacción de minutas, presentaciones, respuestas ejecutivas y narrativas comparativas para procesos presupuestales, de control y de junta directiva.</div>
+          <span class="card-tag tag-red">Comunicación</span>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🧮</div>
+          <div class="card-title">Análisis de estados financieros</div>
+          <div class="card-text">Diagnóstico vertical, horizontal y cruzado de ER, ESF y EFE. Identificación de tendencias, alertas y oportunidades con interpretación ejecutiva integrada.</div>
+          <span class="card-tag tag-gold">Análisis</span>
+        </div>
+      </div>
+
+      <div class="callout purple">
+        <div class="callout-icon">🏗️</div>
+        <div><strong>Conclusión estratégica:</strong> ChatGPT pasa de ser un asistente textual a convertirse en una <strong>arquitectura algorítmica que conecta información, lógica, decisión y comunicación financiera</strong>. Esto implica rediseñar procesos, redefinir roles y transformar la forma en que se estructura el trabajo en finanzas corporativas.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" disabled><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(2)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S4.2 -->
+    <div class="session-panel" id="s2">
+      <div class="session-hero">
+        <div class="hero-top blue">
+          <div class="hero-eyebrow">Sesión 4.2</div>
+          <div class="hero-title">Personalización, instrucciones de sistema y control semántico del modelo</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Las instrucciones de sistema son el mecanismo de <strong>control semántico y estratégico</strong> del modelo. Permiten establecer comportamiento, tono, estilo y rol desde el inicio de la sesión, garantizando coherencia y alineación con el perfil organizacional deseado en cada función financiera.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 40 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> System prompts</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Niveles de personalización del modelo</div>
+      <div class="cards-grid-3">
+        <div class="concept-card">
+          <div class="card-icon red">⚙️</div>
+          <div class="card-title">Instrucciones de sistema</div>
+          <div class="card-text">Establecen el comportamiento base del modelo para toda la sesión. Definen rol, estilo de análisis, nivel de tecnicismo, límites y formato de salida.</div>
+          <span class="card-tag tag-red">Nivel base</span>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">🔧</div>
+          <div class="card-title">Fine-tuning conceptual</div>
+          <div class="card-text">Adaptación del modelo a terminología, metodologías y marcos de referencia específicos de la organización sin modificar los parámetros del modelo base.</div>
+          <span class="card-tag tag-blue">Nivel medio</span>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🤖</div>
+          <div class="card-title">Agentes con memoria</div>
+          <div class="card-text">Sistemas que mantienen contexto acumulado entre sesiones, aprenden del comportamiento del usuario y adaptan sus respuestas a patrones organizacionales.</div>
+          <span class="card-tag tag-purple">Nivel avanzado</span>
+        </div>
+      </div>
+
+      <div class="section-label">Perfiles de instrucción para funciones financieras</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Perfil del agente</th><th>Instrucción de sistema clave</th><th>Aplicación financiera</th></tr></thead>
+          <tbody>
+            <tr><td>Auditor tributario</td><td>Analiza con rigor normativo, cita regulación aplicable, señala riesgos de cumplimiento</td><td>Revisión de declaraciones, alertas de inconsistencia</td></tr>
+            <tr><td>Asesor de riesgo financiero</td><td>Prioriza identificación de variables de riesgo, cuantifica exposición, propone coberturas</td><td>Análisis de riesgo crediticio, mercado y liquidez</td></tr>
+            <tr><td>Controlador presupuestal</td><td>Compara ejecución vs. presupuesto, identifica desviaciones y propone acciones correctivas</td><td>Seguimiento presupuestal, reportes de control</td></tr>
+            <tr><td>Analista de valoración</td><td>Aplica metodología DCF/múltiplos, justifica supuestos, entrega rango de valor con sensibilidades</td><td>Valoración de empresas, due diligence, M&A</td></tr>
+            <tr><td>Comunicador ejecutivo</td><td>Traduce resultados técnicos a lenguaje ejecutivo, adapta narrativa a la audiencia específica</td><td>Informes para junta, presentaciones a inversionistas</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout blue">
+        <div class="callout-icon">💡</div>
+        <div><strong>Ventaja operativa:</strong> Las instrucciones de sistema permiten la <strong>estandarización de respuestas</strong>, el cumplimiento regulatorio y la adaptación al contexto de cada unidad de negocio. Un CFO puede configurar un asistente con el perfil exacto requerido para cada tipo de análisis, reduciendo el riesgo de respuestas genéricas o fuera de contexto.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(1)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(3)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S4.3 -->
+    <div class="session-panel" id="s3">
+      <div class="session-hero">
+        <div class="hero-top gold">
+          <div class="hero-eyebrow">Sesión 4.3</div>
+          <div class="hero-title">Integración con herramientas externas — Excel, Power BI, APIs financieras y ERP</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El valor de ChatGPT en finanzas se multiplica cuando se conecta con los sistemas donde viven los datos. La integración con Excel, Power BI, APIs y ERP transforma el modelo de generador de texto a <strong>orquestador de flujos financieros conectados</strong>.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> Integración práctica</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Ecosistema de integración financiera</div>
+      <div class="cards-grid">
+        <div class="concept-card gold">
+          <div class="card-icon gold">📊</div>
+          <div class="card-title">Microsoft Excel + Copilot</div>
+          <div class="card-text">Análisis de estados financieros directamente desde hojas de cálculo. Generación de fórmulas complejas, tablas dinámicas y narrativas automatizadas sobre los datos del modelo.</div>
+          <span class="card-tag tag-gold">Modelación financiera</span>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">📈</div>
+          <div class="card-title">Power BI con IA</div>
+          <div class="card-text">Dashboards de KPIs con interpretación automática. Narrativas generadas sobre variaciones en métricas financieras clave. Alertas inteligentes sobre desviaciones presupuestales.</div>
+          <span class="card-tag tag-red">Visualización</span>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">🔌</div>
+          <div class="card-title">APIs financieras</div>
+          <div class="card-text">Conexión con Bloomberg API, datos de bancos centrales, tasas de cambio y datos macroeconómicos en tiempo real. El modelo razona sobre información actualizada al momento del análisis.</div>
+          <span class="card-tag tag-blue">Datos en tiempo real</span>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🏭</div>
+          <div class="card-title">Integración con ERP</div>
+          <div class="card-text">Extracción y análisis de información de sistemas SAP, Oracle o Dynamics. Automatización de reportes de gestión directamente desde la fuente transaccional.</div>
+          <span class="card-tag tag-purple">Sistemas corporativos</span>
+        </div>
+      </div>
+
+      <div class="section-label">Flujo de integración: del dato al insight ejecutivo</div>
+      <div class="stack-flow">
+        <div class="sf-step"><div class="sf-num">1</div><span class="sf-model">ERP/API</span><div class="sf-task">Ingesta de datos</div><div class="sf-desc">Extracción de datos financieros transaccionales</div></div>
+        <div class="sf-step"><div class="sf-num">2</div><span class="sf-model">Excel</span><div class="sf-task">Estructuración</div><div class="sf-desc">Modelación y normalización en hojas de trabajo</div></div>
+        <div class="sf-step"><div class="sf-num">3</div><span class="sf-model">ChatGPT</span><div class="sf-task">Análisis</div><div class="sf-desc">Razonamiento sobre los datos estructurados</div></div>
+        <div class="sf-step"><div class="sf-num">4</div><span class="sf-model">Power BI</span><div class="sf-task">Visualización</div><div class="sf-desc">Dashboards e indicadores para decisión</div></div>
+        <div class="sf-step"><div class="sf-num">5</div><span class="sf-model">Narrativa</span><div class="sf-task">Comunicación</div><div class="sf-desc">Reporte ejecutivo adaptado a la audiencia</div></div>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-icon">⚡</div>
+        <div><strong>Principio de integración:</strong> La ventaja no está en usar ChatGPT de forma aislada, sino en <strong>conectarlo con los sistemas donde ya viven los datos de la organización</strong>. Cada integración elimina una capa de trabajo manual y convierte al analista financiero en orquestador del flujo, no ejecutor de tareas repetitivas.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(2)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(4)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S4.4 -->
+    <div class="session-panel" id="s4">
+      <div class="session-hero">
+        <div class="hero-top purple">
+          <div class="hero-eyebrow">Sesión 4.4</div>
+          <div class="hero-title">De ChatGPT como herramienta a ChatGPT como orquestador — la evolución del rol</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La evolución más significativa del ecosistema IA financiero no es técnica: es conceptual. El cambio de paradigma — de <strong>usar ChatGPT</strong> a <strong>diseñar sistemas donde ChatGPT coordina otros agentes</strong> — define la frontera entre el profesional financiero digital y el arquitecto de soluciones cognitivas.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Cambio de paradigma</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Las tres etapas de madurez en el uso de IA financiera</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Etapa</th><th>Descripción</th><th>Rol del profesional</th><th>Limitación</th></tr></thead>
+          <tbody>
+            <tr><td>🔧 Herramienta</td><td>ChatGPT responde preguntas y genera texto bajo demanda</td><td>Usuario — hace preguntas y evalúa respuestas</td><td class="td-no">Dependiente de la calidad del prompt manual</td></tr>
+            <tr><td>🔄 Asistente integrado</td><td>ChatGPT conectado a datos y herramientas; ejecuta tareas en flujos definidos</td><td>Operador — diseña flujos y supervisa ejecución</td><td class="td-mid">Limitado a flujos predefinidos sin autonomía</td></tr>
+            <tr><td>🤖 Orquestador agéntico</td><td>ChatGPT coordina múltiples agentes especializados hacia un objetivo complejo</td><td>Arquitecto — diseña sistemas, define objetivos y gobierna</td><td class="td-yes">Requiere diseño robusto y gobernanza continua</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-label">Diferencias operativas: herramienta vs. orquestador</div>
+      <div class="cards-grid-2">
+        <div class="concept-card">
+          <div class="card-icon red">🔧</div>
+          <div class="card-title">ChatGPT como herramienta</div>
+          <div class="card-text"><strong>Flujo:</strong> Usuario hace pregunta → modelo responde → usuario evalúa y decide.<br><br>El analista ejecuta manualmente cada paso del análisis y usa el modelo como asistente puntual. Alta dependencia de la calidad del prompt individual.</div>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🤖</div>
+          <div class="card-title">ChatGPT como orquestador</div>
+          <div class="card-text"><strong>Flujo:</strong> Analista define objetivo → orquestador descompone → agentes ejecutan → modelo consolida → analista revisa.<br><br>El modelo gestiona el flujo, delega tareas a agentes especializados y entrega un resultado integrado. El analista supervisa y valida.</div>
+        </div>
+      </div>
+
+      <div class="callout purple">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Implicación para el profesional financiero:</strong> El salto no es aprender a escribir mejores prompts — es aprender a <strong>diseñar sistemas donde la IA actúa con autonomía supervisada</strong>. El profesional evoluciona de ejecutor a arquitecto: define el objetivo, establece los límites, gobierna el proceso y valida los resultados críticos.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(3)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(5)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S4.5 -->
+    <div class="session-panel" id="s5">
+      <div class="session-hero">
+        <div class="hero-top teal">
+          <div class="hero-eyebrow">Sesión 4.5</div>
+          <div class="hero-title">OpenAI Agents SDK — estructura, herramientas, handoffs y trazabilidad en finanzas</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El <strong>OpenAI Agents SDK</strong> es el marco técnico que permite construir sistemas donde múltiples agentes colaboran de forma coordinada. En finanzas, su valor reside en la capacidad de orquestar tareas complejas — análisis, cálculo, validación, reporte — con trazabilidad completa y puntos de control humano en decisiones críticas.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> SDK · Técnico</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Componentes del OpenAI Agents SDK</div>
+      <div class="cards-grid">
+        <div class="concept-card teal">
+          <div class="card-icon teal">🧠</div>
+          <div class="card-title">Agentes</div>
+          <div class="card-text">Instancias del modelo configuradas con instrucciones específicas, herramientas disponibles y límites de acción. Cada agente tiene un rol definido y no puede actuar fuera de él.</div>
+          <span class="card-tag tag-teal">Core component</span>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">🔨</div>
+          <div class="card-title">Herramientas (Tools)</div>
+          <div class="card-text">Funciones que el agente puede invocar: llamadas a APIs, ejecución de código, consultas a bases de datos, cálculos financieros o acceso a datos externos en tiempo real.</div>
+          <span class="card-tag tag-blue">Function calling</span>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🔁</div>
+          <div class="card-title">Handoffs (transferencias)</div>
+          <div class="card-text">Mecanismo mediante el cual un agente transfiere el control a otro agente especializado. Permite flujos complejos donde distintos agentes aportan su especialización en cada etapa.</div>
+          <span class="card-tag tag-purple">Coordinación</span>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🔍</div>
+          <div class="card-title">Trazabilidad</div>
+          <div class="card-text">Registro completo de cada decisión, herramienta invocada y dato procesado. Permite auditoría end-to-end del proceso agéntico, fundamental para cumplimiento regulatorio.</div>
+          <span class="card-tag tag-gold">Gobernanza</span>
+        </div>
+      </div>
+
+      <div class="section-label">Arquitectura de un agente financiero simple con SDK</div>
+      <div class="agent-diagram">
+        <div class="ad-header">
+          <div class="ad-title">Sistema agéntico de análisis financiero — OpenAI Agents SDK</div>
+          <div class="ad-sub">Flujo: ingesta → análisis → validación → reporte</div>
+        </div>
+        <div class="ad-body">
+          <div class="ad-grid">
+            <div></div>
+            <div class="ad-box orchestrator">
+              <div class="ad-box-title">🤖 Agente Orquestador</div>
+              <div class="ad-box-sub">GPT-5.4 · Recibe el objetivo, descompone tareas, asigna agentes y consolida resultados</div>
+            </div>
+            <div></div>
+          </div>
+          <div class="ad-agents-row">
+            <div class="ad-agent-card">
+              <div class="ad-agent-icon">📥</div>
+              <div class="ad-agent-name">Agente de Ingesta</div>
+              <div class="ad-agent-role">Lee y normaliza estados financieros del ERP</div>
+            </div>
+            <div class="ad-agent-card">
+              <div class="ad-agent-icon">📊</div>
+              <div class="ad-agent-name">Agente Analista</div>
+              <div class="ad-agent-role">Calcula KPIs, ratios y variaciones clave</div>
+            </div>
+            <div class="ad-agent-card">
+              <div class="ad-agent-icon">✅</div>
+              <div class="ad-agent-name">Agente Auditor</div>
+              <div class="ad-agent-role">Valida consistencia y detecta anomalías</div>
+            </div>
+            <div class="ad-agent-card">
+              <div class="ad-agent-icon">📄</div>
+              <div class="ad-agent-name">Agente Reportero</div>
+              <div class="ad-agent-role">Genera narrativa ejecutiva para junta</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout teal">
+        <div class="callout-icon">🔑</div>
+        <div><strong>Principio de trazabilidad:</strong> En finanzas corporativas, <strong>cada decisión del sistema debe poder auditarse</strong>. El SDK registra qué herramienta fue invocada, con qué datos, en qué momento y con qué resultado. Este log es el fundamento del cumplimiento normativo en sistemas agénticos.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(4)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(6)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S4.6 -->
+    <div class="session-panel" id="s6">
+      <div class="session-hero">
+        <div class="hero-top green">
+          <div class="hero-eyebrow">Sesión 4.6</div>
+          <div class="hero-title">Diseño de flujos híbridos IA–humano para FP&A — estructura, roles y puntos de control</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Los flujos híbridos IA–humano no son una transición temporal: son la arquitectura permanente de la función financiera del futuro. El diseño correcto define <strong>qué hace la IA con autonomía, qué requiere supervisión humana y dónde está el punto de no retorno</strong> en cada proceso crítico.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> FP&A aplicado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Principios del diseño híbrido IA–humano</div>
+      <div class="cards-grid">
+        <div class="concept-card green">
+          <div class="card-icon green">🤖</div>
+          <div class="card-title">IA con autonomía total</div>
+          <div class="card-text">Tareas estructuradas, repetitivas y de bajo riesgo donde la IA opera sin supervisión: extracción de datos, cálculo de ratios estándar, formateo de reportes, clasificación de transacciones.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">👁️</div>
+          <div class="card-title">IA con supervisión humana</div>
+          <div class="card-text">Análisis de tendencias, generación de supuestos y construcción de escenarios. La IA propone y el analista valida antes de avanzar. El humano conserva el criterio de aceptación.</div>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">🛑</div>
+          <div class="card-title">Humano con soporte IA</div>
+          <div class="card-text">Decisiones de alto impacto: aprobación de presupuesto, recomendaciones de inversión, comunicación con junta directiva. La IA aporta análisis, pero la decisión final es humana.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Flujo híbrido aplicado al ciclo presupuestal (FP&A)</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Fase del proceso</th><th>Rol de la IA</th><th>Rol del humano</th><th>Control</th></tr></thead>
+          <tbody>
+            <tr><td>Ingesta de datos históricos</td><td class="td-yes">Autonomía total — extrae y normaliza</td><td>Valida completitud del dataset</td><td class="td-yes">Bajo</td></tr>
+            <tr><td>Análisis de tendencias</td><td class="td-yes">Genera análisis y detecta patrones</td><td>Revisa y ajusta según contexto estratégico</td><td class="td-mid">Medio</td></tr>
+            <tr><td>Generación de supuestos</td><td class="td-mid">Propone supuestos basados en datos</td><td>Valida y ajusta supuestos clave</td><td class="td-mid">Medio-Alto</td></tr>
+            <tr><td>Construcción de modelo proforma</td><td class="td-yes">Calcula proyecciones automáticamente</td><td>Revisa coherencia y plausibilidad</td><td class="td-mid">Medio</td></tr>
+            <tr><td>Análisis de escenarios</td><td class="td-yes">Genera escenarios base/optimista/pesimista</td><td>Selecciona el escenario de presentación</td><td class="td-mid">Medio-Alto</td></tr>
+            <tr><td>Aprobación del presupuesto</td><td class="td-no">Solo soporte narrativo y análisis de impacto</td><td>Decisión final con criterio estratégico</td><td class="td-no">Humano obligatorio</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-icon">⚖️</div>
+        <div><strong>Regla de diseño híbrido:</strong> El punto de control humano no se define por comodidad, sino por <strong>nivel de riesgo e impacto estratégico de la decisión</strong>. Automatizar lo que se puede automatizar libera capacidad cognitiva del analista para las decisiones que realmente requieren criterio humano.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(5)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(7)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S4.7 -->
+    <div class="session-panel" id="s7">
+      <div class="session-hero">
+        <div class="hero-top red">
+          <div class="hero-eyebrow">Sesión 4.7</div>
+          <div class="hero-title">Riesgos y salvaguardas — exceso de confianza algorítmica y gobernanza de agentes financieros</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El mayor riesgo de los sistemas agénticos en finanzas no es técnico: es el <strong>exceso de confianza algorítmica</strong> — la tendencia a aceptar outputs bien estructurados sin validación crítica. Una respuesta con apariencia profesional puede contener errores analíticos significativos que se propagan a lo largo del flujo.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Riesgos críticos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Tipología de riesgos en sistemas agénticos financieros</div>
+      <div class="cards-grid">
+        <div class="concept-card">
+          <div class="card-icon red">🎭</div>
+          <div class="card-title">Exceso de confianza algorítmica</div>
+          <div class="card-text">Aceptar outputs bien redactados sin validación crítica. El modelo produce respuestas con apariencia de validez que ocultan errores de fondo en supuestos o cálculos.</div>
+          <span class="card-tag tag-red">Riesgo crítico</span>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">📉</div>
+          <div class="card-title">Propagación de errores en cadena</div>
+          <div class="card-text">En arquitecturas multi-agente, un error en el agente de ingesta se propaga a todos los agentes siguientes. Sin puntos de validación, el error llega intacto al reporte final.</div>
+          <span class="card-tag tag-red">Riesgo sistémico</span>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🔮</div>
+          <div class="card-title">Alucinación financiera</div>
+          <div class="card-text">El modelo genera cifras, ratios o tendencias plausibles pero incorrectas cuando no tiene acceso a los datos reales. Especialmente crítico en valoración y análisis de riesgo.</div>
+          <span class="card-tag tag-gold">Riesgo de calidad</span>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">🔒</div>
+          <div class="card-title">Riesgo de confidencialidad</div>
+          <div class="card-text">Envío inadvertido de información financiera sensible a APIs externas o modelos en la nube sin políticas claras de soberanía de datos. Impacto regulatorio y competitivo.</div>
+          <span class="card-tag tag-blue">Riesgo regulatorio</span>
+        </div>
+      </div>
+
+      <div class="section-label">Salvaguardas mínimas requeridas</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Salvaguarda</th><th>Qué protege</th><th>Cómo implementarla</th></tr></thead>
+          <tbody>
+            <tr><td>Validación cruzada de cifras</td><td>Alucinación y errores de cálculo</td><td>Agente auditor independiente que verifica outputs contra fuente de datos original</td></tr>
+            <tr><td>Puntos de control humano</td><td>Decisiones de alto impacto</td><td>Nodos obligatorios de aprobación humana antes de etapas críticas del flujo</td></tr>
+            <tr><td>Logs de trazabilidad</td><td>Propagación de errores y auditoría</td><td>Registro de cada herramienta invocada, dato procesado y decisión tomada por el sistema</td></tr>
+            <tr><td>Políticas de privacidad de datos</td><td>Confidencialidad y cumplimiento</td><td>Clasificación de datos por sensibilidad antes de enviarlos a cualquier modelo externo</td></tr>
+            <tr><td>Validación de supuestos</td><td>Exceso de confianza algorítmica</td><td>Protocolo de revisión crítica de supuestos generados por IA antes de usarlos en modelos</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">⚠️</div>
+        <div><strong>Principio de gobernanza:</strong> En finanzas corporativas, <strong>la IA no reemplaza el criterio — lo amplifica</strong>. La salvaguarda más importante no es técnica: es el hábito del analista de cuestionar, contrastar y validar los outputs del sistema antes de incorporarlos a cualquier decisión de alto impacto.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(6)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(8)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S4.8 -->
+    <div class="session-panel" id="s8">
+      <div class="session-hero">
+        <div class="hero-top dark">
+          <div class="hero-eyebrow">Sesión 4.8</div>
+          <div class="hero-title">Adopción institucional — pilotos, escalamiento y transformación organizacional en finanzas</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La adopción de IA en finanzas no es un evento puntual: es un <strong>proceso de transformación organizacional progresiva</strong>. El éxito depende de la capacidad de diseñar pilotos que generen confianza, escalar lo que funciona y gestionar activamente la resistencia al cambio con evidencia y participación.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 40 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> Transformación</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Hoja de ruta de adopción — de piloto a infraestructura cognitiva</div>
+      <div class="stack-flow">
+        <div class="sf-step"><div class="sf-num">1</div><span class="sf-model">Piloto</span><div class="sf-task">Proceso acotado</div><div class="sf-desc">Un caso de uso claro con métricas de éxito definidas desde el inicio</div></div>
+        <div class="sf-step"><div class="sf-num">2</div><span class="sf-model">Validación</span><div class="sf-task">Evidencia y aprendizaje</div><div class="sf-desc">Medir impacto, documentar errores y ajustar el sistema</div></div>
+        <div class="sf-step"><div class="sf-num">3</div><span class="sf-model">Expansión</span><div class="sf-task">Más procesos</div><div class="sf-desc">Aplicar el modelo a procesos similares con menor fricción</div></div>
+        <div class="sf-step"><div class="sf-num">4</div><span class="sf-model">Escalamiento</span><div class="sf-task">Integración sistémica</div><div class="sf-desc">Conectar con sistemas corporativos y consolidar la gobernanza</div></div>
+        <div class="sf-step"><div class="sf-num">5</div><span class="sf-model">Infraestructura</span><div class="sf-task">Capacidad institucional</div><div class="sf-desc">La IA es parte permanente de la arquitectura financiera</div></div>
+      </div>
+
+      <div class="section-label">Factores críticos de éxito en la adopción</div>
+      <div class="cards-grid">
+        <div class="concept-card blue">
+          <div class="card-icon blue">🎯</div>
+          <div class="card-title">Caso de uso con impacto visible</div>
+          <div class="card-text">El primer piloto debe resolver un problema real y medible. El impacto visible genera confianza interna y financia el escalamiento con evidencia, no con promesas.</div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">👥</div>
+          <div class="card-title">Participación del equipo financiero</div>
+          <div class="card-text">La adopción sin participación del equipo genera rechazo. Los analistas financieros deben co-diseñar los flujos para que la IA amplifique su criterio, no compita con él.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">📏</div>
+          <div class="card-title">Métricas de éxito definidas</div>
+          <div class="card-text">Tiempo ahorrado, calidad del output, errores detectados, reducción de ciclos de revisión. Sin métricas, el piloto no se puede evaluar ni escalar con criterio.</div>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">🛡️</div>
+          <div class="card-title">Gobernanza desde el inicio</div>
+          <div class="card-text">Las políticas de uso, privacidad de datos y puntos de control humano deben definirse antes del primer piloto, no después del primer error. La gobernanza es by design.</div>
+        </div>
+      </div>
+
+      <div class="callout blue">
+        <div class="callout-icon">🏁</div>
+        <div><strong>Conclusión del módulo:</strong> El profesional financiero del siglo XXI no solo interpreta cifras: <strong>diseña flujos cognitivos, dialoga con algoritmos y construye inteligencia institucional aumentada</strong>. La adopción responsable de IA en finanzas no es opcional — es la competencia diferenciadora que define la próxima generación de líderes financieros.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(7)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(9)">Evaluación final <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="session-panel" id="s9">
+      <div class="session-hero">
+        <div class="hero-top purple">
+          <div class="hero-eyebrow">Evaluación · Módulo 4</div>
+          <div class="hero-title">Quiz de verificación — Ecosistema Multi-LLM Financiero: de ChatGPT a Agentes</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Valide su comprensión de los conceptos clave del módulo. Las preguntas están diseñadas para evaluar criterio estratégico — no memorización. Escenarios reales de adopción, gobernanza y diseño de sistemas agénticos en finanzas corporativas.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 8 preguntas</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> ~15 min</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-card" id="quizCard"></div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(8)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Volver al módulo</button>
+        <button class="nav-btn" onclick="resetQuiz()">Reiniciar quiz</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SESSIONS=[
+  {num:"4.1",title:"ChatGPT como infraestructura cognitiva"},
+  {num:"4.2",title:"Instrucciones de sistema y control semántico"},
+  {num:"4.3",title:"Integración con Excel, Power BI y APIs"},
+  {num:"4.4",title:"De herramienta a orquestador agéntico"},
+  {num:"4.5",title:"OpenAI Agents SDK — estructura y handoffs"},
+  {num:"4.6",title:"Flujos híbridos IA–humano en FP&A"},
+  {num:"4.7",title:"Riesgos, salvaguardas y gobernanza"},
+  {num:"4.8",title:"Adopción institucional y escalamiento"},
+  {num:"Quiz",title:"Evaluación final del módulo"}
+];
+
+const QUIZ=[
+  {q:"¿Cuál es la diferencia estructural entre usar ChatGPT como herramienta y usarlo como orquestador agéntico en un proceso financiero?",opts:["Como herramienta es más preciso; como orquestador comete más errores","Como herramienta, el analista ejecuta cada paso manualmente. Como orquestador, el modelo coordina agentes especializados mientras el analista supervisa y valida resultados","Como herramienta solo genera texto; como orquestador solo hace cálculos numéricos","No hay diferencia práctica — ambos modos producen el mismo output financiero"],correct:1,feedback:"Correcto. La diferencia es conceptual y operativa: en modo herramienta el analista hace preguntas y evalúa cada respuesta. En modo orquestador, el modelo descompone el objetivo, delega tareas a agentes y consolida resultados — el analista diseña el sistema y supervisa los nodos críticos."},
+  {q:"¿Para qué sirven las instrucciones de sistema en ChatGPT aplicadas a finanzas corporativas?",opts:["Para aumentar la velocidad de respuesta del modelo","Para establecer el comportamiento, tono, rol y límites del modelo desde el inicio de la sesión, garantizando coherencia con el perfil deseado en cada función financiera","Para conectar ChatGPT directamente con bases de datos externas sin API","Para reducir el costo por token de cada consulta"],correct:1,feedback:"Correcto. Las instrucciones de sistema permiten configurar perfiles como 'auditor tributario', 'asesor de riesgo financiero' o 'controlador presupuestal', estandarizando el análisis, garantizando cumplimiento regulatorio y adaptando el contexto organizacional desde el inicio de cada sesión."},
+  {q:"En el OpenAI Agents SDK, ¿qué es un handoff y cuál es su función en un sistema agéntico financiero?",opts:["Es una función de respaldo que activa el modelo cuando hay un error de cálculo","Es el mecanismo mediante el cual un agente transfiere el control a otro agente especializado, permitiendo flujos donde cada agente aporta su especialización en su etapa correspondiente","Es una forma de guardar el historial de conversación entre sesiones","Es el nombre del módulo de trazabilidad que registra las decisiones del sistema"],correct:1,feedback:"Correcto. El handoff es el mecanismo de coordinación entre agentes. Por ejemplo, el agente de ingesta transfiere el control al agente analista una vez que los datos están normalizados, y este lo transfiere al agente auditor para validación. Esto permite flujos complejos con especialización por etapa."},
+  {q:"¿Cuál es el riesgo más crítico identificado en sistemas agénticos aplicados a finanzas corporativas?",opts:["El alto costo computacional de los modelos GPT en producción","El exceso de confianza algorítmica — aceptar outputs bien estructurados sin validación crítica, lo que permite que errores analíticos se propaguen con apariencia de validez","La lentitud de los agentes para procesar estados financieros extensos","La incompatibilidad de los agentes con formatos Excel y Power BI"],correct:1,feedback:"Correcto. El exceso de confianza algorítmica es el riesgo más crítico porque es silencioso: el modelo produce respuestas con estructura profesional que parecen correctas pero pueden contener errores de fondo en supuestos, cálculos o interpretaciones que se propagarán a lo largo de todo el flujo agéntico."},
+  {q:"En el diseño de un flujo híbrido IA–humano para el ciclo presupuestal (FP&A), ¿en qué etapa es OBLIGATORIO el control humano?",opts:["En la extracción y normalización de datos históricos del ERP","En el cálculo automático de proyecciones a partir de supuestos ya validados","En la aprobación final del presupuesto, donde la decisión tiene alto impacto estratégico y no puede delegarse al sistema","En la generación de análisis de tendencias a partir de datos estructurados"],correct:2,feedback:"Correcto. La aprobación del presupuesto es una decisión de alto impacto estratégico que involucra criterio sobre el contexto organizacional, visión estratégica y responsabilidad ante la junta. La IA puede apoyar con análisis y narrativa, pero la decisión final debe ser humana obligatoriamente."},
+  {q:"¿Cuál es el principio correcto para definir los puntos de control humano en un sistema agéntico financiero?",opts:["Se definen según la comodidad del equipo con la tecnología — más control al inicio, menos después","Se definen según el nivel de riesgo e impacto estratégico de la decisión — no por comodidad con la tecnología","Se eliminan progresivamente a medida que el sistema demuestra precisión histórica","Se colocan en todas las etapas del flujo para garantizar máxima seguridad"],correct:1,feedback:"Correcto. El diseño correcto de los puntos de control se basa en el nivel de riesgo e impacto de la decisión, no en la comodidad del equipo o la historia de precisión del modelo. Automatizar lo que se puede automatizar libera capacidad cognitiva para las decisiones que realmente requieren criterio humano."},
+  {q:"En la hoja de ruta de adopción institucional de IA en finanzas, ¿qué característica debe tener el primer piloto para maximizar las probabilidades de éxito?",opts:["Debe ser el proceso más complejo y estratégico de la organización para demostrar máximo impacto","Debe ser un caso de uso acotado con un problema real y medible, y con métricas de éxito definidas desde el inicio","Debe involucrar a todos los departamentos financieros simultáneamente para garantizar alineación","Debe ejecutarse sin políticas de gobernanza para moverse con agilidad en la fase inicial"],correct:1,feedback:"Correcto. El primer piloto debe resolver un problema real y medible en un proceso acotado. El impacto visible genera confianza interna y financia el escalamiento con evidencia, no con promesas. La gobernanza debe definirse desde el inicio, no después del primer error."},
+  {q:"¿Qué transformación de rol describe correctamente la evolución del profesional financiero en la era de los sistemas agénticos?",opts:["De gerente de presupuesto a especialista en programación Python y APIs","De ejecutor de análisis manuales a arquitecto de flujos cognitivos que diseña, supervisa y gobierna sistemas donde la IA amplifica su criterio","De analista financiero a operador técnico de modelos de lenguaje","De especialista en Excel a especialista en prompting sin necesidad de criterio financiero"],correct:1,feedback:"Correcto. El profesional financiero evoluciona hacia un rol de arquitecto de soluciones cognitivas: diseña los flujos, define los objetivos del sistema, establece los puntos de control y valida los resultados críticos. La IA amplifica su criterio — no lo reemplaza. El juicio experto sigue siendo el centro del proceso."}
+];
+
+let current=1,completed=new Set(),quizIdx=0,quizScore=0,answerMap={};
+
+function buildSidebar(){
+  const list=document.getElementById("sessionList");
+  list.innerHTML=SESSIONS.map((s,i)=>{
+    const n=i+1,isCurrent=n===current,isDone=completed.has(n);
+    return `<div class="session-item ${isCurrent?"active":""}" onclick="goTo(${n})">
+      <div class="si-num">${s.num}</div>
+      <div class="si-text"><div class="si-label">Sesión ${s.num}</div><div class="si-title">${s.title}</div></div>
+      <div class="si-check ${isCurrent?"current":isDone?"done":"pending"}">
+        ${isCurrent?`<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>`:isDone?`<svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,4 3,6 7,2"/></svg>`:""}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function updateProgress(){
+  const pct=Math.round((completed.size/SESSIONS.length)*100);
+  document.getElementById("progressFill").style.width=pct+"%";
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("badgeSession").textContent="Sesión "+SESSIONS[current-1].num;
+}
+
+function goTo(n){
+  completed.add(current);
+  document.querySelectorAll(".session-panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById("s"+n).classList.add("active");
+  document.getElementById("contentArea").scrollTop=0;
+  current=n;buildSidebar();updateProgress();
+  if(n===9) renderQuiz();
+}
+
+function renderQuiz(){
+  const q=QUIZ[quizIdx];
+  const answered=answerMap[quizIdx]!==undefined;
+  document.getElementById("quizCard").innerHTML=`
+    <div class="quiz-header">
+      <div class="quiz-header-title">Pregunta ${quizIdx+1} de ${QUIZ.length}</div>
+      <div class="quiz-header-sub">Módulo 4 · Ecosistema Multi-LLM Financiero: de ChatGPT a Agentes</div>
+    </div>
+    <div class="quiz-body">
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o,i)=>{
+          let cls="quiz-opt"+(answered?" disabled":"");
+          if(answered){if(i===q.correct)cls+=" correct";else if(answerMap[quizIdx]===i)cls+=" wrong";}
+          return `<div class="${cls}" onclick="${answered?"":"answer("+i+")"}"><span class="opt-letter">${"ABCD"[i]}</span><span>${o}</span></div>`;
+        }).join("")}
+      </div>
+      <div class="quiz-feedback ${answered?"show":""} ${answered?(answerMap[quizIdx]===q.correct?"ok":"fail"):""}">
+        ${answered?q.feedback:""}
+      </div>
+      <div class="quiz-footer">
+        <div class="quiz-score">Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas</div>
+        <div style="display:flex;gap:8px;">
+          ${quizIdx>0?`<button class="nav-btn" onclick="prevQ()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg></button>`:""}
+          ${quizIdx<QUIZ.length-1
+            ?`<button class="nav-btn primary" onclick="nextQ()">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>`
+            :`<div style="font-size:13px;font-weight:500;color:var(--green);padding:8px 16px;background:var(--green-light);border-radius:8px;">✅ Módulo 4 completado — ${quizScore}/${QUIZ.length} correctas</div>`}
+        </div>
+      </div>
+    </div>`;
+}
+
+function answer(i){
+  if(answerMap[quizIdx]!==undefined)return;
+  answerMap[quizIdx]=i;
+  if(i===QUIZ[quizIdx].correct) quizScore++;
+  const opts=document.querySelectorAll(".quiz-opt");
+  opts.forEach((o,idx)=>{
+    o.classList.add("disabled");
+    if(idx===QUIZ[quizIdx].correct) o.classList.add("correct");
+    else if(idx===i) o.classList.add("wrong");
+  });
+  const fb=document.querySelector(".quiz-feedback");
+  if(fb){fb.textContent=QUIZ[quizIdx].feedback;fb.classList.add("show");fb.classList.add(i===QUIZ[quizIdx].correct?"ok":"fail");}
+  document.querySelector(".quiz-score").innerHTML=`Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas`;
+}
+function nextQ(){if(quizIdx<QUIZ.length-1){quizIdx++;renderQuiz();}}
+function prevQ(){if(quizIdx>0){quizIdx--;renderQuiz();}}
+function resetQuiz(){quizIdx=0;quizScore=0;answerMap={};renderQuiz();}
+buildSidebar();updateProgress();
+</script>
+</body>
+</html>
