@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Módulo 7 · Modelos de Planeación Financiera Estratégica con IA Agéntica · ADVANCE UR</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ur:#C8102E;--url:#F5E6E9;--urm:#E8899A;
+  --bg:#F2F0EE;--white:#FFFFFF;
+  --b1:#E0DDDA;--b2:#C8C4C0;
+  --t1:#2C2C2C;--t2:#666560;--t3:#9E9B97;
+  --gold:#B8860B;--gold-light:#FDF8EC;
+  --green:#1A6B3C;--green-light:#EAF5EE;
+  --blue:#1A3A6B;--blue-light:#EAF0F8;
+  --purple:#4A1D8F;--purple-light:#F0EBF8;
+  --teal:#0E6B6B;--teal-light:#E6F5F5;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;}
+header{flex-shrink:0;background:var(--white);border-bottom:2px solid var(--ur);padding:.75rem 2rem;display:flex;align-items:center;gap:16px;z-index:100;}
+.logo-mark{width:36px;height:36px;background:var(--ur);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:18px;height:18px;}
+.header-text{flex:1;}
+.header-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--t1);line-height:1.2;}
+.header-sub{font-size:11px;color:var(--t3);letter-spacing:.04em;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.progress-bar-wrap{width:180px;}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px;}
+.progress-track{height:4px;background:var(--b1);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--ur);border-radius:2px;transition:width .5s ease;}
+.badge-session{font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;background:var(--url);color:var(--ur);border:1px solid var(--urm);white-space:nowrap;}
+.main{flex:1;display:flex;overflow:hidden;}
+.sidebar{width:280px;flex-shrink:0;background:var(--white);border-right:1px solid var(--b1);overflow-y:auto;display:flex;flex-direction:column;}
+.sidebar-header{padding:1rem 1.25rem .75rem;border-bottom:1px solid var(--b1);position:sticky;top:0;background:var(--white);z-index:10;}
+.sidebar-mod-num{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--ur);text-transform:uppercase;margin-bottom:2px;}
+.sidebar-title{font-size:11px;font-weight:500;letter-spacing:.05em;color:var(--t3);text-transform:uppercase;}
+.sidebar-mod{font-size:13px;font-weight:500;color:var(--t1);margin-top:3px;}
+.session-list{padding:.5rem 0;}
+.session-item{display:flex;align-items:center;gap:10px;padding:.6rem 1.25rem;cursor:pointer;transition:background .12s;border-left:3px solid transparent;}
+.session-item:hover{background:var(--bg);}
+.session-item.active{background:var(--url);border-left-color:var(--ur);}
+.si-num{font-family:'DM Serif Display',serif;font-size:15px;color:var(--t3);width:24px;flex-shrink:0;text-align:center;}
+.session-item.active .si-num{color:var(--ur);}
+.si-text{flex:1;min-width:0;}
+.si-label{font-size:10px;color:var(--t3);}
+.si-title{font-size:12px;font-weight:500;color:var(--t1);line-height:1.3;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.session-item.active .si-title{color:var(--ur);}
+.si-check{width:16px;height:16px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.si-check.done{background:var(--green);color:#fff;}
+.si-check.current{background:var(--ur);color:#fff;}
+.si-check.pending{background:var(--b1);}
+.content{flex:1;overflow-y:auto;padding:2rem 2.5rem 3rem;display:flex;flex-direction:column;gap:2rem;}
+.session-panel{display:none;}
+.session-panel.active{display:flex;flex-direction:column;gap:1.5rem;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.session-hero{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.hero-top{padding:1.75rem 2rem 1.25rem;}
+.hero-top.green{background:linear-gradient(135deg,#051209 0%,var(--green) 100%);}
+.hero-top.blue{background:linear-gradient(135deg,#040d1a 0%,var(--blue) 100%);}
+.hero-top.gold{background:linear-gradient(135deg,#1a1000 0%,#8B6914 100%);}
+.hero-top.red{background:linear-gradient(135deg,#1a0408 0%,var(--ur) 100%);}
+.hero-top.purple{background:linear-gradient(135deg,#0a051a 0%,var(--purple) 100%);}
+.hero-top.teal{background:linear-gradient(135deg,#050f0f 0%,var(--teal) 100%);}
+.hero-top.dark{background:linear-gradient(135deg,#0a0a1a 0%,#1A3A6B 100%);}
+.hero-eyebrow{font-size:10px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:8px;}
+.hero-title{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;line-height:1.3;}
+.hero-body{padding:1.5rem 2rem;display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;}
+.hero-desc{flex:1;min-width:200px;font-size:14px;color:var(--t2);line-height:1.75;}
+.hero-meta{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);padding:5px 12px;border-radius:20px;border:1px solid var(--b1);background:var(--bg);white-space:nowrap;}
+.meta-pill svg{width:12px;height:12px;color:var(--ur);}
+.section-label{font-size:11px;font-weight:500;letter-spacing:.07em;color:var(--ur);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--url);}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+.cards-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.cards-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.concept-card{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1.25rem;transition:all .2s;position:relative;overflow:hidden;}
+.concept-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--ur);}
+.concept-card.gold::before{background:var(--gold);}
+.concept-card.green::before{background:var(--green);}
+.concept-card.blue::before{background:var(--blue);}
+.concept-card.purple::before{background:var(--purple);}
+.concept-card.teal::before{background:var(--teal);}
+.concept-card:hover{border-color:var(--b2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px;}
+.card-icon.red{background:var(--url);}
+.card-icon.gold{background:var(--gold-light);}
+.card-icon.green{background:var(--green-light);}
+.card-icon.blue{background:var(--blue-light);}
+.card-icon.purple{background:var(--purple-light);}
+.card-icon.teal{background:var(--teal-light);}
+.card-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:5px;}
+.card-text{font-size:12px;color:var(--t2);line-height:1.65;}
+.card-tag{display:inline-flex;margin-top:10px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;}
+.tag-red{background:var(--url);color:var(--ur);}
+.tag-gold{background:var(--gold-light);color:var(--gold);}
+.tag-green{background:var(--green-light);color:var(--green);}
+.tag-blue{background:var(--blue-light);color:var(--blue);}
+.tag-purple{background:var(--purple-light);color:var(--purple);}
+.tag-teal{background:var(--teal-light);color:var(--teal);}
+.compare-table{background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.compare-table table{width:100%;border-collapse:collapse;}
+.compare-table th{background:var(--url);font-size:11px;font-weight:500;color:var(--ur);padding:.65rem 1rem;text-align:left;border-bottom:1px solid var(--b1);}
+.compare-table th:first-child{border-right:1px solid var(--b1);width:180px;}
+.compare-table td{font-size:12px;color:var(--t2);padding:.65rem 1rem;border-bottom:1px solid var(--bg);vertical-align:top;line-height:1.5;}
+.compare-table tr:last-child td{border-bottom:none;}
+.compare-table td:first-child{font-weight:500;color:var(--t1);border-right:1px solid var(--b1);background:var(--bg);}
+.td-yes{color:var(--green)!important;}
+.td-mid{color:var(--gold)!important;}
+.td-no{color:var(--ur)!important;}
+.stack-flow{display:flex;align-items:center;gap:0;background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.sf-step{flex:1;padding:1.1rem .9rem;border-right:1px solid var(--b1);text-align:center;transition:background .15s;position:relative;}
+.sf-step:last-child{border-right:none;}
+.sf-step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--b2);z-index:2;pointer-events:none;}
+.sf-step:last-child::after{display:none;}
+.sf-step:hover{background:var(--bg);}
+.sf-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ur);opacity:.25;line-height:1;}
+.sf-model{font-size:11px;font-weight:500;color:var(--green);margin:3px 0;padding:2px 8px;background:var(--green-light);border-radius:20px;display:inline-block;}
+.sf-task{font-size:11px;color:var(--t1);font-weight:500;margin-bottom:2px;}
+.sf-desc{font-size:10px;color:var(--t3);line-height:1.5;}
+.callout{border-radius:10px;padding:1.1rem 1.25rem;font-size:13px;line-height:1.65;display:flex;gap:12px;align-items:flex-start;}
+.callout.red{background:var(--url);border:1px solid var(--urm);color:#7a0010;}
+.callout.gold{background:var(--gold-light);border:1px solid #e6d080;color:#7a5800;}
+.callout.green{background:var(--green-light);border:1px solid #b3dfc2;color:#0a4a25;}
+.callout.blue{background:var(--blue-light);border:1px solid #b3c9e6;color:#0d2a55;}
+.callout.purple{background:var(--purple-light);border:1px solid #c5a8e6;color:#2a0a6a;}
+.callout.teal{background:var(--teal-light);border:1px solid #a8d8d8;color:#0a4a4a;}
+.callout-icon{font-size:18px;flex-shrink:0;line-height:1.3;}
+.callout strong{font-weight:500;}
+.session-nav{display:flex;justify-content:space-between;align-items:center;padding-top:1.5rem;border-top:1px solid var(--b1);margin-top:.5rem;}
+.nav-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;border:1px solid var(--b2);color:var(--t2);background:var(--white);}
+.nav-btn:hover{background:var(--bg);color:var(--t1);}
+.nav-btn.primary{background:var(--ur);color:#fff;border-color:var(--ur);}
+.nav-btn.primary:hover{opacity:.88;}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.nav-btn svg{width:14px;height:14px;}
+.quiz-card{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.quiz-header{background:linear-gradient(135deg,#051209,var(--green));padding:1.25rem 1.5rem;}
+.quiz-header-title{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:3px;}
+.quiz-header-sub{font-size:11px;color:rgba(255,255,255,.6);}
+.quiz-body{padding:1.5rem;}
+.quiz-q{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:14px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:.75rem 1rem;border-radius:8px;border:1px solid var(--b1);cursor:pointer;transition:all .15s;font-size:13px;color:var(--t2);background:var(--bg);}
+.quiz-opt:hover{border-color:var(--urm);background:var(--url);color:var(--t1);}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.quiz-opt.wrong{border-color:var(--ur);background:var(--url);color:var(--ur);}
+.quiz-opt.disabled{cursor:default;pointer-events:none;}
+.opt-letter{width:22px;height:22px;border-radius:50%;background:var(--b1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+.quiz-opt.correct .opt-letter{background:var(--green);color:#fff;}
+.quiz-opt.wrong .opt-letter{background:var(--ur);color:#fff;}
+.quiz-feedback{margin-top:14px;padding:.9rem 1rem;border-radius:8px;font-size:13px;line-height:1.55;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.ok{background:var(--green-light);color:var(--green);border:1px solid #b3dfc2;}
+.quiz-feedback.fail{background:var(--url);color:var(--ur);border:1px solid var(--urm);}
+.quiz-footer{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--b1);}
+.quiz-score{font-size:12px;color:var(--t3);}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><polyline points="3,14 7,8 10,11 13,6 17,10" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="10" r="1.5" fill="#ffccd4"/></svg></div>
+  <div class="header-text">
+    <div class="header-title">Módulo 7 · Modelos de Planeación Financiera Estratégica con IA Agéntica</div>
+    <div class="header-sub">ADVANCE · Universidad del Rosario · Finanzas Corporativas</div>
+  </div>
+  <div class="header-right">
+    <div class="progress-bar-wrap">
+      <div class="progress-label"><span>Progreso</span><span id="pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="badge-session" id="badgeSession">Sesión 7.1</div>
+  </div>
+</header>
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-mod-num">Módulo 7 · Cierre</div>
+      <div class="sidebar-title">Contenidos</div>
+      <div class="sidebar-mod">Planeación Estratégica con IA Agéntica</div>
+    </div>
+    <div class="session-list" id="sessionList"></div>
+  </div>
+  <div class="content" id="contentArea">
+
+    <!-- S7.1 -->
+    <div class="session-panel active" id="s1">
+      <div class="session-hero">
+        <div class="hero-top green">
+          <div class="hero-eyebrow">Sesión 7.1</div>
+          <div class="hero-title">El Presupuesto como Sistema Cognitivo Aumentado — Límites del modelo clásico y reconfiguración</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El presupuesto clásico fue diseñado para un entorno predecible. En 2026, ese modelo muestra límites estructurales: ciclos lentos, supuestos frágiles y poca capacidad de adaptación. La IA agéntica no solo acelera el presupuesto — lo <strong>reconfigura como sistema cognitivo</strong> capaz de aprender, actualizar y recomendar.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Fundamentos M7</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Límites estructurales del modelo clásico vs. presupuesto aumentado</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Dimensión</th><th>Presupuesto clásico</th><th>Presupuesto aumentado con IA</th></tr></thead>
+          <tbody>
+            <tr><td>Ciclo de actualización</td><td class="td-no">Anual o trimestral — rígido</td><td class="td-yes">Continuo — rolling con señales en tiempo real</td></tr>
+            <tr><td>Supuestos</td><td class="td-no">Definidos una vez, raramente revisados</td><td class="td-yes">Validados, tensionados y actualizados automáticamente</td></tr>
+            <tr><td>Escenarios</td><td class="td-mid">1-3 escenarios manuales</td><td class="td-yes">Múltiples escenarios generados y recalculados con IA</td></tr>
+            <tr><td>Integración de datos</td><td class="td-no">Manual — consolidación laboriosa</td><td class="td-yes">Automática desde ERP, APIs y fuentes externas</td></tr>
+            <tr><td>Narrativa ejecutiva</td><td class="td-no">Redacción manual por el analista</td><td class="td-yes">Borrador generado por agente, revisado por analista</td></tr>
+            <tr><td>Capacidad de aprendizaje</td><td class="td-no">No aprende — repite el mismo proceso</td><td class="td-yes">Mejora en cada ciclo incorporando errores de predicción</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-icon">🧠</div>
+        <div><strong>El cambio de paradigma:</strong> El presupuesto deja de ser un documento de control para convertirse en un <strong>sistema de pensamiento financiero continuo</strong>. La pregunta ya no es "¿cuánto presupuestamos?" sino "¿qué nos dice el sistema sobre la viabilidad de nuestra estrategia en este momento?"</div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" disabled><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(2)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.2 -->
+    <div class="session-panel" id="s2">
+      <div class="session-hero">
+        <div class="hero-top blue">
+          <div class="hero-eyebrow">Sesión 7.2</div>
+          <div class="hero-title">Tipología de modelos — Estáticos vs. Dinámicos · Determinísticos vs. Probabilísticos</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Modelar no es solo calcular — es <strong>representar la lógica del negocio</strong>. La elección entre un modelo estático o dinámico, determinístico o probabilístico, no es técnica sino estratégica: define qué tipo de preguntas puede responder el sistema y qué nivel de incertidumbre puede gestionar.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 4 arquitecturas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Las 4 arquitecturas de modelo — cruce de tipologías</div>
+      <div class="cards-grid-2">
+        <div class="concept-card blue">
+          <div class="card-icon blue">📋</div>
+          <div class="card-title">Estático + Determinístico</div>
+          <div class="card-text">Un solo resultado para un conjunto fijo de supuestos. El modelo clásico de presupuesto anual. Útil para comunicación ejecutiva pero frágil ante cambios del entorno.<br><br><strong>Cuándo usar:</strong> organizaciones en etapa inicial, contextos estables.</div>
+          <span class="card-tag tag-blue">Modelo base</span>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🔀</div>
+          <div class="card-title">Estático + Probabilístico</div>
+          <div class="card-text">Incorpora distribuciones de probabilidad en los supuestos — Monte Carlo sobre un modelo de estructura fija. Más robusto para análisis de riesgo.<br><br><strong>Cuándo usar:</strong> proyectos de inversión, análisis de riesgo financiero.</div>
+          <span class="card-tag tag-gold">Riesgo cuantificado</span>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">🔄</div>
+          <div class="card-title">Dinámico + Determinístico</div>
+          <div class="card-text">Rolling forecast que actualiza supuestos en cada ciclo con los datos más recientes. Estructura de resultado única pero en evolución continua.<br><br><strong>Cuándo usar:</strong> FP&A de empresas con alta variabilidad operativa.</div>
+          <span class="card-tag tag-green">Adaptación continua</span>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🤖</div>
+          <div class="card-title">Dinámico + Probabilístico</div>
+          <div class="card-text">La arquitectura más avanzada: actualización continua + distribuciones de probabilidad + aprendizaje de errores previos. Habilitada por IA agéntica.<br><br><strong>Cuándo usar:</strong> planeación estratégica en entornos de alta incertidumbre.</div>
+          <span class="card-tag tag-purple">IA agéntica</span>
+        </div>
+      </div>
+
+      <div class="callout blue">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Regla de selección:</strong> La calidad del modelo no se mide por su sofisticación — se mide por su capacidad de responder las preguntas financieras que importan en ese contexto específico. Un modelo dinámico-probabilístico mal implementado es menos útil que uno estático-determinístico bien estructurado.</div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(1)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(3)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.3 -->
+    <div class="session-panel" id="s3">
+      <div class="session-hero">
+        <div class="hero-top gold">
+          <div class="hero-eyebrow">Sesión 7.3</div>
+          <div class="hero-title">Enfoques de construcción del plan — Top-Down, Bottom-Up, Rolling Forecast y Driver-Based</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Planear financieramente implica elegir una <strong>lógica de construcción del plan</strong>. Cada enfoque define el punto de partida, la dirección del flujo de información y el tipo de debate estratégico que genera. La IA agéntica no elimina esta elección — la amplifica integrando múltiples enfoques simultáneamente.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 4 enfoques</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Los 4 enfoques de construcción del plan financiero</div>
+      <div class="cards-grid-2">
+        <div class="concept-card">
+          <div class="card-icon red">⬇️</div>
+          <div class="card-title">Top-Down</div>
+          <div class="card-text">Parte de la estrategia corporativa y los objetivos de dirección. Desagrega metas hacia unidades de negocio. Garantiza alineación con la visión estratégica pero puede generar metas desconectadas de la realidad operativa.<br><br><strong>Riesgo:</strong> irrealismo operativo.</div>
+          <span class="card-tag tag-red">De la estrategia a la operación</span>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">⬆️</div>
+          <div class="card-title">Bottom-Up</div>
+          <div class="card-text">Parte de las unidades operativas y consolida hacia la dirección. Alta fidelidad a la realidad del negocio pero puede perder alineación estratégica y producir "presupuestos de comodidad".<br><br><strong>Riesgo:</strong> falta de ambición estratégica.</div>
+          <span class="card-tag tag-blue">De la operación a la estrategia</span>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">🔄</div>
+          <div class="card-title">Rolling Forecast</div>
+          <div class="card-text">Reemplaza el horizonte fijo anual por una proyección continua que siempre mira 12-18 meses hacia adelante. Se actualiza mensual o trimestralmente incorporando datos reales.<br><br><strong>Ventaja:</strong> elimina el "juego del presupuesto" de fin de año.</div>
+          <span class="card-tag tag-green">Horizonte continuo</span>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">⚙️</div>
+          <div class="card-title">Driver-Based</div>
+          <div class="card-text">Construye el modelo desde los impulsores causales del negocio (volumen, precio, productividad, retención). Cada driver mueve múltiples líneas del plan de forma coherente.<br><br><strong>Ventaja:</strong> modelación más cercana a la lógica económica real.</div>
+          <span class="card-tag tag-purple">Lógica causal</span>
+        </div>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-icon">💡</div>
+        <div><strong>La IA como integrador:</strong> Los agentes financieros permiten combinar simultáneamente top-down (metas estratégicas) con bottom-up (datos operativos), driver-based (lógica causal) y rolling (actualización continua). Planear estratégicamente implica dominar múltiples lógicas de construcción — no elegir solo una.</div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(2)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(4)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.4 -->
+    <div class="session-panel" id="s4">
+      <div class="session-hero">
+        <div class="hero-top green">
+          <div class="hero-eyebrow">Sesión 7.4</div>
+          <div class="hero-title">Estado de Resultados Proforma con IA — Construcción técnica y principios metodológicos</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Proyectar el ER no es extrapolar cifras — es <strong>modelar la economía futura del negocio</strong>. El ER proforma asistido por IA mantiene la lógica causal del modelo: cada rubro se proyecta desde sus drivers específicos, no desde una tasa de crecimiento genérica aplicada uniformemente.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> ER Proforma</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Secuencia técnica del ER proforma — lógica causal por rubro</div>
+      <div class="stack-flow">
+        <div class="sf-step"><div class="sf-num">1</div><span class="sf-model">Ingresos</span><div class="sf-task">Volumen × precio</div><div class="sf-desc">Mezcla comercial, elasticidad, segmentos</div></div>
+        <div class="sf-step"><div class="sf-num">2</div><span class="sf-model">Costos</span><div class="sf-task">% sobre ventas</div><div class="sf-desc">Estructura variable/fija, eficiencia, inflación</div></div>
+        <div class="sf-step"><div class="sf-num">3</div><span class="sf-model">Margen</span><div class="sf-task">Bruto + EBITDA</div><div class="sf-desc">Coherencia entre crecimiento y estructura</div></div>
+        <div class="sf-step"><div class="sf-num">4</div><span class="sf-model">Gastos Op.</span><div class="sf-task">Admin + ventas</div><div class="sf-desc">Fijos vs. variables según escala</div></div>
+        <div class="sf-step"><div class="sf-num">5</div><span class="sf-model">Financiero</span><div class="sf-task">Deuda × tasa</div><div class="sf-desc">Estructura de capital y política de financiación</div></div>
+        <div class="sf-step"><div class="sf-num">6</div><span class="sf-model">Utilidad</span><div class="sf-task">Neta proyectada</div><div class="sf-desc">Impuesto efectivo y resultado consolidado</div></div>
+      </div>
+
+      <div class="section-label">Qué aporta la IA en la construcción del ER proforma</div>
+      <div class="cards-grid-2">
+        <div class="concept-card green">
+          <div class="card-icon green">✅</div>
+          <div class="card-title">Lo que la IA puede hacer bien</div>
+          <div class="card-text">• Identificar tendencias históricas en drivers<br>• Proponer supuestos ancla en datos observados<br>• Verificar coherencia interna entre rubros<br>• Generar múltiples versiones del ER bajo distintos supuestos<br>• Producir narrativa diagnóstica del ER resultante</div>
+        </div>
+        <div class="concept-card"><div class="card-icon red">🛑</div>
+          <div class="card-title">Lo que requiere criterio humano</div>
+          <div class="card-text">• Validar supuestos de crecimiento vs. contexto estratégico<br>• Juzgar si las proyecciones son realistas para el sector<br>• Decidir sobre cambios estructurales en el modelo de negocio<br>• Aprobación final antes de presentar a la dirección<br>• Identificar eventos no recurrentes que distorsionan la historia</div>
+        </div>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Principio del ER proforma con IA:</strong> El ER proforma con IA no se improvisa — se diseña. La IA acelera la construcción, pero no puede reemplazar la comprensión del modelo económico del negocio. <strong>El analista define la lógica; el agente ejecuta y verifica la coherencia.</strong></div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(3)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(5)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.5 -->
+    <div class="session-panel" id="s5">
+      <div class="session-hero">
+        <div class="hero-top teal">
+          <div class="hero-eyebrow">Sesión 7.5</div>
+          <div class="hero-title">Análisis de Escenarios con GPT-5.4 — Base, Optimista y Pesimista con coherencia metodológica</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Proyectar un solo futuro es metodológicamente insuficiente. Los escenarios no son simplemente "cifras más altas o más bajas" — son <strong>representaciones coherentes de contextos alternativos</strong> con sus propias lógicas de supuestos, efectos en cascada e implicaciones para la decisión financiera.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Escenarios · GPT-5.4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Los 3 escenarios financieros — definición correcta</div>
+      <div class="cards-grid-3">
+        <div class="concept-card blue">
+          <div class="card-icon blue">⚖️</div>
+          <div class="card-title">Escenario Base</div>
+          <div class="card-text">La trayectoria central y metodológicamente defendible. No es el resultado deseado ni el promedio de optimista y pesimista — es la hipótesis más plausible dado el contexto actual del negocio y su entorno.<br><br><strong>Error frecuente:</strong> confundirlo con el resultado presupuestado.</div>
+          <span class="card-tag tag-blue">Trayectoria central</span>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">📈</div>
+          <div class="card-title">Escenario Optimista</div>
+          <div class="card-text">Mejora plausible — no fantasía financiera. Supone condiciones favorables creíbles: mayor demanda, mejor margen, eficiencia operativa superior. Debe ser coherente en todos sus efectos en cascada.<br><br><strong>Error frecuente:</strong> subir ventas sin ajustar costos y capital de trabajo.</div>
+          <span class="card-tag tag-green">Mejora plausible</span>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">📉</div>
+          <div class="card-title">Escenario Pesimista</div>
+          <div class="card-text">Estrés razonable — no catastrofismo arbitrario. Supone deterioro de variables críticas bajo condiciones adversas plausibles. Revela resiliencia financiera y capacidad de respuesta.<br><br><strong>Error frecuente:</strong> construirlo como recorte lineal del base.</div>
+          <span class="card-tag tag-red">Estrés razonable</span>
+        </div>
+      </div>
+
+      <div class="section-label">Qué aporta GPT-5.4 al análisis de escenarios</div>
+      <div class="cards-grid-2">
+        <div class="concept-card teal">
+          <div class="card-icon teal">⚡</div>
+          <div class="card-title">Generación y recálculo ágil</div>
+          <div class="card-text">GPT-5.4 puede generar y recalcular múltiples versiones de escenarios en segundos, permitiendo al analista explorar combinaciones de supuestos que manualmente tomarían días.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">🔍</div>
+          <div class="card-title">Verificación de coherencia interna</div>
+          <div class="card-text">Detecta inconsistencias entre supuestos: "el escenario optimista supone mayor crecimiento pero menor inversión en CAPEX — ¿es esto coherente con la capacidad instalada proyectada?"</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">📊</div>
+          <div class="card-title">Identificación de variables críticas</div>
+          <div class="card-text">Señala qué supuestos explican la mayor brecha entre escenarios — focaliza la atención del analista en los drivers que realmente determinan el resultado financiero.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">📝</div>
+          <div class="card-title">Narrativa por escenario</div>
+          <div class="card-text">Genera la historia económica coherente que da sentido a cada escenario — esencial para presentar a junta o comité de inversión más allá de las tablas numéricas.</div>
+        </div>
+      </div>
+
+      <div class="callout teal">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Conclusión:</strong> Analizar escenarios con GPT-5.4 es diseñar una inteligencia financiera más robusta. La IA no decide qué escenario es más probable — <strong>amplía la capacidad del analista para explorar el espacio de posibilidades y preparar a la organización para múltiples futuros plausibles.</strong></div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(4)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(6)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.6 -->
+    <div class="session-panel" id="s6">
+      <div class="session-hero">
+        <div class="hero-top purple">
+          <div class="hero-eyebrow">Sesión 7.6</div>
+          <div class="hero-title">Sensibilidad y Stress Testing con Prompts Iterativos — Prueba de robustez del modelo</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Modelar no es suficiente — es indispensable <strong>probar la resistencia del modelo</strong>. El análisis de sensibilidad revela elasticidad ante cambios puntuales; el stress testing expone comportamiento ante shocks extremos. Juntos, convierten el plan financiero de una proyección a una arquitectura de decisión bajo presión.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Robustez · Stress</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Sensibilidad vs. Stress Testing — diferencia metodológica</div>
+      <div class="cards-grid-2">
+        <div class="concept-card blue">
+          <div class="card-icon blue">📊</div>
+          <div class="card-title">Análisis de Sensibilidad</div>
+          <div class="card-text">Varía una o pocas variables de forma controlada para medir su impacto sobre el resultado. Responde: ¿cuánto cambia el EBITDA si el precio cae 5%?<br><br><strong>Propósito:</strong> identificar qué variables tienen mayor poder explicativo sobre el resultado financiero.</div>
+          <span class="card-tag tag-blue">Elasticidad variable</span>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">⚡</div>
+          <div class="card-title">Stress Testing</div>
+          <div class="card-text">Somete el modelo a condiciones extremas pero plausibles — no a valores promedio sino a shocks adversos combinados. Responde: ¿sobrevive la empresa si ventas caen 20% y costos suben 10% simultáneamente?<br><br><strong>Propósito:</strong> revelar la capacidad de resiliencia del negocio.</div>
+          <span class="card-tag tag-red">Shock adverso</span>
+        </div>
+      </div>
+
+      <div class="section-label">Prompts iterativos — nueva lógica de exploración del modelo</div>
+      <div class="cards-grid">
+        <div class="concept-card purple">
+          <div class="card-icon purple">🔁</div>
+          <div class="card-title">Exploración iterativa</div>
+          <div class="card-text">GPT-5.4 permite explorar el modelo de forma conversacional: cada respuesta genera una nueva pregunta sobre el impacto, la coherencia o el límite de tolerancia del sistema financiero.</div>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🎯</div>
+          <div class="card-title">Identificación de variables críticas</div>
+          <div class="card-text">A través de prompts iterativos se identifican rápidamente cuáles variables tienen mayor elasticidad — focaliza la atención directiva en los drivers que más impactan el resultado.</div>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">📐</div>
+          <div class="card-title">Tablas de sensibilidad automáticas</div>
+          <div class="card-text">El agente puede generar automáticamente tablas de doble entrada (ej. margen vs. crecimiento) mostrando el resultado bajo múltiples combinaciones simultáneas de supuestos.</div>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">📊</div>
+          <div class="card-title">Narrativa de resultados</div>
+          <div class="card-text">Traduce la tabla de sensibilidad en implicaciones estratégicas: "el modelo es especialmente sensible al precio de venta — una caída de 3% destruye el 40% del EBITDA proyectado".</div>
+        </div>
+      </div>
+
+      <div class="callout purple">
+        <div class="callout-icon">🔑</div>
+        <div><strong>Conclusión:</strong> Probar el modelo no es una actividad de cierre — es parte de diseñar una planeación robusta. El análisis de sensibilidad y el stress testing, amplificados por prompts iterativos con GPT-5.4, convierten el plan financiero en una <strong>arquitectura de decisión preparada para múltiples condiciones del entorno.</strong></div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(5)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(7)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.7 -->
+    <div class="session-panel" id="s7">
+      <div class="session-hero">
+        <div class="hero-top blue">
+          <div class="hero-eyebrow">Sesión 7.7</div>
+          <div class="hero-title">Forecasting Predictivo — ARIMA, Regresión y Redes Neuronales para proyección financiera</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El forecasting predictivo no reemplaza el juicio financiero — lo complementa con patrones estadísticos que el ojo humano no detecta fácilmente. <strong>ARIMA</strong> modela estructura temporal, <strong>Regresión</strong> captura relaciones explicativas y las <strong>Redes Neuronales</strong> detectan patrones complejos no lineales.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Modelos predictivos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Comparativa metodológica — 3 enfoques predictivos</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Modelo</th><th>Lógica</th><th>Mejor para</th><th>Limitación</th></tr></thead>
+          <tbody>
+            <tr><td>ARIMA</td><td>Modela autocorrelación y tendencia en series temporales financieras</td><td class="td-yes">Ventas con estacionalidad, flujo de caja, ingresos recurrentes</td><td>Requiere series largas y estables. No captura efectos externos</td></tr>
+            <tr><td>Regresión lineal/múltiple</td><td>Proyecta una variable en función de sus predictores causales observados</td><td class="td-yes">Costos en función del volumen, ingresos vs. indicadores macroeconómicos</td><td>Asume linealidad. Sensible a multicolinealidad entre predictores</td></tr>
+            <tr><td>Redes Neuronales</td><td>Detecta patrones complejos y no lineales en grandes volúmenes de datos</td><td class="td-mid">Forecasting con múltiples variables y patrones complejos de demanda</td><td>Caja negra — difícil de explicar. Requiere grandes datasets para entrenamiento</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout blue">
+        <div class="callout-icon">⚠️</div>
+        <div><strong>Cautela metodológica crítica:</strong> Los modelos predictivos extraen patrones del pasado — asumen que el futuro se parecerá al pasado. Cuando ocurren cambios estructurales (nuevo competidor, cambio regulatorio, disrupción tecnológica), los modelos estadísticos quedan desactualizados. <strong>La IA agéntica amplifica la capacidad predictiva pero no elimina la necesidad de criterio financiero sobre el contexto estratégico.</strong></div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(6)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(8)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.8 -->
+    <div class="session-panel" id="s8">
+      <div class="session-hero">
+        <div class="hero-top green">
+          <div class="hero-eyebrow">Sesión 7.8</div>
+          <div class="hero-title">Agente de Planeación Financiera — Automatización end-to-end del ciclo presupuestal</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La automatización end-to-end del ciclo presupuestal no significa eliminar al profesional financiero — significa <strong>rediseñar su rol</strong>. El agente ejecuta las etapas estructurales; el analista define objetivos, valida supuestos críticos y aprueba el plan final antes de presentarlo a la dirección.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> End-to-end</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Fases del ciclo presupuestal automatizables vs. con control humano</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Fase del ciclo</th><th>Automatizable con agente</th><th>Control humano requerido</th></tr></thead>
+          <tbody>
+            <tr><td>Recopilación de datos históricos</td><td class="td-yes">✅ Automático desde ERP/Excel</td><td>Verificación de completitud</td></tr>
+            <tr><td>Análisis de tendencias históricas</td><td class="td-yes">✅ Agente de análisis financiero</td><td>Contextualización estratégica</td></tr>
+            <tr><td>Generación de supuestos iniciales</td><td class="td-mid">⚠️ Propuesta del agente</td><td class="td-no">Validación obligatoria del analista</td></tr>
+            <tr><td>Construcción del ER proforma</td><td class="td-yes">✅ Agente de planeación</td><td>Revisión de coherencia económica</td></tr>
+            <tr><td>Análisis de escenarios y sensibilidad</td><td class="td-yes">✅ Generación automática</td><td>Selección del escenario de presentación</td></tr>
+            <tr><td>Detección de alertas presupuestales</td><td class="td-yes">✅ Agente de monitoreo</td><td>Decisión sobre acciones correctivas</td></tr>
+            <tr><td>Aprobación y presentación final</td><td class="td-no">❌ Solo soporte narrativo</td><td class="td-no">Decisión humana obligatoria</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-icon">🏗️</div>
+        <div><strong>El agente presupuestal como co-piloto:</strong> La automatización end-to-end no es piloto automático — es co-piloto inteligente. El agente prepara, calcula, verifica y alerta. El profesional financiero define el rumbo estratégico, valida los nodos críticos y toma las decisiones de alto impacto con mayor velocidad y mejor información.</div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(7)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(9)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.9 -->
+    <div class="session-panel" id="s9">
+      <div class="session-hero">
+        <div class="hero-top gold">
+          <div class="hero-eyebrow">Sesión 7.9</div>
+          <div class="hero-title">Agente de Escenarios — Generación autónoma y validación de hipótesis macroeconómicas</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El agente de escenarios no solo recalcula — <strong>genera, valida y traduce</strong>. Propone hipótesis macroeconómicas coherentes con el entorno, las valida contra la lógica financiera del negocio y las traduce en implicaciones concretas para el plan financiero estratégico.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> Agente especializado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Capacidades del agente de escenarios en planeación estratégica</div>
+      <div class="cards-grid-2">
+        <div class="concept-card gold">
+          <div class="card-icon gold">🌐</div>
+          <div class="card-title">Integración de hipótesis macroeconómicas</div>
+          <div class="card-text">El agente incorpora variables macro (inflación, tasa de referencia, tipo de cambio, crecimiento del PIB) y las conecta con los drivers del modelo financiero de la empresa de forma coherente.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🔍</div>
+          <div class="card-title">Validación de coherencia del escenario</div>
+          <div class="card-text">Verifica que el escenario construido sea internamente consistente: que el impacto en costos sea coherente con la inflación supuesta, que el efecto cambiario sea correcto para la estructura de la empresa.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">📊</div>
+          <div class="card-title">Traducción financiera del entorno</div>
+          <div class="card-text">Convierte señales externas (cambio de política monetaria, variación en commodities, riesgo geopolítico) en implicaciones financieras concretas para el plan presupuestal.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">📝</div>
+          <div class="card-title">Narrativa ejecutiva del escenario</div>
+          <div class="card-text">Genera la historia económica coherente que explica por qué el escenario es plausible, cuáles son sus supuestos clave y qué implicaciones tiene para la estrategia financiera de la organización.</div>
+        </div>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-icon">💡</div>
+        <div><strong>Valor diferencial:</strong> El agente de escenarios no reemplaza la inteligencia macroeconómica del CFO — la amplifica. <strong>La capacidad de traducir señales del entorno en implicaciones financieras concretas, de forma rápida y coherente, es el verdadero diferenciador del profesional financiero estratégico en 2026.</strong></div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(8)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(10)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.10 -->
+    <div class="session-panel" id="s10">
+      <div class="session-hero">
+        <div class="hero-top teal">
+          <div class="hero-eyebrow">Sesión 7.10</div>
+          <div class="hero-title">Integración agéntica con ERP y fuentes de datos reales</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La planeación financiera agéntica solo alcanza su máximo potencial cuando el agente puede conectarse directamente con las <strong>fuentes de datos reales</strong> de la organización — ERP, hojas de cálculo, APIs externas y bases documentales — eliminando la capa manual de consolidación.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 40 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> ERP · APIs · Integración</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Stack de integración — del dato transaccional al insight estratégico</div>
+      <div class="stack-flow">
+        <div class="sf-step"><div class="sf-num">1</div><span class="sf-model">ERP</span><div class="sf-task">Datos transaccionales</div><div class="sf-desc">SAP, Oracle, Dynamics — fuente primaria de verdad financiera</div></div>
+        <div class="sf-step"><div class="sf-num">2</div><span class="sf-model">APIs externas</span><div class="sf-task">Datos de mercado</div><div class="sf-desc">Tasas, inflación, tipo de cambio, commodities</div></div>
+        <div class="sf-step"><div class="sf-num">3</div><span class="sf-model">Agente ingesta</span><div class="sf-task">Normaliza datos</div><div class="sf-desc">Estructura, valida y prepara datos para análisis</div></div>
+        <div class="sf-step"><div class="sf-num">4</div><span class="sf-model">Agente análisis</span><div class="sf-task">KPIs + variaciones</div><div class="sf-desc">Diagnóstico automático del desempeño financiero</div></div>
+        <div class="sf-step"><div class="sf-num">5</div><span class="sf-model">Agente planeación</span><div class="sf-task">Proforma + escenarios</div><div class="sf-desc">Plan financiero actualizado con datos reales</div></div>
+      </div>
+
+      <div class="section-label">Beneficios de la integración agéntica con datos reales</div>
+      <div class="cards-grid">
+        <div class="concept-card teal"><div class="card-icon teal">⚡</div><div class="card-title">Eliminación del trabajo manual de consolidación</div><div class="card-text">El tiempo que los analistas dedican a copiar datos del ERP a Excel puede redirigirse completamente a interpretación, validación y decisión estratégica.</div></div>
+        <div class="concept-card teal"><div class="card-icon teal">🔄</div><div class="card-title">Actualización continua del plan</div><div class="card-text">El modelo financiero se actualiza automáticamente con cada cierre de período, eliminando el desfase entre realidad y plan que caracteriza los sistemas presupuestales clásicos.</div></div>
+        <div class="concept-card teal"><div class="card-icon teal">🔒</div><div class="card-title">Trazabilidad del dato a la decisión</div><div class="card-text">Cada cifra del plan puede rastrearse hasta su fuente original en el ERP o API. Esta trazabilidad es esencial para auditoría y para defender las decisiones ante reguladores o junta.</div></div>
+        <div class="concept-card teal"><div class="card-icon teal">⚠️</div><div class="card-title">Riesgo de calidad del dato fuente</div><div class="card-text">Si el ERP tiene inconsistencias contables o errores de clasificación, el agente los amplifica. <strong>Basura entra, basura sale</strong> — la calidad del dato fuente es condición previa ineludible.</div></div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(9)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(11)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.11 -->
+    <div class="session-panel" id="s11">
+      <div class="session-hero">
+        <div class="hero-top red">
+          <div class="hero-eyebrow">Sesión 7.11</div>
+          <div class="hero-title">Supervisión Humana en Planeación Agéntica — Puntos de control y gobierno financiero</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La supervisión humana no es un obstáculo a la automatización — es su <strong>condición de legitimidad institucional</strong>. En planeación financiera agéntica, los puntos de control obligatorios no frenan la velocidad del sistema: definen dónde el criterio humano es insustituible y dónde la automatización es genuinamente útil.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Gobernanza · Control</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Puntos de control humano obligatorios en la arquitectura presupuestal agéntica</div>
+      <div class="cards-grid-2">
+        <div class="concept-card"><div class="card-icon red">1️⃣</div><div class="card-title">Validación de supuestos estratégicos</div><div class="card-text">Los supuestos de crecimiento, expansión o inversión que implican decisiones de negocio no pueden delegarse al agente. El analista los valida contra el contexto estratégico antes de que el agente construya el plan.</div><span class="card-tag tag-red">Nodo crítico</span></div>
+        <div class="concept-card"><div class="card-icon red">2️⃣</div><div class="card-title">Aprobación de escenarios de presentación</div><div class="card-text">El agente puede generar múltiples escenarios, pero la decisión sobre cuál presentar a junta o comité de inversión — y con qué narrativa — es responsabilidad humana.</div><span class="card-tag tag-red">Nodo crítico</span></div>
+        <div class="concept-card gold"><div class="card-icon gold">3️⃣</div><div class="card-title">Revisión de alertas presupuestales críticas</div><div class="card-text">Cuando el agente detecta una desviación material o una alerta de liquidez, la decisión sobre la acción correctiva requiere criterio humano sobre contexto, prioridad y consecuencias.</div><span class="card-tag tag-gold">Revisión requerida</span></div>
+        <div class="concept-card gold"><div class="card-icon gold">4️⃣</div><div class="card-title">Aprobación final del plan financiero</div><div class="card-text">Ningún plan financiero que vaya a junta directiva, a reguladores o a socios puede ser aprobado automáticamente. La firma institucional sobre el plan es siempre humana.</div><span class="card-tag tag-gold">Decisión humana</span></div>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">🛡️</div>
+        <div><strong>Principio de gobierno financiero:</strong> La arquitectura de supervisión no se diseña para limitar la IA — se diseña para <strong>preservar la responsabilidad institucional</strong> sobre decisiones financieras críticas. En un sistema bien gobernado, la IA hace más con menos fricción; el humano decide con mejor información y mayor criterio.</div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(10)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(12)">Siguiente <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.12 -->
+    <div class="session-panel" id="s12">
+      <div class="session-hero">
+        <div class="hero-top dark">
+          <div class="hero-eyebrow">Sesión 7.12</div>
+          <div class="hero-title">Presentación Financiera Multiactor — Narrativas generadas con IA para cada audiencia</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El mismo plan financiero debe comunicarse de forma diferente a la junta directiva, a los inversionistas y a los reguladores. La IA agéntica permite generar <strong>narrativas financieramente rigurosas adaptadas a cada audiencia</strong>, sin perder el núcleo común de verdad financiera que las sustenta a todas.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Comunicación estratégica</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Adaptación narrativa por audiencia — mismos datos, distinto enfoque</div>
+      <div class="cards-grid-3">
+        <div class="concept-card blue"><div class="card-icon blue">🏛️</div><div class="card-title">Junta Directiva</div><div class="card-text">Foco en implicaciones estratégicas, riesgos materiales y decisiones requeridas. Lenguaje ejecutivo. Alta síntesis. Qué ocurrió, por qué, qué riesgos emergen y qué decisiones exige a la junta.</div><span class="card-tag tag-blue">Síntesis estratégica</span></div>
+        <div class="concept-card green"><div class="card-icon green">💼</div><div class="card-title">Inversionistas</div><div class="card-text">Foco en crecimiento, rentabilidad, generación de caja y creación de valor. Equilibrio entre persuasión fundamentada y rigor financiero. Construcción de credibilidad sobre perspectivas.</div><span class="card-tag tag-green">Credibilidad financiera</span></div>
+        <div class="concept-card"><div class="card-icon red">📋</div><div class="card-title">Reguladores</div><div class="card-text">Foco en precisión, consistencia y cumplimiento formal. Sin adornos ni simplificaciones excesivas. Trazabilidad entre dato, cálculo y afirmación. Alineación con marcos normativos aplicables.</div><span class="card-tag tag-red">Exactitud y cumplimiento</span></div>
+      </div>
+
+      <div class="callout dark" style="background:#EAF0F8;border:1px solid #b3c9e6;color:#0d2a55;">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Principio de comunicación financiera multiactor:</strong> Toda adaptación narrativa debe preservar un <strong>núcleo común de verdad financiera</strong>. Sin esa base, el sistema corre el riesgo de producir mensajes eficaces en apariencia, pero inconsistentes entre sí o débiles frente a revisión posterior. La IA adapta la forma — el CFO garantiza la consistencia del fondo.</div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(11)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(13)">Sesión final <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S7.13 -->
+    <div class="session-panel" id="s13">
+      <div class="session-hero">
+        <div class="hero-top green">
+          <div class="hero-eyebrow">Sesión 7.13 · Cierre del Programa</div>
+          <div class="hero-title">Gobernanza del proceso presupuestal aumentado — Trazabilidad, responsabilidad y cierre del programa</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La gobernanza del proceso presupuestal aumentado es el sello de madurez institucional. No es una capa administrativa final — es la condición que convierte la automatización en <strong>capacidad financiera sostenible</strong>. Trazabilidad, responsabilidad y aprendizaje continuo son los tres pilares del cierre del programa.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Cierre · M7 · Programa</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Los 3 pilares de gobernanza del presupuesto aumentado</div>
+      <div class="cards-grid-3">
+        <div class="concept-card green"><div class="card-icon green">🔍</div><div class="card-title">Trazabilidad completa</div><div class="card-text">Cada cifra del plan financiero puede rastrearse hasta su fuente: qué agente la generó, qué datos procesó, qué herramienta utilizó, qué validación humana recibió y en qué momento fue aprobada.</div></div>
+        <div class="concept-card green"><div class="card-icon green">👤</div><div class="card-title">Responsabilidad clara</div><div class="card-text">El sistema agéntico automatiza procesos — pero la responsabilidad institucional sobre el plan financiero siempre recae en una persona identificable. No existe "el agente decidió" como exculpación válida.</div></div>
+        <div class="concept-card green"><div class="card-icon green">📈</div><div class="card-title">Aprendizaje continuo</div><div class="card-text">Cada ciclo presupuestal retroalimenta el sistema: errores de predicción, supuestos que fallaron y decisiones que resultaron correctas mejoran el modelo en el siguiente ciclo.</div></div>
+      </div>
+
+      <div class="section-label">Síntesis del programa — La evolución del profesional financiero</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Dimensión</th><th>Inicio del programa</th><th>Cierre del programa</th></tr></thead>
+          <tbody>
+            <tr><td>Relación con la IA</td><td>Usuario de herramientas conversacionales</td><td class="td-yes">Arquitecto de sistemas cognitivos financieros</td></tr>
+            <tr><td>Rol en planeación</td><td>Productor manual de proyecciones</td><td class="td-yes">Diseñador y supervisor de flujos agénticos</td></tr>
+            <tr><td>Valoración</td><td>Aplicador mecánico de fórmulas DCF</td><td class="td-yes">Validador de nodos críticos en valoración asistida</td></tr>
+            <tr><td>Gobernanza</td><td>Control ex-post de resultados</td><td class="td-yes">Gobierno by-design de sistemas IA financieros</td></tr>
+            <tr><td>Comunicación</td><td>Redacción manual de reportes ejecutivos</td><td class="td-yes">Supervisor de narrativas multiactor generadas por IA</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-icon">🏆</div>
+        <div><strong>Conclusión del programa:</strong> La madurez en IA financiera no se mide por la potencia de los modelos que se usan — se mide por la <strong>calidad del marco de control, criterio y responsabilidad que los rodea</strong>. El profesional financiero del futuro no es el que más automatiza: es el que mejor gobierna la inteligencia que amplifica su criterio. Esa es la ventaja competitiva del siglo XXI en finanzas corporativas.</div>
+      </div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(12)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(14)">Evaluación final <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="session-panel" id="s14">
+      <div class="session-hero">
+        <div class="hero-top green">
+          <div class="hero-eyebrow">Evaluación · Módulo 7 · Cierre del Programa</div>
+          <div class="hero-title">Quiz de verificación — Planeación Financiera Estratégica con IA Agéntica</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">8 preguntas finales del programa. Criterio aplicado sobre modelos de planeación, escenarios con IA, forecasting predictivo, gobernanza del presupuesto aumentado y el nuevo rol del profesional financiero.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 8 preguntas · Cierre</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> ~15 min</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-card" id="quizCard"></div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(13)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Volver al módulo</button>
+        <button class="nav-btn" onclick="resetQuiz()">Reiniciar quiz</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SESSIONS=[
+  {num:"7.1",title:"Presupuesto como sistema cognitivo aumentado"},
+  {num:"7.2",title:"Modelos estáticos vs. dinámicos / determinísticos vs. probabilísticos"},
+  {num:"7.3",title:"Top-Down, Bottom-Up, Rolling y Driver-Based"},
+  {num:"7.4",title:"ER Proforma con IA — construcción técnica"},
+  {num:"7.5",title:"Escenarios con GPT-5.4 — coherencia metodológica"},
+  {num:"7.6",title:"Sensibilidad y Stress Testing con prompts iterativos"},
+  {num:"7.7",title:"Forecasting ARIMA, Regresión y Redes Neuronales"},
+  {num:"7.8",title:"Agente de planeación — automatización end-to-end"},
+  {num:"7.9",title:"Agente de escenarios — hipótesis macroeconómicas"},
+  {num:"7.10",title:"Integración agéntica con ERP y datos reales"},
+  {num:"7.11",title:"Supervisión humana — puntos de control obligatorios"},
+  {num:"7.12",title:"Presentación multiactor — narrativas por audiencia"},
+  {num:"7.13",title:"Gobernanza y cierre del programa"},
+  {num:"Quiz",title:"Evaluación final · Cierre del programa"}
+];
+const QUIZ=[
+  {q:"¿Cuál es la diferencia fundamental entre un modelo de planeación dinámico-probabilístico y uno estático-determinístico?",opts:["El modelo dinámico-probabilístico es más costoso de implementar pero produce los mismos resultados","El estático-determinístico produce un resultado fijo para supuestos fijos. El dinámico-probabilístico actualiza supuestos continuamente e incorpora distribuciones de probabilidad — habilitado por IA agéntica","Los modelos probabilísticos solo aplican para empresas con cotización en bolsa","No existe diferencia práctica — ambos modelos convergen al mismo resultado con suficiente información"],correct:1,feedback:"Correcto. El modelo estático-determinístico es el presupuesto clásico: un resultado por conjunto de supuestos. El dinámico-probabilístico actualiza continuamente y trabaja con distribuciones de probabilidad sobre supuestos inciertos. Esta combinación, habilitada por IA agéntica, produce el sistema de planeación más robusto para entornos de alta volatilidad."},
+  {q:"En el enfoque Driver-Based, ¿qué diferencia metodológica lo distingue del Top-Down y Bottom-Up?",opts:["El Driver-Based es simplemente una combinación del Top-Down y Bottom-Up sin diferencia conceptual","El Driver-Based construye el modelo desde los impulsores causales del negocio, de forma que cada driver mueve coherentemente múltiples líneas del plan — en lugar de distribuir metas o consolidar cifras operativas","El Driver-Based solo aplica para empresas manufactureras con procesos productivos estandarizados","El Driver-Based elimina la necesidad de análisis histórico porque parte exclusivamente de drivers futuros"],correct:1,feedback:"Correcto. El enfoque Driver-Based modela la lógica causal del negocio: si el precio unitario cambia en X%, todos los efectos en cascada se actualizan automáticamente porque el modelo captura las relaciones económicas reales. Esto lo hace especialmente potente cuando se integra con IA agéntica, que puede mantener la coherencia de esas relaciones causales a través de todo el plan."},
+  {q:"¿Qué error metodológico crítico ocurre cuando el escenario optimista de un plan financiero sube las ventas proyectadas sin ajustar el capital de trabajo, los costos y la inversión requerida?",opts:["Es una práctica aceptable que simplifica el análisis sin alterar la calidad del escenario","Incoherencia interna del escenario: un crecimiento mayor requiere más capital de trabajo, más costos variables y posiblemente más CAPEX — omitir estos efectos produce un escenario financieramente irreal","Solo es un problema si el incremento de ventas supera el 20%","No es un error — el escenario optimista por definición asume que los costos no crecen proporcionalmente"],correct:1,feedback:"Correcto. Un escenario financiero coherente debe capturar todos los efectos en cascada del supuesto central. Mayor crecimiento implica mayor capital de trabajo (más cartera, más inventario), mayores costos variables y potencialmente más inversión en capacidad. Un escenario que solo sube la línea de ingresos sin ajustar el resto produce una representación irreal del futuro financiero."},
+  {q:"¿Cuál es la limitación estructural más relevante de los modelos predictivos (ARIMA, regresión, redes neuronales) cuando se aplican a planeación financiera?",opts:["Son demasiado costosos computacionalmente para ser usados por empresas medianas","Extraen patrones del pasado — cuando ocurren cambios estructurales en el entorno del negocio, los modelos estadísticos quedan desactualizados y requieren revisión con criterio estratégico","Solo funcionan correctamente con datos de al menos 10 años de historia","Producen resultados idénticos a los métodos de planeación tradicionales"],correct:1,feedback:"Correcto. Los modelos predictivos asumen implícitamente que el futuro se parecerá al pasado. Cuando ocurre un cambio estructural — nuevo competidor disruptivo, cambio regulatorio, cambio tecnológico, crisis sistémica — los modelos estadísticos pierden poder predictivo y el criterio financiero experto es irreemplazable para ajustar la proyección al nuevo contexto."},
+  {q:"Un agente de planeación genera automáticamente el plan financiero completo y lo envía directamente al CFO sin ningún punto de revisión humana intermedia. ¿Qué problema representa esta arquitectura?",opts:["Ninguno — si el agente está bien diseñado, el plan es tan confiable como uno manual","Ausencia de puntos de control humano en nodos críticos, lo que expone el plan a supuestos no validados estratégicamente, incoherencias no detectadas y responsabilidad institucional no asignada","El único problema es que el proceso es demasiado rápido y el CFO podría no tener tiempo de leerlo","Representa eficiencia operativa máxima — el objetivo de toda automatización end-to-end"],correct:1,feedback:"Correcto. Una arquitectura sin puntos de control humano en nodos críticos concentra todos los riesgos de gobernanza: supuestos de crecimiento no validados contra la estrategia real, incoherencias entre rubros no detectadas, y ausencia de responsabilidad institucional clara sobre el plan. En un sistema maduro, la automatización acelera el proceso pero no elimina los nodos de validación experta."},
+  {q:"¿Cuál es el propósito del stress testing en el contexto de la planeación financiera estratégica?",opts:["Probar si el modelo matemático está correctamente formulado y libre de errores de cálculo","Someter el modelo a condiciones extremas pero plausibles para revelar la capacidad de resiliencia financiera del negocio ante shocks adversos combinados","Verificar que el escenario optimista sea más alto que el escenario base en todas las líneas del ER","Calcular el error de predicción del modelo de forecasting comparando resultados reales vs. proyectados"],correct:1,feedback:"Correcto. El stress testing no prueba errores matemáticos — prueba la resiliencia estratégica del negocio. Responde preguntas como: ¿puede la empresa sobrevivir si ventas caen 20% y costos suben 10% simultáneamente? ¿Cuántos meses de liquidez tiene ante ese escenario adverso? Esta información es crítica para decisiones de estructura de capital, líneas de crédito contingente y planes de contingencia operativa."},
+  {q:"Cuando el mismo plan financiero se presenta a la junta directiva, a inversionistas y a reguladores, ¿qué principio debe preservarse en las tres narrativas?",opts:["Cada narrativa debe ser completamente independiente y adaptarse sin restricciones a la audiencia específica","Las tres narrativas deben preservar un núcleo común de verdad financiera — la adaptación afecta la forma, el énfasis y el nivel de detalle, pero nunca la consistencia de los datos y supuestos subyacentes","Solo la narrativa para reguladores debe ser rigurosa — las otras pueden simplificarse libremente","El principio principal es que cada narrativa muestre los resultados más favorables para esa audiencia específica"],correct:1,feedback:"Correcto. Sin un núcleo común de verdad financiera, la organización corre el riesgo de comunicar versiones parcialmente distintas de la misma realidad — lo que genera inconsistencias que pueden ser detectadas por auditores, reguladores o inversionistas sofisticados. La IA adapta la forma narrativa; la consistencia financiera de fondo es responsabilidad institucional no delegable."},
+  {q:"¿Cuál es la transformación más profunda del rol del profesional financiero al finalizar este programa?",opts:["Aprender a usar más herramientas de software financiero y aumentar la velocidad de producción de reportes","Pasar de ser productor manual de análisis a convertirse en arquitecto de sistemas cognitivos financieros: diseña flujos agénticos, define nodos de control humano, valida supuestos críticos y gobierna sistemas donde la IA amplifica su criterio","Reemplazar al equipo de FP&A con agentes autónomos para reducir costos operativos del área financiera","Especializarse en programación Python y APIs para construir modelos agénticos desde cero"],correct:1,feedback:"Correcto. La transformación más profunda no es técnica — es conceptual y estratégica. El profesional financiero evoluciona de ejecutor a arquitecto: diseña los sistemas, define sus reglas, establece puntos de control y gobierna el proceso con criterio experto. La IA amplifica su capacidad analítica; él amplifica el valor de la IA con su comprensión del negocio, el riesgo y la estrategia. Esa combinación es la ventaja competitiva irreplicable del profesional financiero del siglo XXI."}
+];
+let current=1,completed=new Set(),quizIdx=0,quizScore=0,answerMap={};
+function buildSidebar(){
+  const list=document.getElementById("sessionList");
+  list.innerHTML=SESSIONS.map((s,i)=>{
+    const n=i+1,isCurrent=n===current,isDone=completed.has(n);
+    return `<div class="session-item ${isCurrent?"active":""}" onclick="goTo(${n})">
+      <div class="si-num">${s.num}</div>
+      <div class="si-text"><div class="si-label">Sesión ${s.num}</div><div class="si-title">${s.title}</div></div>
+      <div class="si-check ${isCurrent?"current":isDone?"done":"pending"}">
+        ${isCurrent?`<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>`:isDone?`<svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,4 3,6 7,2"/></svg>`:""}
+      </div>
+    </div>`;
+  }).join("");
+}
+function updateProgress(){
+  const pct=Math.round((completed.size/SESSIONS.length)*100);
+  document.getElementById("progressFill").style.width=pct+"%";
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("badgeSession").textContent="Sesión "+SESSIONS[current-1].num;
+}
+function goTo(n){
+  completed.add(current);
+  document.querySelectorAll(".session-panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById("s"+n).classList.add("active");
+  document.getElementById("contentArea").scrollTop=0;
+  current=n;buildSidebar();updateProgress();
+  if(n===14) renderQuiz();
+}
+function renderQuiz(){
+  const q=QUIZ[quizIdx];const answered=answerMap[quizIdx]!==undefined;
+  document.getElementById("quizCard").innerHTML=`<div class="quiz-header"><div class="quiz-header-title">Pregunta ${quizIdx+1} de ${QUIZ.length}</div><div class="quiz-header-sub">Módulo 7 · Planeación Financiera Estratégica con IA Agéntica · Cierre del Programa</div></div><div class="quiz-body"><div class="quiz-q">${q.q}</div><div class="quiz-opts">${q.opts.map((o,i)=>{let cls="quiz-opt"+(answered?" disabled":"");if(answered){if(i===q.correct)cls+=" correct";else if(answerMap[quizIdx]===i)cls+=" wrong";}return`<div class="${cls}" onclick="${answered?"":"answer("+i+")"}"><span class="opt-letter">${"ABCD"[i]}</span><span>${o}</span></div>`;}).join("")}</div><div class="quiz-feedback ${answered?"show":""} ${answered?(answerMap[quizIdx]===q.correct?"ok":"fail"):""}">${answered?q.feedback:""}</div><div class="quiz-footer"><div class="quiz-score">Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas</div><div style="display:flex;gap:8px;">${quizIdx>0?`<button class="nav-btn" onclick="prevQ()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg></button>`:""}${quizIdx<QUIZ.length-1?`<button class="nav-btn primary" onclick="nextQ()">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>`:`<div style="font-size:13px;font-weight:500;color:var(--green);padding:8px 16px;background:var(--green-light);border-radius:8px;">🎓 Programa completado — ${quizScore}/${QUIZ.length} correctas</div>`}</div></div></div>`;
+}
+function answer(i){if(answerMap[quizIdx]!==undefined)return;answerMap[quizIdx]=i;if(i===QUIZ[quizIdx].correct)quizScore++;const opts=document.querySelectorAll(".quiz-opt");opts.forEach((o,idx)=>{o.classList.add("disabled");if(idx===QUIZ[quizIdx].correct)o.classList.add("correct");else if(idx===i)o.classList.add("wrong");});const fb=document.querySelector(".quiz-feedback");if(fb){fb.textContent=QUIZ[quizIdx].feedback;fb.classList.add("show");fb.classList.add(i===QUIZ[quizIdx].correct?"ok":"fail");}document.querySelector(".quiz-score").innerHTML=`Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas`;}
+function nextQ(){if(quizIdx<QUIZ.length-1){quizIdx++;renderQuiz();}}
+function prevQ(){if(quizIdx>0){quizIdx--;renderQuiz();}}
+function resetQuiz(){quizIdx=0;quizScore=0;answerMap={};renderQuiz();}
+buildSidebar();updateProgress();
+</script>
+</body>
+</html>
