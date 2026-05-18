@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Módulo 6 · Introducción a la Planeación Financiera y Valoración · ADVANCE UR</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ur:#C8102E;--url:#F5E6E9;--urm:#E8899A;
+  --bg:#F2F0EE;--white:#FFFFFF;
+  --b1:#E0DDDA;--b2:#C8C4C0;
+  --t1:#2C2C2C;--t2:#666560;--t3:#9E9B97;
+  --gold:#B8860B;--gold-light:#FDF8EC;
+  --green:#1A6B3C;--green-light:#EAF5EE;
+  --blue:#1A3A6B;--blue-light:#EAF0F8;
+  --purple:#4A1D8F;--purple-light:#F0EBF8;
+  --teal:#0E6B6B;--teal-light:#E6F5F5;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;}
+header{flex-shrink:0;background:var(--white);border-bottom:2px solid var(--ur);padding:.75rem 2rem;display:flex;align-items:center;gap:16px;z-index:100;}
+.logo-mark{width:36px;height:36px;background:var(--ur);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:18px;height:18px;}
+.header-text{flex:1;}
+.header-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--t1);line-height:1.2;}
+.header-sub{font-size:11px;color:var(--t3);letter-spacing:.04em;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.progress-bar-wrap{width:180px;}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px;}
+.progress-track{height:4px;background:var(--b1);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--ur);border-radius:2px;transition:width .5s ease;}
+.badge-session{font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;background:var(--url);color:var(--ur);border:1px solid var(--urm);white-space:nowrap;}
+.main{flex:1;display:flex;overflow:hidden;}
+.sidebar{width:280px;flex-shrink:0;background:var(--white);border-right:1px solid var(--b1);overflow-y:auto;display:flex;flex-direction:column;}
+.sidebar-header{padding:1rem 1.25rem .75rem;border-bottom:1px solid var(--b1);position:sticky;top:0;background:var(--white);z-index:10;}
+.sidebar-mod-num{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--ur);text-transform:uppercase;margin-bottom:2px;}
+.sidebar-title{font-size:11px;font-weight:500;letter-spacing:.05em;color:var(--t3);text-transform:uppercase;}
+.sidebar-mod{font-size:13px;font-weight:500;color:var(--t1);margin-top:3px;}
+.session-list{padding:.5rem 0;}
+.session-item{display:flex;align-items:center;gap:10px;padding:.6rem 1.25rem;cursor:pointer;transition:background .12s;border-left:3px solid transparent;}
+.session-item:hover{background:var(--bg);}
+.session-item.active{background:var(--url);border-left-color:var(--ur);}
+.si-num{font-family:'DM Serif Display',serif;font-size:15px;color:var(--t3);width:24px;flex-shrink:0;text-align:center;}
+.session-item.active .si-num{color:var(--ur);}
+.si-text{flex:1;min-width:0;}
+.si-label{font-size:10px;color:var(--t3);}
+.si-title{font-size:12px;font-weight:500;color:var(--t1);line-height:1.3;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.session-item.active .si-title{color:var(--ur);}
+.si-check{width:16px;height:16px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.si-check.done{background:var(--green);color:#fff;}
+.si-check.current{background:var(--ur);color:#fff;}
+.si-check.pending{background:var(--b1);}
+.content{flex:1;overflow-y:auto;padding:2rem 2.5rem 3rem;display:flex;flex-direction:column;gap:2rem;}
+.session-panel{display:none;}
+.session-panel.active{display:flex;flex-direction:column;gap:1.5rem;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.session-hero{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.hero-top{padding:1.75rem 2rem 1.25rem;}
+.hero-top.red{background:linear-gradient(135deg,#1a0408 0%,var(--ur) 100%);}
+.hero-top.blue{background:linear-gradient(135deg,#040d1a 0%,var(--blue) 100%);}
+.hero-top.gold{background:linear-gradient(135deg,#1a1000 0%,#8B6914 100%);}
+.hero-top.green{background:linear-gradient(135deg,#051209 0%,var(--green) 100%);}
+.hero-top.purple{background:linear-gradient(135deg,#0a051a 0%,var(--purple) 100%);}
+.hero-top.teal{background:linear-gradient(135deg,#050f0f 0%,var(--teal) 100%);}
+.hero-top.dark{background:linear-gradient(135deg,#0a0a1a 0%,#1A3A6B 100%);}
+.hero-eyebrow{font-size:10px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:8px;}
+.hero-title{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;line-height:1.3;}
+.hero-body{padding:1.5rem 2rem;display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;}
+.hero-desc{flex:1;min-width:200px;font-size:14px;color:var(--t2);line-height:1.75;}
+.hero-meta{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);padding:5px 12px;border-radius:20px;border:1px solid var(--b1);background:var(--bg);white-space:nowrap;}
+.meta-pill svg{width:12px;height:12px;color:var(--ur);}
+.section-label{font-size:11px;font-weight:500;letter-spacing:.07em;color:var(--ur);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--url);}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+.cards-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.cards-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.concept-card{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:1.25rem;transition:all .2s;position:relative;overflow:hidden;}
+.concept-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--ur);}
+.concept-card.gold::before{background:var(--gold);}
+.concept-card.green::before{background:var(--green);}
+.concept-card.blue::before{background:var(--blue);}
+.concept-card.purple::before{background:var(--purple);}
+.concept-card.teal::before{background:var(--teal);}
+.concept-card:hover{border-color:var(--b2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px;}
+.card-icon.red{background:var(--url);}
+.card-icon.gold{background:var(--gold-light);}
+.card-icon.green{background:var(--green-light);}
+.card-icon.blue{background:var(--blue-light);}
+.card-icon.purple{background:var(--purple-light);}
+.card-icon.teal{background:var(--teal-light);}
+.card-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:5px;}
+.card-text{font-size:12px;color:var(--t2);line-height:1.65;}
+.card-tag{display:inline-flex;margin-top:10px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;}
+.tag-red{background:var(--url);color:var(--ur);}
+.tag-gold{background:var(--gold-light);color:var(--gold);}
+.tag-green{background:var(--green-light);color:var(--green);}
+.tag-blue{background:var(--blue-light);color:var(--blue);}
+.tag-purple{background:var(--purple-light);color:var(--purple);}
+.tag-teal{background:var(--teal-light);color:var(--teal);}
+.compare-table{background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.compare-table table{width:100%;border-collapse:collapse;}
+.compare-table th{background:var(--url);font-size:11px;font-weight:500;color:var(--ur);padding:.65rem 1rem;text-align:left;border-bottom:1px solid var(--b1);}
+.compare-table th:first-child{border-right:1px solid var(--b1);width:180px;}
+.compare-table td{font-size:12px;color:var(--t2);padding:.65rem 1rem;border-bottom:1px solid var(--bg);vertical-align:top;line-height:1.5;}
+.compare-table tr:last-child td{border-bottom:none;}
+.compare-table td:first-child{font-weight:500;color:var(--t1);border-right:1px solid var(--b1);background:var(--bg);}
+.td-yes{color:var(--green)!important;}
+.td-mid{color:var(--gold)!important;}
+.td-no{color:var(--ur)!important;}
+.stack-flow{display:flex;align-items:center;gap:0;background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.sf-step{flex:1;padding:1.1rem .9rem;border-right:1px solid var(--b1);text-align:center;transition:background .15s;position:relative;}
+.sf-step:last-child{border-right:none;}
+.sf-step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--b2);z-index:2;pointer-events:none;}
+.sf-step:last-child::after{display:none;}
+.sf-step:hover{background:var(--bg);}
+.sf-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ur);opacity:.25;line-height:1;}
+.sf-model{font-size:11px;font-weight:500;color:var(--ur);margin:3px 0;padding:2px 8px;background:var(--url);border-radius:20px;display:inline-block;}
+.sf-task{font-size:11px;color:var(--t1);font-weight:500;margin-bottom:2px;}
+.sf-desc{font-size:10px;color:var(--t3);line-height:1.5;}
+.callout{border-radius:10px;padding:1.1rem 1.25rem;font-size:13px;line-height:1.65;display:flex;gap:12px;align-items:flex-start;}
+.callout.red{background:var(--url);border:1px solid var(--urm);color:#7a0010;}
+.callout.gold{background:var(--gold-light);border:1px solid #e6d080;color:#7a5800;}
+.callout.green{background:var(--green-light);border:1px solid #b3dfc2;color:#0a4a25;}
+.callout.blue{background:var(--blue-light);border:1px solid #b3c9e6;color:#0d2a55;}
+.callout.purple{background:var(--purple-light);border:1px solid #c5a8e6;color:#2a0a6a;}
+.callout.teal{background:var(--teal-light);border:1px solid #a8d8d8;color:#0a4a4a;}
+.callout-icon{font-size:18px;flex-shrink:0;line-height:1.3;}
+.callout strong{font-weight:500;}
+.triada{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--white);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.triada-item{padding:1.5rem 1.25rem;border-right:1px solid var(--b1);text-align:center;}
+.triada-item:last-child{border-right:none;}
+.triada-item:hover{background:var(--bg);}
+.triada-num{font-family:'DM Serif Display',serif;font-size:32px;color:var(--url);line-height:1;}
+.triada-title{font-size:13px;font-weight:500;color:var(--t1);margin:8px 0 5px;}
+.triada-desc{font-size:11px;color:var(--t2);line-height:1.6;}
+.session-nav{display:flex;justify-content:space-between;align-items:center;padding-top:1.5rem;border-top:1px solid var(--b1);margin-top:.5rem;}
+.nav-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;border:1px solid var(--b2);color:var(--t2);background:var(--white);}
+.nav-btn:hover{background:var(--bg);color:var(--t1);}
+.nav-btn.primary{background:var(--ur);color:#fff;border-color:var(--ur);}
+.nav-btn.primary:hover{opacity:.88;}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.nav-btn svg{width:14px;height:14px;}
+.quiz-card{background:var(--white);border:1px solid var(--b1);border-radius:14px;overflow:hidden;}
+.quiz-header{background:linear-gradient(135deg,#1a0408,var(--ur));padding:1.25rem 1.5rem;}
+.quiz-header-title{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:3px;}
+.quiz-header-sub{font-size:11px;color:rgba(255,255,255,.6);}
+.quiz-body{padding:1.5rem;}
+.quiz-q{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:14px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:.75rem 1rem;border-radius:8px;border:1px solid var(--b1);cursor:pointer;transition:all .15s;font-size:13px;color:var(--t2);background:var(--bg);}
+.quiz-opt:hover{border-color:var(--urm);background:var(--url);color:var(--t1);}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.quiz-opt.wrong{border-color:var(--ur);background:var(--url);color:var(--ur);}
+.quiz-opt.disabled{cursor:default;pointer-events:none;}
+.opt-letter{width:22px;height:22px;border-radius:50%;background:var(--b1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+.quiz-opt.correct .opt-letter{background:var(--green);color:#fff;}
+.quiz-opt.wrong .opt-letter{background:var(--ur);color:#fff;}
+.quiz-feedback{margin-top:14px;padding:.9rem 1rem;border-radius:8px;font-size:13px;line-height:1.55;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.ok{background:var(--green-light);color:var(--green);border:1px solid #b3dfc2;}
+.quiz-feedback.fail{background:var(--url);color:var(--ur);border:1px solid var(--urm);}
+.quiz-footer{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--b1);}
+.quiz-score{font-size:12px;color:var(--t3);}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><polyline points="3,14 7,8 10,11 13,6 17,10" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="10" r="1.5" fill="#ffccd4"/></svg></div>
+  <div class="header-text">
+    <div class="header-title">Módulo 6 · Introducción a la Planeación Financiera y Valoración de Empresas</div>
+    <div class="header-sub">ADVANCE · Universidad del Rosario · Finanzas Corporativas</div>
+  </div>
+  <div class="header-right">
+    <div class="progress-bar-wrap">
+      <div class="progress-label"><span>Progreso</span><span id="pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="badge-session" id="badgeSession">Sesión 6.1</div>
+  </div>
+</header>
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-mod-num">Módulo 6</div>
+      <div class="sidebar-title">Contenidos</div>
+      <div class="sidebar-mod">Planeación Financiera y Valoración</div>
+    </div>
+    <div class="session-list" id="sessionList"></div>
+  </div>
+  <div class="content" id="contentArea">
+
+    <!-- S6.1 -->
+    <div class="session-panel active" id="s1">
+      <div class="session-hero">
+        <div class="hero-top red">
+          <div class="hero-eyebrow">Sesión 6.1</div>
+          <div class="hero-title">Planeación Financiera — Definición, propósito y arquitectura estratégica</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La planeación financiera no es una práctica de proyección periódica. Es un <strong>sistema de traducción estratégica</strong>: conecta ambición, recursos, restricciones y viabilidad en una arquitectura que permite anticipar necesidades, coordinar decisiones y evaluar trayectorias bajo incertidumbre.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Fundamentos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">5 propósitos centrales de la planeación financiera</div>
+      <div class="cards-grid">
+        <div class="concept-card">
+          <div class="card-icon red">🎯</div>
+          <div class="card-title">Traducir la estrategia en términos financieros</div>
+          <div class="card-text">Convierte metas de crecimiento, rentabilidad y eficiencia en ingresos, costos, inversiones, flujos de caja y retornos esperados medibles.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🔭</div>
+          <div class="card-title">Anticipar restricciones y necesidades</div>
+          <div class="card-text">Detecta problemas de liquidez, estructura de costos insostenible o necesidades de financiación antes de que se conviertan en crisis operativas o estratégicas.</div>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">🔗</div>
+          <div class="card-title">Coordinar decisiones interdependientes</div>
+          <div class="card-text">Un aumento en ventas afecta inventarios, cartera, costos, capacidad y caja. La planeación coordina esas relaciones y evita que los objetivos de un área deterioren el sistema completo.</div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">⚖️</div>
+          <div class="card-title">Fortalecer la toma de decisiones</div>
+          <div class="card-text">Genera un marco para evaluar alternativas: comparar escenarios, estimar impactos, identificar sensibilidad y definir prioridades bajo restricciones reales.</div>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">💎</div>
+          <div class="card-title">Contribuir a la creación de valor</div>
+          <div class="card-text">Orienta la organización hacia trayectorias que no solo sostengan operación y liquidez, sino que mejoren la capacidad de generar valor económico en el tiempo.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Tres niveles que no son equivalentes</div>
+      <div class="triada">
+        <div class="triada-item">
+          <div class="triada-num" style="color:var(--purple-light);">1</div>
+          <div class="triada-title">Estrategia</div>
+          <div class="triada-desc">Define la dirección: qué quiere lograr, dónde competir, cómo diferenciarse, qué capacidades desarrollar.</div>
+        </div>
+        <div class="triada-item">
+          <div class="triada-num" style="color:var(--url);">2</div>
+          <div class="triada-title">Planeación Financiera</div>
+          <div class="triada-desc">Traduce esa dirección en trayectorias cuantificables, restricciones, necesidades de recursos y escenarios posibles.</div>
+        </div>
+        <div class="triada-item">
+          <div class="triada-num" style="color:var(--gold-light);">3</div>
+          <div class="triada-title">Presupuesto</div>
+          <div class="triada-desc">Expresión de corto plazo. Herramienta de asignación, control y seguimiento — no equivalente a la estrategia.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Arquitectura estratégica de la planeación — 6 componentes</div>
+      <div class="cards-grid">
+        <div class="concept-card">
+          <div class="card-icon red">🧭</div>
+          <div class="card-title">Direccionamiento estratégico</div>
+          <div class="card-text">Punto de partida: comprensión clara de hacia dónde va la empresa. Sin él, la proyección pierde sentido y se convierte en ejercicio mecánico.</div>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">⚙️</div>
+          <div class="card-title">Drivers de negocio</div>
+          <div class="card-text">Volumen, precio, mezcla, productividad, rotación, inflación, tipo de cambio. La calidad del modelo depende de identificar correctamente estos impulsores.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">📋</div>
+          <div class="card-title">Supuestos explícitos</div>
+          <div class="card-text">Definidos, documentados y conectados con lógica económica. Un modelo sin supuestos visibles puede parecer ordenado, pero es metodológicamente frágil.</div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">📊</div>
+          <div class="card-title">Modelación financiera</div>
+          <div class="card-text">Proyección del ER, balance, flujo de caja, inversión y métricas. No extrapola tendencias: representa relaciones económicas coherentes.</div>
+        </div>
+        <div class="concept-card purple">
+          <div class="card-icon purple">🔀</div>
+          <div class="card-title">Escenarios y sensibilidad</div>
+          <div class="card-text">Una arquitectura madura no trabaja con una sola versión del futuro. Construye alternativas y evalúa sensibilidad frente a variables críticas.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">🔄</div>
+          <div class="card-title">Seguimiento y realimentación</div>
+          <div class="card-text">La planeación no termina con la aprobación del presupuesto. Requiere contraste con la realidad, análisis de desviaciones y ajustes sucesivos.</div>
+        </div>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Conclusión estratégica:</strong> Planear financieramente es <strong>diseñar viabilidad</strong>. No prometer certeza — hacer explícitas las condiciones bajo las cuales una estrategia puede sostenerse, financiarse y transformarse en valor. La planeación deficiente no solo afecta el desempeño: genera una ilusión de dirección donde en realidad solo existe reacción.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" disabled><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(2)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S6.2 -->
+    <div class="session-panel" id="s2">
+      <div class="session-hero">
+        <div class="hero-top blue">
+          <div class="hero-eyebrow">Sesión 6.2</div>
+          <div class="hero-title">Componentes técnicos — Presupuesto Maestro, Simulación y Análisis de Escenarios</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La planeación financiera no se sostiene sobre conceptos generales. Requiere una <strong>estructura técnica</strong> que permita cuantificar, coordinar, tensionar y revisar proyecciones. Presupuesto maestro, simulación y escenarios no son herramientas separadas — son tres niveles complementarios de una misma arquitectura analítica.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Técnico · Aplicado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Los 3 pilares técnicos y su función diferenciada</div>
+      <div class="cards-grid-3">
+        <div class="concept-card blue">
+          <div class="card-icon blue">📐</div>
+          <div class="card-title">Presupuesto Maestro</div>
+          <div class="card-text">Consolida presupuestos operativos y financieros en un marco coherente. Obliga a que decisiones comerciales, operativas y financieras dialoguen entre sí.<br><br><strong>Función:</strong> coherencia estructural del modelo.</div>
+          <span class="card-tag tag-blue">Arquitectura base</span>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🔬</div>
+          <div class="card-title">Simulación</div>
+          <div class="card-text">Someter el modelo a variaciones controladas para observar sus respuestas. ¿Cómo cambia el flujo de caja si las ventas caen 10%? ¿Qué pasa si la inflación sube 3 puntos?<br><br><strong>Función:</strong> revelar sensibilidad del sistema.</div>
+          <span class="card-tag tag-gold">Elasticidad</span>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">🗺️</div>
+          <div class="card-title">Análisis de Escenarios</div>
+          <div class="card-text">Organiza versiones alternativas del futuro con coherencia interna. No es solo "ventas más altas" — considera todos los efectos en cascada sobre el modelo.<br><br><strong>Función:</strong> exponer resiliencia estratégica.</div>
+          <span class="card-tag tag-green">Contingencia</span>
+        </div>
+      </div>
+
+      <div class="section-label">Componentes del Presupuesto Maestro</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Componente</th><th>Qué proyecta</th><th>Por qué es crítico</th></tr></thead>
+          <tbody>
+            <tr><td>Presupuesto de ventas</td><td>Volúmenes, precios, mezcla e ingresos esperados</td><td>Punto de partida — condiciona todo el resto del modelo</td></tr>
+            <tr><td>Presupuesto de costos y gastos</td><td>Costos directos, administrativos y comerciales</td><td>Determina la estructura de rentabilidad proyectada</td></tr>
+            <tr><td>Presupuesto de inversión</td><td>CAPEX, expansión, mantenimiento estratégico</td><td>Define la capacidad operativa y las necesidades de caja</td></tr>
+            <tr><td>Presupuesto de caja</td><td>Liquidez, capital de trabajo, servicio de deuda</td><td>Componente más sensible — muestra si el negocio es sostenible</td></tr>
+            <tr><td>Estados financieros proyectados</td><td>ER, Balance y Flujo de caja proyectados</td><td>Cierre sistémico — valida coherencia de todo el modelo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout blue">
+        <div class="callout-icon">💡</div>
+        <div><strong>Regla de integración:</strong> El presupuesto maestro muestra <em>cómo se sostiene el modelo en condiciones base</em>. La simulación revela <em>qué tan sensible es a cambios puntuales</em>. El análisis de escenarios expone <em>qué tan resiliente resulta frente a configuraciones completas del entorno</em>. Solo la integración de los tres niveles produce una lectura suficientemente robusta del futuro financiero.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(1)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(3)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S6.3 -->
+    <div class="session-panel" id="s3">
+      <div class="session-hero">
+        <div class="hero-top gold">
+          <div class="hero-eyebrow">Sesión 6.3</div>
+          <div class="hero-title">Valoración de Empresas — Lógica económica y propósito estratégico</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Valorar no es adivinar un precio — es <strong>interpretar una capacidad económica</strong>. El valor no surge de la suma de activos contables ni de una fórmula mecánica. Se construye a partir de la capacidad esperada de generación de caja, ajustada por riesgo, tiempo e inversión requerida para crecer.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> Fundamentos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">3 conceptos que no son equivalentes</div>
+      <div class="cards-grid-3">
+        <div class="concept-card blue">
+          <div class="card-icon blue">💰</div>
+          <div class="card-title">Valor</div>
+          <div class="card-text">Estimación económica construida a partir de la capacidad esperada de generar beneficios futuros, ajustados por riesgo y contexto. Es una <strong>brújula económica</strong>.</div>
+          <span class="card-tag tag-blue">Análisis disciplinado</span>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">🏷️</div>
+          <div class="card-title">Precio</div>
+          <div class="card-text">Cantidad efectivamente pagada o negociada en una transacción. Influido por poder de negociación, liquidez, urgencia y asimetría de información. Es un <strong>resultado de mercado</strong>.</div>
+          <span class="card-tag tag-red">Resultado de negociación</span>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🔢</div>
+          <div class="card-title">Costo</div>
+          <div class="card-text">Recurso consumido para producir, adquirir o mantener un activo. Vinculado con el esfuerzo económico incurrido — históricamente puede ser muy distinto del valor actual.</div>
+          <span class="card-tag tag-gold">Esfuerzo incurrido</span>
+        </div>
+      </div>
+
+      <div class="section-label">Lógica económica — 5 elementos del valor</div>
+      <div class="cards-grid">
+        <div class="concept-card">
+          <div class="card-icon red">📈</div>
+          <div class="card-title">Capacidad de generación</div>
+          <div class="card-text">Una empresa crea valor si produce ingresos, márgenes y flujos superiores al costo de los recursos empleados. El valor depende de la calidad y sostenibilidad de esa generación.</div>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">⏱️</div>
+          <div class="card-title">Temporalidad del valor</div>
+          <div class="card-text">Recibir un flujo en el futuro no equivale a recibirlo hoy. La valoración ajusta temporalmente la generación esperada — de allí surge el descuento de flujos.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">⚠️</div>
+          <div class="card-title">Riesgo y retorno exigido</div>
+          <div class="card-text">A mayor riesgo, mayor exigencia de retorno y menor valor presente para un mismo flujo esperado. El riesgo no es decorativo — determina estructuralmente el resultado.</div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">🔄</div>
+          <div class="card-title">Inversión necesaria para crecer</div>
+          <div class="card-text">Un negocio que crece rápido pero consume caja intensivamente puede valer menos que uno que crece con mayor eficiencia de capital. El crecimiento sin reinversión es una ilusión.</div>
+        </div>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Principio fundamental:</strong> La valoración no produce una verdad absoluta — produce una <strong>estimación razonada, condicionada por supuestos, metodología y contexto</strong>. Su fortaleza no se mide por la sofisticación matemática del modelo, sino por la solidez económica de los supuestos que la sostienen.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(2)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(4)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S6.4 -->
+    <div class="session-panel" id="s4">
+      <div class="session-hero">
+        <div class="hero-top red">
+          <div class="hero-eyebrow">Sesión 6.4</div>
+          <div class="hero-title">Metodología DCF — WACC ajustado, Beta sectorial y Crecimiento terminal</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">El DCF es una <strong>arquitectura de valor</strong>, no solo una fórmula. Su resultado depende de tres parámetros críticos que concentran la mayor parte de su sensibilidad: el WACC como tasa de descuento, el beta sectorial como aproximación al riesgo sistemático, y el crecimiento terminal como hipótesis sobre la perpetuidad del negocio.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 50 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> DCF · WACC</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Los 3 parámetros críticos del DCF</div>
+      <div class="cards-grid-3">
+        <div class="concept-card">
+          <div class="card-icon red">📡</div>
+          <div class="card-title">WACC ajustado</div>
+          <div class="card-text">Costo promedio ponderado de capital: pondera el costo del equity (CAPM) y el costo de la deuda después de escudo fiscal según la estructura de capital objetivo.<br><br><strong>Componentes:</strong> tasa libre de riesgo + prima de mercado × beta + prima de tamaño/país si aplica.</div>
+          <span class="card-tag tag-red">Tasa de descuento</span>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">📐</div>
+          <div class="card-title">Beta sectorial</div>
+          <div class="card-text">Mide el riesgo sistemático del negocio relativo al mercado. Se obtiene de comparables cotizados, se desapalanca según la estructura del comparable y sereapalanca con la estructura objetivo de la empresa valorada.<br><br><strong>Beta &gt; 1:</strong> mayor riesgo que el mercado. <strong>Beta &lt; 1:</strong> menor riesgo.</div>
+          <span class="card-tag tag-blue">Riesgo sistemático</span>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">∞</div>
+          <div class="card-title">Crecimiento terminal</div>
+          <div class="card-text">Hipótesis sobre la tasa a la que crecerán los flujos en perpetuidad más allá del horizonte explícito. Suele alinearse con inflación de largo plazo o crecimiento del PIB nominal del sector.<br><br><strong>Riesgo:</strong> sobreestimarlo puede representar más del 60% del valor total.</div>
+          <span class="card-tag tag-gold">Valor terminal</span>
+        </div>
+      </div>
+
+      <div class="section-label">Interacción entre los tres parámetros</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Variable</th><th>Si aumenta</th><th>Efecto sobre valor</th><th>Riesgo metodológico</th></tr></thead>
+          <tbody>
+            <tr><td>WACC</td><td>Tasa libre de riesgo sube o estructura de deuda cambia</td><td class="td-no">Valor disminuye — flujos se descuentan más fuerte</td><td>Usar estructura de capital actual vs. objetivo</td></tr>
+            <tr><td>Beta sectorial</td><td>Mayor volatilidad o riesgo operativo del sector</td><td class="td-no">WACC sube → valor disminuye</td><td>Beta de comparables sin ajuste por estructura</td></tr>
+            <tr><td>Crecimiento terminal</td><td>Supuesto más optimista sobre perpetuidad</td><td class="td-yes">Valor terminal sube → valor total sube</td><td>Crecimiento terminal &gt; crecimiento económico sostenible</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">⚠️</div>
+        <div><strong>Advertencia crítica:</strong> Pequeñas variaciones en WACC o en crecimiento terminal pueden alterar materialmente el resultado final del DCF. Por eso, ninguno de estos parámetros debe aceptarse sin validación experta. <strong>Dominar el DCF exige criterio, no solo cálculo.</strong></div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(3)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(5)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S6.5 -->
+    <div class="session-panel" id="s5">
+      <div class="session-hero">
+        <div class="hero-top purple">
+          <div class="hero-eyebrow">Sesión 6.5</div>
+          <div class="hero-title">Valoración Relativa — Múltiplos EV/EBITDA, P/E y P/BV con ajustes para Colombia y LATAM</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Valorar por comparación no significa valorar sin criterio. Los múltiplos comparan <strong>precios de mercado</strong> — el analista debe comparar <strong>economías de negocio</strong>. Su utilidad depende de la calidad de los comparables seleccionados y de los ajustes contextuales aplicados al entorno latinoamericano.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Múltiplos · LATAM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Los 3 múltiplos principales y su lógica</div>
+      <div class="cards-grid-3">
+        <div class="concept-card teal">
+          <div class="card-icon teal">🏭</div>
+          <div class="card-title">EV/EBITDA</div>
+          <div class="card-text">Valor de la firma (deuda + equity) sobre EBITDA. Compara negocios antes de estructura de capital e impuestos. El más utilizado en M&A y private equity.<br><br><strong>Ventaja:</strong> comparable entre empresas con diferente apalancamiento.<br><strong>Limitación:</strong> ignora CAPEX y capital de trabajo.</div>
+        </div>
+        <div class="concept-card blue">
+          <div class="card-icon blue">📊</div>
+          <div class="card-title">P/E (Precio / Utilidad)</div>
+          <div class="card-text">Precio de la acción sobre utilidad por acción. Muy utilizado en mercados cotizados. Simplicidad aparente y sensibilidad elevada — la utilidad puede distorsionarse por items no recurrentes.<br><br><strong>Ventaja:</strong> familiar para inversionistas de equity.<br><strong>Limitación:</strong> sensible a políticas contables.</div>
+        </div>
+        <div class="concept-card">
+          <div class="card-icon red">🏦</div>
+          <div class="card-title">P/BV (Precio / Valor en libros)</div>
+          <div class="card-text">Precio de mercado sobre valor en libros del patrimonio. Especialmente útil en sectores intensivos en activos (banca, holding, energía).<br><br><strong>Ventaja:</strong> ancla en activos tangibles.<br><strong>Limitación:</strong> el valor en libros puede diferir mucho del económico.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Ajustes contextuales para Colombia y América Latina</div>
+      <div class="cards-grid-2">
+        <div class="concept-card gold">
+          <div class="card-icon gold">🌎</div>
+          <div class="card-title">Prima de riesgo país</div>
+          <div class="card-text">Los múltiplos de mercados emergentes son sistemáticamente menores que los de mercados desarrollados. Colombia y LATAM exigen ajuste por riesgo político, regulatorio y macroeconómico al seleccionar comparables.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">💱</div>
+          <div class="card-title">Iliquidez y tamaño</div>
+          <div class="card-text">Empresas de mediana y pequeña capitalización en LATAM presentan descuentos adicionales por iliquidez de la participación. Comparable cotizado en NYSE ≠ empresa no listada en Colombia.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">📋</div>
+          <div class="card-title">Diferencias contables</div>
+          <div class="card-text">NIIF vs. GAAP vs. normas locales pueden alterar márgenes, EBITDA y book value. Es imprescindible normalizar los estados financieros antes de calcular múltiplos comparables.</div>
+        </div>
+        <div class="concept-card gold">
+          <div class="card-icon gold">🔄</div>
+          <div class="card-title">Ciclo económico y sector</div>
+          <div class="card-text">Los múltiplos son altamente cíclicos. Un EV/EBITDA de 8x en el pico del ciclo puede ser equivalente a 5x en condiciones normalizadas. La comparación debe ajustarse por momento del ciclo.</div>
+        </div>
+      </div>
+
+      <div class="callout purple">
+        <div class="callout-icon">🔑</div>
+        <div><strong>Principio de los múltiplos:</strong> Los múltiplos comparan precios — no economías. Un P/E más bajo no significa automáticamente que una empresa esté barata: puede reflejar menor calidad de crecimiento, mayor riesgo o diferencias contables. <strong>El analista debe comparar economías de negocio, no solo ratios de precio.</strong></div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(4)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(6)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S6.6 -->
+    <div class="session-panel" id="s6">
+      <div class="session-hero">
+        <div class="hero-top teal">
+          <div class="hero-eyebrow">Sesión 6.6</div>
+          <div class="hero-title">Interdependencia entre Planeación y Valoración — Ciclo bidireccional de retroalimentación</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Planear y valorar no son procesos aislados que ocurren en momentos distintos. Son un <strong>ciclo bidireccional</strong>: la planeación alimenta la valoración con supuestos y proyecciones, y la valoración retroalimenta la planeación revelando qué tan sostenible y creador de valor es el plan financiero.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><polyline points="2,11 6,7 9,9 14,4"/></svg> Integración</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Ciclo bidireccional: qué aporta cada disciplina a la otra</div>
+      <div class="cards-grid-2">
+        <div class="concept-card blue">
+          <div class="card-icon blue">📊</div>
+          <div class="card-title">Lo que la planeación aporta a la valoración</div>
+          <div class="card-text">• Proyecciones del ER, balance y flujo de caja<br>• Supuestos operativos explícitos y documentados<br>• Drivers de crecimiento justificados<br>• Requerimientos de CAPEX y capital de trabajo<br>• Escenarios alternativos para análisis de sensibilidad<br><br><strong>Sin planeación sólida, el DCF descansa sobre hipótesis débiles.</strong></div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">💎</div>
+          <div class="card-title">Lo que la valoración aporta a la planeación</div>
+          <div class="card-text">• Responde si el plan financiero crea o destruye valor<br>• Revela si el crecimiento proyectado justifica la inversión requerida<br>• Identifica cuáles supuestos tienen mayor impacto sobre el valor<br>• Obliga a evaluar trade-offs entre crecimiento y eficiencia de capital<br><br><strong>Sin valoración, el plan financiero pierde perspectiva estratégica.</strong></div>
+        </div>
+      </div>
+
+      <div class="section-label">Coherencia entre crecimiento, reinversión y valor</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Situación</th><th>Implicación para el valor</th><th>Señal para la planeación</th></tr></thead>
+          <tbody>
+            <tr><td>Crecimiento alto + reinversión eficiente</td><td class="td-yes">Crea valor — ROIC &gt; WACC</td><td>Plan sostenible, fortalecer drivers</td></tr>
+            <tr><td>Crecimiento alto + consumo intensivo de capital</td><td class="td-mid">Valor neutro o destructor si ROIC ≈ WACC</td><td>Revisar eficiencia del capital de trabajo y CAPEX</td></tr>
+            <tr><td>Crecimiento bajo + alta eficiencia de capital</td><td class="td-mid">Puede crear valor si retorno &gt; costo</td><td>Evaluar si el plan es suficientemente ambicioso</td></tr>
+            <tr><td>Crecimiento proyectado sin respaldo operativo</td><td class="td-no">Destruye valor — supuestos no sostenibles</td><td>Revisión urgente de supuestos y estructura del plan</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout teal">
+        <div class="callout-icon">🔄</div>
+        <div><strong>Conclusión del ciclo:</strong> Separar artificialmente planeación y valoración produce dos riesgos: planes financieros ambiciosos pero económicamente insostenibles, o valoraciones técnicamente correctas pero desconectadas de la realidad operativa del negocio. <strong>Planear y valorar juntos es aprender a corregir el futuro antes de que llegue.</strong></div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(5)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(7)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S6.7 -->
+    <div class="session-panel" id="s7">
+      <div class="session-hero">
+        <div class="hero-top gold">
+          <div class="hero-eyebrow">Sesión 6.7</div>
+          <div class="hero-title">El Agente Financiero como extensión del analista — Finanzas corporativas aumentadas por IA</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">Un agente financiero no reemplaza al analista — lo <strong>amplía</strong>. La relación correcta no es de sustitución sino de complementariedad: el agente automatiza tareas estructurales para que el criterio experto se concentre donde agrega más valor — interpretación, validación y decisión estratégica.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> IA aplicada</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Capacidades del agente que amplían el trabajo del analista</div>
+      <div class="cards-grid">
+        <div class="concept-card teal">
+          <div class="card-icon teal">⚡</div>
+          <div class="card-title">Velocidad analítica</div>
+          <div class="card-text">Ejecuta en segundos análisis que manualmente tomarían horas: diagnóstico de EF, cálculo de ratios, variaciones presupuestales, sensibilidades del DCF.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">🔄</div>
+          <div class="card-title">Consistencia metodológica</div>
+          <div class="card-text">Aplica los mismos criterios de análisis en cada ciclo. Elimina la variabilidad humana en tareas repetitivas y garantiza comparabilidad entre períodos.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">📊</div>
+          <div class="card-title">Escalabilidad</div>
+          <div class="card-text">Analiza simultáneamente múltiples unidades de negocio, filiales o empresas comparables con el mismo estándar metodológico — algo imposible para un solo analista.</div>
+        </div>
+        <div class="concept-card teal">
+          <div class="card-icon teal">📋</div>
+          <div class="card-title">Narrativa preliminar</div>
+          <div class="card-text">Genera borradores de comentarios ejecutivos, síntesis de variaciones y primeras lecturas diagnósticas que el analista revisa, contextualiza y ajusta.</div>
+        </div>
+      </div>
+
+      <div class="section-label">El analista en un entorno aumentado por agentes — nuevo perfil de competencias</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Función tradicional</th><th>Función en entorno aumentado</th></tr></thead>
+          <tbody>
+            <tr><td>Consolidar datos manualmente</td><td class="td-yes">Diseñar y supervisar flujos de ingesta agéntica</td></tr>
+            <tr><td>Calcular ratios y variaciones</td><td class="td-yes">Validar criterios metodológicos del agente de diagnóstico</td></tr>
+            <tr><td>Construir modelos en Excel</td><td class="td-yes">Definir supuestos críticos y validar coherencia del modelo proforma</td></tr>
+            <tr><td>Redactar reportes ejecutivos</td><td class="td-yes">Revisar y contextualizar narrativas generadas por el agente</td></tr>
+            <tr><td>Presentar resultados a la dirección</td><td class="td-yes">Interpretar hallazgos estratégicamente y traducirlos en decisiones</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-icon">🎯</div>
+        <div><strong>Conclusión:</strong> El mejor agente financiero no reemplaza al analista — <strong>amplía su capacidad de decidir bien</strong>. La IA aporta velocidad, escala y consistencia; el analista aporta criterio, contexto y responsabilidad sobre la decisión. Esta complementariedad, bien diseñada, es la base de la función financiera del futuro.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(6)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(8)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S6.8 -->
+    <div class="session-panel" id="s8">
+      <div class="session-hero">
+        <div class="hero-top dark">
+          <div class="hero-eyebrow">Sesión 6.8</div>
+          <div class="hero-title">ChatGPT / GPT-5.4 como infraestructura cognitiva del CFO</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">GPT-5.4 no es un asistente de texto para el CFO — es una <strong>infraestructura cognitiva transversal</strong> que conecta análisis financiero, planeación, valoración, reporting y comunicación estratégica dentro de una misma arquitectura de razonamiento. La ventaja no estará en usarlo — estará en integrarlo con criterio financiero.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> CFO · Estratégico</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">GPT-5.4 como capa transversal del stack financiero del CFO</div>
+      <div class="stack-flow">
+        <div class="sf-step"><div class="sf-num">1</div><span class="sf-model">Análisis</span><div class="sf-task">EF y KPIs</div><div class="sf-desc">Diagnóstico automático de estados financieros y variaciones</div></div>
+        <div class="sf-step"><div class="sf-num">2</div><span class="sf-model">Planeación</span><div class="sf-task">Supuestos + ER</div><div class="sf-desc">Formulación y validación de hipótesis de proyección</div></div>
+        <div class="sf-step"><div class="sf-num">3</div><span class="sf-model">Valoración</span><div class="sf-task">DCF + sensibilidad</div><div class="sf-desc">Soporte metodológico y narrativa de inversión</div></div>
+        <div class="sf-step"><div class="sf-num">4</div><span class="sf-model">Reporte</span><div class="sf-task">Junta + reguladores</div><div class="sf-desc">Narrativas adaptadas a cada audiencia con rigor</div></div>
+        <div class="sf-step"><div class="sf-num">5</div><span class="sf-model">Decisión</span><div class="sf-task">Criterio humano</div><div class="sf-desc">CFO valida, decide y asume responsabilidad institucional</div></div>
+      </div>
+
+      <div class="section-label">Reconfiguración del rol del CFO en el entorno IA</div>
+      <div class="cards-grid-2">
+        <div class="concept-card blue">
+          <div class="card-icon blue">🔧</div>
+          <div class="card-title">Antes: productor de análisis</div>
+          <div class="card-text">El CFO coordinaba equipos para producir datos, construir modelos, generar reportes y preparar presentaciones. El esfuerzo se concentraba en producción de información.</div>
+        </div>
+        <div class="concept-card green">
+          <div class="card-icon green">🏗️</div>
+          <div class="card-title">Ahora: arquitecto de sistemas cognitivos</div>
+          <div class="card-text">El CFO diseña cómo la IA amplifica la función financiera, define qué decisiones requieren criterio humano y traduce los resultados en dirección estratégica. El esfuerzo se concentra en interpretación y gobernanza.</div>
+        </div>
+      </div>
+
+      <div class="callout blue">
+        <div class="callout-icon">🏆</div>
+        <div><strong>Conclusión del módulo:</strong> La ventaja competitiva del CFO no estará en saber usar ChatGPT — estará en <strong>integrarlo con criterio financiero dentro de una arquitectura que preserve control, trazabilidad y responsabilidad institucional</strong>. La IA amplifica la función financiera; el CFO la gobierna.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(7)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(9)">Siguiente sesión <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- S6.9 -->
+    <div class="session-panel" id="s9">
+      <div class="session-hero">
+        <div class="hero-top red">
+          <div class="hero-eyebrow">Sesión 6.9</div>
+          <div class="hero-title">Gobernanza y riesgos del uso de IA en decisiones financieras de alto impacto</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">La potencia analítica de la IA exige un <strong>marco de control proporcional</strong>. En decisiones financieras de alto impacto — valoración, M&A, financiación, reporting regulatorio — la madurez no está en usar IA sino en gobernarla bien. La sofisticación sin control es un pasivo institucional.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> Gobernanza · Cierre M6</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> 45 min</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Principales riesgos del uso de IA en finanzas de alto impacto</div>
+      <div class="cards-grid-2">
+        <div class="concept-card"><div class="card-icon red">🎭</div><div class="card-title">Sobreconfianza algorítmica</div><div class="card-text">Aceptar outputs bien estructurados sin validación crítica. En valoración o M&A, una estimación persuasiva pero metodológicamente débil puede llevar a decisiones de alto costo.</div></div>
+        <div class="concept-card gold"><div class="card-icon gold">🔮</div><div class="card-title">Alucinación financiera</div><div class="card-text">El modelo genera cifras, tendencias o relaciones plausibles pero incorrectas. Crítico en supuestos de WACC, crecimiento terminal o comparables de mercado.</div></div>
+        <div class="concept-card blue"><div class="card-icon blue">🔒</div><div class="card-title">Riesgo de confidencialidad</div><div class="card-text">Envío de información financiera sensible (valoraciones, estructuras M&A, proyecciones estratégicas) a APIs externas sin políticas claras de privacidad.</div></div>
+        <div class="concept-card purple"><div class="card-icon purple">📉</div><div class="card-title">Pérdida de trazabilidad</div><div class="card-text">Sin registros del proceso agéntico, la organización no puede reconstruir cómo se generó una recomendación financiera — problema crítico ante reguladores o auditores.</div></div>
+      </div>
+
+      <div class="section-label">Señales de mala gobernanza en el uso de IA financiera</div>
+      <div class="compare-table">
+        <table>
+          <thead><tr><th>Señal de alerta</th><th>Riesgo asociado</th></tr></thead>
+          <tbody>
+            <tr><td>Se usa IA para justificar decisiones ya tomadas</td><td class="td-no">Uso decorativo — no analítico. Falsa objetividad</td></tr>
+            <tr><td>Nadie puede explicar cómo el sistema llegó al resultado</td><td class="td-no">Ausencia de trazabilidad — opacidad metodológica</td></tr>
+            <tr><td>Los supuestos del modelo IA no se documentan ni revisan</td><td class="td-no">Riesgo de supuestos implícitos y conclusiones frágiles</td></tr>
+            <tr><td>Outputs de IA van directo a junta o reguladores sin revisión</td><td class="td-no">Ausencia de control humano en nodo crítico</td></tr>
+            <tr><td>Se asume que la IA elimina la necesidad de criterio experto</td><td class="td-no">Debilitamiento del juicio financiero institucional</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">🏆</div>
+        <div><strong>Conclusión final del Módulo 6:</strong> La madurez en el uso de IA financiera no se mide por la sofisticación de las herramientas empleadas, sino por la <strong>calidad del marco de control que las rodea</strong>. Planeación financiera y valoración rigurosas, combinadas con gobernanza robusta de los sistemas de IA, constituyen la base de una dirección financiera corporativa sostenible y confiable.</div>
+      </div>
+
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(8)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Anterior</button>
+        <button class="nav-btn primary" onclick="goTo(10)">Evaluación final <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="session-panel" id="s10">
+      <div class="session-hero">
+        <div class="hero-top red">
+          <div class="hero-eyebrow">Evaluación · Módulo 6</div>
+          <div class="hero-title">Quiz de verificación — Planeación Financiera y Valoración de Empresas</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">8 preguntas de criterio aplicado sobre planeación financiera, DCF, valoración relativa, interdependencia planeación-valoración y gobernanza de IA en finanzas corporativas.</div>
+          <div class="hero-meta">
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2"/></svg> 8 preguntas</div>
+            <div class="meta-pill"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg> ~15 min</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-card" id="quizCard"></div>
+      <div class="session-nav">
+        <button class="nav-btn" onclick="goTo(9)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg> Volver al módulo</button>
+        <button class="nav-btn" onclick="resetQuiz()">Reiniciar quiz</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SESSIONS=[
+  {num:"6.1",title:"Planeación financiera — Definición y arquitectura"},
+  {num:"6.2",title:"Presupuesto Maestro, Simulación y Escenarios"},
+  {num:"6.3",title:"Valoración — Lógica económica y propósito"},
+  {num:"6.4",title:"DCF — WACC, Beta y Crecimiento terminal"},
+  {num:"6.5",title:"Múltiplos EV/EBITDA, P/E, P/BV · LATAM"},
+  {num:"6.6",title:"Planeación y Valoración — Ciclo bidireccional"},
+  {num:"6.7",title:"El agente como extensión del analista"},
+  {num:"6.8",title:"GPT-5.4 como infraestructura cognitiva del CFO"},
+  {num:"6.9",title:"Gobernanza y riesgos de IA en decisiones críticas"},
+  {num:"Quiz",title:"Evaluación final del módulo"}
+];
+const QUIZ=[
+  {q:"¿Cuál es la diferencia fundamental entre planeación financiera, presupuesto y estrategia?",opts:["Son términos equivalentes que se usan indistintamente en finanzas corporativas","La estrategia define la dirección; la planeación financiera traduce esa dirección en trayectorias cuantificables y restricciones; el presupuesto es la expresión de corto plazo de esa planeación","El presupuesto es más importante que la planeación porque es el instrumento de control operativo","La planeación financiera solo aplica a empresas grandes — las PyMEs solo necesitan presupuesto"],correct:1,feedback:"Correcto. Confundir estos tres niveles genera dos errores críticos: tratar el presupuesto como si fuera estrategia, o hacer planeación financiera desconectada de las decisiones estratégicas reales del negocio. La estrategia define el sentido, la planeación define la viabilidad y el presupuesto define la ejecución de corto plazo."},
+  {q:"¿Cuál es la función del análisis de escenarios que lo distingue de la simulación financiera?",opts:["La simulación es más sofisticada y compleja que el análisis de escenarios","La simulación modifica variables específicas para ver su efecto; el análisis de escenarios reorganiza el modelo completo bajo versiones alternativas coherentes del futuro","No hay diferencia — ambas herramientas producen el mismo resultado","El análisis de escenarios solo aplica para el escenario optimista; la simulación para el pesimista"],correct:1,feedback:"Correcto. La simulación explora la respuesta del modelo ante cambios en variables específicas. El análisis de escenarios construye futuros alternativos completos y coherentes — no solo 'ventas más altas', sino todas las consecuencias en cascada sobre costos, capacidad, capital de trabajo, caja y financiamiento."},
+  {q:"¿Qué significa que la valoración de una empresa es un ejercicio 'condicionado por supuestos'?",opts:["Que los resultados de la valoración son siempre incorrectos y no deben usarse para decisiones","Que el valor estimado no es una verdad absoluta sino una estimación razonada cuya calidad depende de la solidez, coherencia y explicitación de sus hipótesis subyacentes","Que solo se puede valorar una empresa cuando existe información perfecta sobre el futuro","Que la valoración solo es válida si utiliza la metodología DCF"],correct:1,feedback:"Correcto. La calidad de una valoración no se mide por la sofisticación matemática del modelo, sino por la solidez económica de los supuestos que la sostienen. Una valoración con supuestos visibles, coherentes y bien justificados es más robusta que un modelo complejo con hipótesis implícitas o arbitrarias."},
+  {q:"En un modelo DCF, ¿qué representa el crecimiento terminal y por qué es el parámetro de mayor riesgo?",opts:["Es el crecimiento proyectado en el primer año del horizonte explícito y tiene poco impacto en el resultado final","Es la tasa a la que crecerán los flujos en perpetuidad más allá del horizonte explícito — puede representar más del 60% del valor total, por lo que sobreestimarlo infla artificialmente el resultado","Es equivalente al WACC y por eso ambos deben calcularse con la misma metodología","Es un parámetro que solo afecta empresas en etapa de madurez con crecimientos muy altos"],correct:1,feedback:"Correcto. El valor terminal y, con él, el crecimiento terminal es la variable que más peso tiene en el resultado del DCF para la mayoría de las empresas. Una variación de 1 punto en el crecimiento terminal puede alterar materialmente el valor estimado. Por eso exige revisión crítica obligatoria y no puede aceptarse como supuesto automático."},
+  {q:"¿Por qué los múltiplos de valoración de empresas colombianas y latinoamericanas suelen ser menores que los de empresas comparables en mercados desarrollados?",opts:["Porque las empresas latinoamericanas son menos rentables y tienen peor gestión que las europeas o americanas","Porque los mercados emergentes presentan mayores riesgos político, regulatorio y macroeconómico, además de menor liquidez de las participaciones — factores que se reflejan en descuentos sobre los múltiplos","Porque las normas contables NIIF producen utilidades más bajas que los estándares contables de países desarrollados","No es cierto — los múltiplos en LATAM son equivalentes a los de mercados desarrollados"],correct:1,feedback:"Correcto. La prima de riesgo país, la menor liquidez de mercado, las diferencias regulatorias y la mayor volatilidad macroeconómica producen descuentos sistemáticos sobre los múltiplos en Colombia y LATAM respecto a comparables cotizados en mercados desarrollados. Ignorar estos ajustes puede llevar a sobrevalorar empresas o a usar referencias incorrectas en negociaciones."},
+  {q:"¿Qué aporta la valoración a la planeación financiera dentro del ciclo bidireccional?",opts:["La valoración no aporta nada a la planeación — son disciplinas completamente independientes","La valoración revela si el plan financiero crea o destruye valor, identifica qué supuestos tienen mayor impacto económico y obliga a evaluar la relación entre crecimiento y eficiencia del capital invertido","La valoración solo es útil al final del proceso de planeación para presentar resultados a inversionistas","La valoración reemplaza la planeación cuando una empresa quiere vender o fusionarse"],correct:1,feedback:"Correcto. La valoración retroalimenta la planeación al responder si el crecimiento proyectado justifica la inversión requerida y si el plan crea valor real (ROIC &gt; WACC) o simplemente expande el tamaño de la empresa sin mejorar su rentabilidad sobre el capital. Esta retroalimentación obliga a los planificadores a diseñar planes financieramente eficientes y estratégicamente sostenibles."},
+  {q:"Un CFO recibe un reporte generado por un agente de IA con una valoración de la empresa y lo presenta directamente a la junta directiva sin revisión previa. ¿Qué señal de gobernanza deficiente representa esto?",opts:["Ninguna — si el agente es avanzado como GPT-5.4, su output es suficientemente confiable para presentar directamente","Ausencia de control humano en un nodo crítico de alto impacto, lo que expone a la organización a riesgo de sobreconfianza algorítmica y potencial error metodológico con consecuencias institucionales","El problema es solo de formato — habría que pedir al agente que mejore la presentación","Representa eficiencia operativa, no un problema de gobernanza"],correct:1,feedback:"Correcto. Que un output de IA vaya directo a junta directiva sin revisión experta es una señal clara de ausencia de control humano en un nodo crítico. En decisiones de valoración de alto impacto, la validación profesional de supuestos, metodología y coherencia del resultado es una condición mínima de gobernanza — no una opción discrecional."},
+  {q:"¿Cuál es el rol correcto del agente financiero dentro de la función de análisis y valoración según la perspectiva del módulo?",opts:["Reemplazar al analista financiero en todas las tareas para reducir costos operativos del área","Competir con el analista en las tareas de mayor complejidad para validar quién produce mejores resultados","Ampliar la capacidad del analista automatizando tareas estructurales, para que el criterio experto se concentre en interpretación, validación de supuestos y decisión estratégica","Producir reportes definitivos de valoración sin intervención humana cuando el volumen de trabajo es alto"]
+  ,correct:2,feedback:"Correcto. La relación correcta entre agente y analista no es de sustitución ni de competencia, sino de complementariedad. El agente aporta velocidad, consistencia y escala; el analista aporta criterio, contexto estratégico y responsabilidad institucional sobre la decisión. El mejor agente financiero amplía la capacidad de decidir bien — no elimina la necesidad del juicio experto."}
+];
+let current=1,completed=new Set(),quizIdx=0,quizScore=0,answerMap={};
+function buildSidebar(){
+  const list=document.getElementById("sessionList");
+  list.innerHTML=SESSIONS.map((s,i)=>{
+    const n=i+1,isCurrent=n===current,isDone=completed.has(n);
+    return `<div class="session-item ${isCurrent?"active":""}" onclick="goTo(${n})">
+      <div class="si-num">${s.num}</div>
+      <div class="si-text"><div class="si-label">Sesión ${s.num}</div><div class="si-title">${s.title}</div></div>
+      <div class="si-check ${isCurrent?"current":isDone?"done":"pending"}">
+        ${isCurrent?`<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>`:isDone?`<svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,4 3,6 7,2"/></svg>`:""}
+      </div>
+    </div>`;
+  }).join("");
+}
+function updateProgress(){
+  const pct=Math.round((completed.size/SESSIONS.length)*100);
+  document.getElementById("progressFill").style.width=pct+"%";
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("badgeSession").textContent="Sesión "+SESSIONS[current-1].num;
+}
+function goTo(n){
+  completed.add(current);
+  document.querySelectorAll(".session-panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById("s"+n).classList.add("active");
+  document.getElementById("contentArea").scrollTop=0;
+  current=n;buildSidebar();updateProgress();
+  if(n===10) renderQuiz();
+}
+function renderQuiz(){
+  const q=QUIZ[quizIdx];const answered=answerMap[quizIdx]!==undefined;
+  document.getElementById("quizCard").innerHTML=`<div class="quiz-header"><div class="quiz-header-title">Pregunta ${quizIdx+1} de ${QUIZ.length}</div><div class="quiz-header-sub">Módulo 6 · Planeación Financiera y Valoración de Empresas</div></div><div class="quiz-body"><div class="quiz-q">${q.q}</div><div class="quiz-opts">${q.opts.map((o,i)=>{let cls="quiz-opt"+(answered?" disabled":"");if(answered){if(i===q.correct)cls+=" correct";else if(answerMap[quizIdx]===i)cls+=" wrong";}return`<div class="${cls}" onclick="${answered?"":"answer("+i+")"}"><span class="opt-letter">${"ABCD"[i]}</span><span>${o}</span></div>`;}).join("")}</div><div class="quiz-feedback ${answered?"show":""} ${answered?(answerMap[quizIdx]===q.correct?"ok":"fail"):""}">${answered?q.feedback:""}</div><div class="quiz-footer"><div class="quiz-score">Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas</div><div style="display:flex;gap:8px;">${quizIdx>0?`<button class="nav-btn" onclick="prevQ()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,2 4,7 9,12"/></svg></button>`:""}${quizIdx<QUIZ.length-1?`<button class="nav-btn primary" onclick="nextQ()">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,2 10,7 5,12"/></svg></button>`:`<div style="font-size:13px;font-weight:500;color:var(--green);padding:8px 16px;background:var(--green-light);border-radius:8px;">✅ Módulo 6 completado — ${quizScore}/${QUIZ.length} correctas</div>`}</div></div></div>`;
+}
+function answer(i){if(answerMap[quizIdx]!==undefined)return;answerMap[quizIdx]=i;if(i===QUIZ[quizIdx].correct)quizScore++;const opts=document.querySelectorAll(".quiz-opt");opts.forEach((o,idx)=>{o.classList.add("disabled");if(idx===QUIZ[quizIdx].correct)o.classList.add("correct");else if(idx===i)o.classList.add("wrong");});const fb=document.querySelector(".quiz-feedback");if(fb){fb.textContent=QUIZ[quizIdx].feedback;fb.classList.add("show");fb.classList.add(i===QUIZ[quizIdx].correct?"ok":"fail");}document.querySelector(".quiz-score").innerHTML=`Puntaje: <strong>${quizScore}</strong> / ${Object.keys(answerMap).length} respondidas`;}
+function nextQ(){if(quizIdx<QUIZ.length-1){quizIdx++;renderQuiz();}}
+function prevQ(){if(quizIdx>0){quizIdx--;renderQuiz();}}
+function resetQuiz(){quizIdx=0;quizScore=0;answerMap={};renderQuiz();}
+buildSidebar();updateProgress();
+</script>
+</body>
+</html>
